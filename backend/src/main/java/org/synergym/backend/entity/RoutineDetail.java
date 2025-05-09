@@ -1,9 +1,17 @@
 package org.synergym.backend.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "routineDetails")
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RoutineDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
