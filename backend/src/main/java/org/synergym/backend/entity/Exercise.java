@@ -1,15 +1,24 @@
 package org.synergym.backend.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.synergym.backend.dto.ExerciseDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "exercises")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Exercise {
     @Id
-    private Long id;
+    private Integer id;
 
     private String name;
     private String nameOriginal;
@@ -34,5 +43,25 @@ public class Exercise {
 
     @ElementCollection
     private List<Integer> equipment;
-}
 
+    // DTO로 변환하는 메서드
+    public ExerciseDTO toDTO() {
+        return ExerciseDTO.builder()
+                .id(this.id)
+                .name(this.name)
+                .description(this.description)
+                .category(this.category)
+                .muscles(this.muscles)
+                .equipment(this.equipment)
+                .build();
+    }
+
+    // DTO 정보를 Entity에 업데이트하는 메서드
+    public void updateFromDTO(ExerciseDTO exerciseDTO) {
+        this.name = exerciseDTO.getName();
+        this.description = exerciseDTO.getDescription();
+        this.category = exerciseDTO.getCategory();
+        this.muscles = exerciseDTO.getMuscles();
+        this.equipment = exerciseDTO.getEquipment();
+    }
+}
