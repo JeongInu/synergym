@@ -27,44 +27,31 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new RuntimeException("User not found");
         }
-        return user.toDTO();  // toDTO 메서드를 사용
+        return entityToDto(user);  // toDTO 메서드를 사용
     }
 
     @Transactional
     @Override
-    public UserDTO addUser(UserDTO userDTO) {
-        User user = User.builder()
-                .username(userDTO.getUsername())
-                .password(userDTO.getPassword())
-                .role(userDTO.getRole())
-                .email(userDTO.getEmail())
-                .age(userDTO.getAge())
-                .gender(userDTO.getGender())
-                .weight(userDTO.getWeight())
-                .height(userDTO.getHeight())
-                .fitnessLevel(userDTO.getFitnessLevel())
-                .createdAt(userDTO.getCreatedAt())
-                .build();
+    public Integer addUser(UserDTO userDTO) {
+        User user = dtoToEntity(userDTO);
         user = userRepository.save(user);
-        return user.toDTO();  // 저장 후 DTO로 반환
+        return user.getId();  // 저장 후 DTO로 반환
     }
 
     @Transactional
     @Override
-    public UserDTO updateUser(Long id, UserDTO userDTO) {
+    public void updateUser(Integer id, UserDTO userDTO) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         // DTO로 받은 정보를 Entity에 반영
         user.updateFromDTO(userDTO);  // Entity에서 DTO의 정보를 업데이트하는 메서드 호출
-        user = userRepository.save(user); // 업데이트된 Entity 저장
-
-        return user.toDTO();  // DTO 반환
+        userRepository.save(user); // 업데이트된 Entity 저장
     }
 
     @Transactional
     @Override
-    public void deleteUser(Long id) {
+    public void deleteUser(Integer id) {
         userRepository.deleteById(id);
     }
 
@@ -73,7 +60,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .map(User::toDTO)  // Entity를 DTO로 변환
+                .map(this::entityToDto)  // Entity를 DTO로 변환
                 .collect(Collectors.toList());
     }
 }

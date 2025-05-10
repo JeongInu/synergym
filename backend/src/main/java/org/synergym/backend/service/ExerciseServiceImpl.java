@@ -8,6 +8,7 @@ import org.synergym.backend.entity.Exercise;
 import org.synergym.backend.repository.ExerciseRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,45 +23,30 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     @Transactional
     @Override
-    public ExerciseDTO getExerciseById(Long id) {
-        // Optional을 사용하여 null 체크 및 예외 처리
-        Exercise exercise = exerciseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Exercise not found"));
-        return exercise.toDTO();  // toDTO 메서드 사용
+    public ExerciseDTO getExerciseById(Integer id) {
+        Optional<Exercise> exercise = exerciseRepository.findById(id);
+        return entityToDto(exercise.get());  // toDTO 메서드 사용
     }
 
     @Transactional
     @Override
-    public ExerciseDTO addExercise(ExerciseDTO exerciseDTO) {
-        Exercise exercise = Exercise.builder()
-                .name(exerciseDTO.getName())
-                .description(exerciseDTO.getDescription())
-                .category(exerciseDTO.getCategory())
-                .muscles(exerciseDTO.getMuscles())
-                .equipment(exerciseDTO.getEquipment())
-                .build();
-
+    public Integer addExercise(ExerciseDTO exerciseDTO) {
+        Exercise exercise = dtoToEntity(exerciseDTO);
         exercise = exerciseRepository.save(exercise);
-        return exercise.toDTO();  // 저장 후 DTO로 반환
+        return exercise.getId();  // 저장 후 DTO로 반환
     }
 
     @Transactional
     @Override
-    public ExerciseDTO updateExercise(Long id, ExerciseDTO exerciseDTO) {
-        // Optional을 사용하여 Exercise 엔티티를 찾고, 없을 경우 예외 처리
-        Exercise exercise = exerciseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Exercise not found"));
-
-        // DTO 정보를 Entity에 반영
-        exercise.updateFromDTO(exerciseDTO);  // Entity에서 DTO의 정보를 업데이트하는 메서드 호출
-        exercise = exerciseRepository.save(exercise); // 업데이트된 Entity 저장
-
-        return exercise.toDTO();  // DTO 반환
+    public void updateExercise(Integer id, ExerciseDTO exerciseDTO) {
+        Optional<Exercise> exercise = exerciseRepository.findById(id);
+        exercise.get().updateFromDTO(exerciseDTO);  // Entity에서 DTO의 정보를 업데이트하는 메서드 호출
+        exerciseRepository.save(exercise.get()); // 업데이트된 Entity 저장
     }
 
     @Transactional
     @Override
-    public void deleteExercise(Long id) {
+    public void deleteExercise(Integer id) {
         exerciseRepository.deleteById(id);
     }
 
@@ -69,7 +55,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     public List<ExerciseDTO> getAllExercises() {
         return exerciseRepository.findAll()
                 .stream()
-                .map(Exercise::toDTO)  // Entity를 DTO로 변환
+                .map(this::entityToDto)  // Entity를 DTO로 변환
                 .collect(Collectors.toList());
     }
 }

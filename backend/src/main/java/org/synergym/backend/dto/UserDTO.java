@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Builder
 public class UserDTO {
     private Integer id;
-    private String password;
     private String username;
+    private String password;
     private String role;
     private String email;
     private Integer age;
@@ -22,5 +22,4 @@ public class UserDTO {
     private Float weight;
     private Float height;
     private String fitnessLevel;
-    private LocalDateTime createdAt;
 }
