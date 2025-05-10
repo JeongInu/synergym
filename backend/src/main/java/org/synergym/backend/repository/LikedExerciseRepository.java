@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface LikedExerciseRepository extends JpaRepository<LikedExercise, Long> {
+public interface LikedExerciseRepository extends JpaRepository<LikedExercise, Integer> {
     List<LikedExercise> findByUserId(Integer userId);
-    Optional<LikedExercise> findByUserIdAndExerciseId(Integer userId, Long exerciseId);
+    Optional<LikedExercise> findByUserIdAndExerciseId(Integer userId, Integer exerciseId);
 
 }
 

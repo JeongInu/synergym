@@ -1,5 +1,7 @@
 package org.synergym.backend.service;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RestController;
 import org.synergym.backend.dto.LikedExerciseDTO;
 import org.synergym.backend.entity.Exercise;
 import org.synergym.backend.entity.LikedExercise;
@@ -15,52 +17,37 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class LikedExerciseServiceImpl implements LikedExerciseService {
 
     private final LikedExerciseRepository likedExerciseRepository;
     private final UserRepository userRepository;
     private final ExerciseRepository exerciseRepository;
 
-    @Autowired
-    public LikedExerciseServiceImpl(LikedExerciseRepository likedExerciseRepository,
-                                    UserRepository userRepository,
-                                    ExerciseRepository exerciseRepository) {
-        this.likedExerciseRepository = likedExerciseRepository;
-        this.userRepository = userRepository;
-        this.exerciseRepository = exerciseRepository;
-    }
-
-    @Transactional
     @Override
-    public List<LikedExerciseDTO> getLikedExercisesByUserId(Long userId) {
-        return likedExerciseRepository.findByUserId(userId.intValue())
-                .stream()
-                .map(LikedExercise::toDTO)
+    public List<LikedExerciseDTO> getLikedExercisesByUserId(Integer userId) {
+        return likedExerciseRepository.findByUserId(userId).stream()
+                .map(this::entityToDto)
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     @Override
-    public void addLikedExercise(Long userId, Long exerciseId) {
+    public Integer addLikedExercise(Integer userId, Integer exerciseId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
         Exercise exercise = exerciseRepository.findById(exerciseId)
-                .orElseThrow(() -> new RuntimeException("Exercise not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Exercise not found"));
 
-        LikedExercise likedExercise = LikedExercise.builder()
-                .user(user)
-                .exercise(exercise)
-                .build();
-
-        likedExerciseRepository.save(likedExercise);
+        LikedExercise likedExercise = dtoToEntity(user, exercise);
+        likedExercise = likedExerciseRepository.save(likedExercise);
+        return likedExercise.getId();
     }
 
-    @Transactional
-    @Override
-    public void removeLikedExercise(Long userId, Long exerciseId) {
-        LikedExercise likedExercise = likedExerciseRepository.findByUserIdAndExerciseId(userId.intValue(), exerciseId)
-                .orElseThrow(() -> new RuntimeException("LikedExercise not found"));
 
+    @Override
+    public void removeLikedExercise(Integer userId, Integer exerciseId) {
+        LikedExercise likedExercise = likedExerciseRepository.findByUserIdAndExerciseId(userId, exerciseId)
+                .orElseThrow(() -> new IllegalArgumentException("LikedExercise not found"));
         likedExerciseRepository.delete(likedExercise);
     }
 }
