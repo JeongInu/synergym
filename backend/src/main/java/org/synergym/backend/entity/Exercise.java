@@ -67,6 +67,7 @@ public class Exercise {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
@@ -81,6 +82,12 @@ public class Exercise {
 =======
 >>>>>>> 5974d05 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 >>>>>>> 61f3472 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+>>>>>>> 5974d05 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> 506ec7c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> ec17896 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     public void changeName(String name) {
         this.name = name;
     }
@@ -172,6 +179,8 @@ public class Exercise {
 =======
         this.equipment = equipment;
 =======
+=======
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     // DTO 정보를 Entity에 업데이트하는 메서드
     public void updateFromDTO(ExerciseDTO exerciseDTO) {
         this.name = exerciseDTO.getName();

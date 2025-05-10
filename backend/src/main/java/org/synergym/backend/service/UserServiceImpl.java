@@ -67,6 +67,7 @@ public class UserServiceImpl implements UserService {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
@@ -81,6 +82,8 @@ public class UserServiceImpl implements UserService {
 >>>>>>> ff4e567 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 61f3472 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> ec17896 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
@@ -98,7 +101,14 @@ public class UserServiceImpl implements UserService {
 >>>>>>> d09733c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 5974d05 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> 61f3472 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> 506ec7c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> ec17896 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
         userRepository.save(user); // 업데이트된 Entity 저장
     }
