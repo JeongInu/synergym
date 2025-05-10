@@ -63,10 +63,13 @@ public class Exercise {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> d09733c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> 666814f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     public void changeName(String name) {
         this.name = name;
     }
@@ -112,6 +115,8 @@ public class Exercise {
 =======
         this.equipment = equipment;
 =======
+=======
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     // DTO 정보를 Entity에 업데이트하는 메서드

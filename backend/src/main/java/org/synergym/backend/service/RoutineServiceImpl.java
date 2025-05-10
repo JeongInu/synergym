@@ -57,10 +57,13 @@ public class RoutineServiceImpl implements RoutineService {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> d09733c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> 666814f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 
         User user = userRepository.findById(routineDTO.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + routineDTO.getUserId()));
@@ -76,6 +79,7 @@ public class RoutineServiceImpl implements RoutineService {
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
@@ -86,6 +90,8 @@ public class RoutineServiceImpl implements RoutineService {
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 >>>>>>> d09733c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> 666814f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 
         User user = userRepository.findById(routineDTO.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + routineDTO.getUserId()));
@@ -98,6 +104,11 @@ public class RoutineServiceImpl implements RoutineService {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> 666814f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
