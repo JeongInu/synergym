@@ -26,7 +26,12 @@ public interface RoutineService {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 .useYN(dto.getUseYN())
+=======
+                .useYn(dto.getUseYn())
+                .deleteYn(dto.getDeleteYn())
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
                 .useYn(dto.getUseYn())
                 .deleteYn(dto.getDeleteYn())
@@ -56,7 +61,12 @@ public interface RoutineService {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 .useYN(routine.getUseYN())
+=======
+                .useYn(routine.getUseYn())
+                .deleteYn(routine.getDeleteYn())
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
                 .useYn(routine.getUseYn())
                 .deleteYn(routine.getDeleteYn())

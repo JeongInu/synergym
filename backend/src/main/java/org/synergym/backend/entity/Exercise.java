@@ -48,6 +48,7 @@ public class Exercise {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     public void changeName(String name) {
         this.name = name;
     }
@@ -67,6 +68,8 @@ public class Exercise {
     public void changeEquipment(List<Integer> equipment) {
         this.equipment = equipment;
 =======
+=======
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
