@@ -23,12 +23,15 @@ public class RoutineDTO {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> d09733c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 666814f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 9f3ef93 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> ff4e567 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     private Character useYN;
 =======
 =======
@@ -39,6 +42,7 @@ public class RoutineDTO {
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
@@ -54,6 +58,10 @@ public class RoutineDTO {
 >>>>>>> 666814f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 9f3ef93 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> ff4e567 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     private Boolean useYn;
     private Boolean deleteYn;
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)

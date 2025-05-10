@@ -31,6 +31,7 @@ public interface RoutineService {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
@@ -39,6 +40,8 @@ public interface RoutineService {
 >>>>>>> 666814f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 9f3ef93 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> ff4e567 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
                 .useYN(dto.getUseYN())
 =======
                 .useYn(dto.getUseYn())
@@ -80,7 +83,14 @@ public interface RoutineService {
                 .useYn(dto.getUseYn())
                 .deleteYn(dto.getDeleteYn())
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> 9f3ef93 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+                .useYn(dto.getUseYn())
+                .deleteYn(dto.getDeleteYn())
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> ff4e567 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
                 .build();
     }
 
@@ -99,6 +109,7 @@ public interface RoutineService {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
@@ -107,6 +118,8 @@ public interface RoutineService {
 >>>>>>> 666814f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 9f3ef93 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> ff4e567 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
                 .useYN(routine.getUseYN())
 =======
                 .useYn(routine.getUseYn())
@@ -148,7 +161,14 @@ public interface RoutineService {
                 .useYn(routine.getUseYn())
                 .deleteYn(routine.getDeleteYn())
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> 9f3ef93 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+                .useYn(routine.getUseYn())
+                .deleteYn(routine.getDeleteYn())
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> ff4e567 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
                 .build();
     }
 }
