@@ -32,6 +32,7 @@ public class User {
     private String fitnessLevel;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public void changeUsername(String username) {
         this.username = username;
     }
@@ -63,6 +64,8 @@ public class User {
     public void changeFitnessLevel(String fitnessLevel) {
         this.fitnessLevel = fitnessLevel;
 =======
+=======
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     public void updateFromDTO(UserDTO dto) {
         this.username = dto.getUsername();
         this.password = dto.getPassword();
@@ -72,6 +75,9 @@ public class User {
         this.weight = dto.getWeight();
         this.height = dto.getHeight();
         this.fitnessLevel = dto.getFitnessLevel();
+<<<<<<< HEAD
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     }
 }
