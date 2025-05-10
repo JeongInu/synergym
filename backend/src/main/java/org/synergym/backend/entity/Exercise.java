@@ -66,6 +66,7 @@ public class Exercise {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
@@ -76,6 +77,10 @@ public class Exercise {
 >>>>>>> 9f3ef93 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> ff4e567 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+>>>>>>> 5974d05 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> 61f3472 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     public void changeName(String name) {
         this.name = name;
     }
@@ -93,6 +98,7 @@ public class Exercise {
     }
 
     public void changeEquipment(List<Integer> equipment) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -120,10 +126,14 @@ public class Exercise {
 =======
 =======
 >>>>>>> 581e456 (test : user, exercise, routine test코드 작성)
+=======
+>>>>>>> 61f3472 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
         this.equipment = equipment != null ? new ArrayList<>(equipment) : new ArrayList<>();
 =======
 =======
 >>>>>>> d78db24 (test : user, exercise, routine test코드 작성)
+=======
+>>>>>>> d7b943e (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
         this.equipment = equipment;
 =======
 =======
@@ -151,7 +161,28 @@ public class Exercise {
 =======
         this.equipment = equipment != null ? new ArrayList<>(equipment) : new ArrayList<>();
 >>>>>>> cc535ab (test : user, exercise, routine test코드 작성)
+<<<<<<< HEAD
 >>>>>>> d78db24 (test : user, exercise, routine test코드 작성)
+<<<<<<< HEAD
 >>>>>>> 581e456 (test : user, exercise, routine test코드 작성)
+=======
+=======
+=======
+        this.equipment = equipment != null ? new ArrayList<>(equipment) : new ArrayList<>();
+=======
+        this.equipment = equipment;
+=======
+    // DTO 정보를 Entity에 업데이트하는 메서드
+    public void updateFromDTO(ExerciseDTO exerciseDTO) {
+        this.name = exerciseDTO.getName();
+        this.description = exerciseDTO.getDescription();
+        this.category = exerciseDTO.getCategory();
+        this.muscles = exerciseDTO.getMuscles();
+        this.equipment = exerciseDTO.getEquipment();
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> 8859a4d (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> 5974d05 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> d7b943e (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> 61f3472 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     }
 }
