@@ -16,7 +16,6 @@ public class RoutineDTO {
     private String name;
     private String routineGoal;
     private Integer userId; // user_id
-    private LocalDateTime createdAt;
     private Boolean useYn;
     private Boolean deleteYn;
 }
