@@ -43,6 +43,7 @@ public class User {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
@@ -59,10 +60,17 @@ public class User {
 >>>>>>> 61f3472 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 =======
+>>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
 >>>>>>> 5974d05 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 506ec7c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> ec17896 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+>>>>>>> 988528d (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     public void changeUsername(String username) {
         this.username = username;
     }
@@ -112,6 +120,7 @@ public class User {
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 =======
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
@@ -140,7 +149,12 @@ public class User {
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 >>>>>>> 506ec7c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> ec17896 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+>>>>>>> 988528d (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     public void updateFromDTO(UserDTO dto) {
         this.username = dto.getUsername();
         this.password = dto.getPassword();
@@ -150,6 +164,7 @@ public class User {
         this.weight = dto.getWeight();
         this.height = dto.getHeight();
         this.fitnessLevel = dto.getFitnessLevel();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -177,6 +192,12 @@ public class User {
 >>>>>>> 61f3472 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> ec17896 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> 988528d (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)

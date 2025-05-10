@@ -53,6 +53,7 @@ public class ExerciseServiceImpl implements ExerciseService {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         Optional<Exercise> exerciseOptional = exerciseRepository.findById(id);
 
         if (exerciseOptional.isPresent()) {
@@ -107,6 +108,8 @@ public class ExerciseServiceImpl implements ExerciseService {
 >>>>>>> 61f3472 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> ec17896 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
         Exercise exercise = exerciseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Exercise not found with id: " + id));
         
@@ -135,6 +138,8 @@ public class ExerciseServiceImpl implements ExerciseService {
 >>>>>>> d7b943e (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 7b3c80e (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> 08e0b0c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 <<<<<<< HEAD
         Optional<Exercise> exerciseOptional = exerciseRepository.findById(id);
 
@@ -208,6 +213,8 @@ public class ExerciseServiceImpl implements ExerciseService {
 >>>>>>> 5974d05 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 506ec7c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> 988528d (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
         Exercise exercise = exerciseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Exercise not found with id: " + id));
         
@@ -230,6 +237,8 @@ public class ExerciseServiceImpl implements ExerciseService {
 =======
 =======
 >>>>>>> 02d523e (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> c20f762 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 <<<<<<< HEAD
         Optional<Exercise> exerciseOptional = exerciseRepository.findById(id);
 
@@ -265,10 +274,27 @@ public class ExerciseServiceImpl implements ExerciseService {
         exercise.get().updateFromDTO(exerciseDTO);  // Entity에서 DTO의 정보를 업데이트하는 메서드 호출
         exerciseRepository.save(exercise.get()); // 업데이트된 Entity 저장
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> 02d523e (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> 506ec7c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> 7b3c80e (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> ec17896 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+=======
+=======
+=======
+        Optional<Exercise> exercise = exerciseRepository.findById(id);
+        exercise.get().updateFromDTO(exerciseDTO);  // Entity에서 DTO의 정보를 업데이트하는 메서드 호출
+        exerciseRepository.save(exercise.get()); // 업데이트된 Entity 저장
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> c20f762 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> 988528d (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> 08e0b0c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     }
 
     @Transactional
