@@ -33,6 +33,7 @@ public class User {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     public void changeUsername(String username) {
         this.username = username;
     }
@@ -66,6 +67,8 @@ public class User {
 =======
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     public void updateFromDTO(UserDTO dto) {
         this.username = dto.getUsername();
         this.password = dto.getPassword();
@@ -76,6 +79,9 @@ public class User {
         this.height = dto.getHeight();
         this.fitnessLevel = dto.getFitnessLevel();
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)

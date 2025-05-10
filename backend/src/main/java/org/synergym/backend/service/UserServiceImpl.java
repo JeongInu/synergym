@@ -58,6 +58,9 @@ public class UserServiceImpl implements UserService {
         // DTO로 받은 정보를 Entity에 반영
         user.updateFromDTO(userDTO);  // Entity에서 DTO의 정보를 업데이트하는 메서드 호출
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
