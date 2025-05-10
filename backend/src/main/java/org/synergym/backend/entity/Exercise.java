@@ -44,6 +44,7 @@ public class Exercise {
     @ElementCollection
     private List<Integer> equipment;
 
+<<<<<<< HEAD
     public void changeName(String name) {
         this.name = name;
     }
@@ -62,5 +63,14 @@ public class Exercise {
 
     public void changeEquipment(List<Integer> equipment) {
         this.equipment = equipment;
+=======
+    // DTO 정보를 Entity에 업데이트하는 메서드
+    public void updateFromDTO(ExerciseDTO exerciseDTO) {
+        this.name = exerciseDTO.getName();
+        this.description = exerciseDTO.getDescription();
+        this.category = exerciseDTO.getCategory();
+        this.muscles = exerciseDTO.getMuscles();
+        this.equipment = exerciseDTO.getEquipment();
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     }
 }

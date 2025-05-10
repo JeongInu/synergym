@@ -14,5 +14,10 @@ public class RoutineDTO {
     private String name;
     private String routineGoal;
     private Integer userId; // user_id
+<<<<<<< HEAD
     private Character useYN;
+=======
+    private Boolean useYn;
+    private Boolean deleteYn;
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 }

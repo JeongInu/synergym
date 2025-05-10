@@ -25,6 +25,7 @@ public class Routine {
     @JoinColumn(name = "userId")
     private User user;
 
+<<<<<<< HEAD
     private Character useYN;
 
     public void changeName(String name) {
@@ -33,6 +34,17 @@ public class Routine {
 
     public void changeRoutineGoal(String routineGoal) {
         this.routineGoal = routineGoal;
+=======
+    private Boolean useYn;
+    private Boolean deleteYn;
+
+    public void updateFromDTO(RoutineDTO dto, User user) {
+        this.name = dto.getName();
+        this.routineGoal = dto.getRoutineGoal();
+        this.user = user;
+        this.useYn = dto.getUseYn();
+        this.deleteYn = dto.getDeleteYn();
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     }
 
     public void changeUseYN(Character useYN) {

@@ -50,6 +50,7 @@ public class RoutineServiceImpl implements RoutineService {
     public void updateRoutine(Integer id, RoutineDTO routineDTO) {
         Routine routine = routineRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Routine not found with id: " + id));
+<<<<<<< HEAD
 
         User user = userRepository.findById(routineDTO.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + routineDTO.getUserId()));
@@ -58,6 +59,14 @@ public class RoutineServiceImpl implements RoutineService {
         routine.changeRoutineGoal(routineDTO.getRoutineGoal());
         routine.changeUseYN(routineDTO.getUseYN());
 
+=======
+
+        User user = userRepository.findById(routineDTO.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + routineDTO.getUserId()));
+
+
+        routine.updateFromDTO(routineDTO, user);
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
         routineRepository.save(routine);
     }
 

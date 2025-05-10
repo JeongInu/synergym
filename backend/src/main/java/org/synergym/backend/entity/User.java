@@ -31,6 +31,7 @@ public class User {
     private Float height;
     private String fitnessLevel;
 
+<<<<<<< HEAD
     public void changeUsername(String username) {
         this.username = username;
     }
@@ -61,5 +62,16 @@ public class User {
 
     public void changeFitnessLevel(String fitnessLevel) {
         this.fitnessLevel = fitnessLevel;
+=======
+    public void updateFromDTO(UserDTO dto) {
+        this.username = dto.getUsername();
+        this.password = dto.getPassword();
+        this.email = dto.getEmail();
+        this.age = dto.getAge();
+        this.gender = dto.getGender();
+        this.weight = dto.getWeight();
+        this.height = dto.getHeight();
+        this.fitnessLevel = dto.getFitnessLevel();
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     }
 }

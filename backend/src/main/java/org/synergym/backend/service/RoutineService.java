@@ -22,7 +22,12 @@ public interface RoutineService {
                 .name(dto.getName())
                 .routineGoal(dto.getRoutineGoal())
                 .user(user)
+<<<<<<< HEAD
                 .useYN(dto.getUseYN())
+=======
+                .useYn(dto.getUseYn())
+                .deleteYn(dto.getDeleteYn())
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
                 .build();
     }
 
@@ -32,7 +37,12 @@ public interface RoutineService {
                 .name(routine.getName())
                 .routineGoal(routine.getRoutineGoal())
                 .userId(routine.getUser() != null ? routine.getUser().getId() : null)
+<<<<<<< HEAD
                 .useYN(routine.getUseYN())
+=======
+                .useYn(routine.getUseYn())
+                .deleteYn(routine.getDeleteYn())
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
                 .build();
     }
 }
