@@ -35,6 +35,7 @@ public interface RoutineService {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
@@ -53,6 +54,8 @@ public interface RoutineService {
 =======
 >>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
+>>>>>>> bab334b (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
 >>>>>>> 5974d05 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 506ec7c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
@@ -61,7 +64,12 @@ public interface RoutineService {
 =======
 =======
 >>>>>>> 988528d (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+>>>>>>> 7bbc5c2 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> bab334b (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
                 .useYN(dto.getUseYN())
 =======
                 .useYn(dto.getUseYn())
@@ -115,6 +123,7 @@ public interface RoutineService {
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> d09733c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
@@ -139,6 +148,8 @@ public interface RoutineService {
 >>>>>>> 5974d05 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 >>>>>>> 61f3472 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
+=======
+>>>>>>> bab334b (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 >>>>>>> 5974d05 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 506ec7c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
@@ -147,7 +158,15 @@ public interface RoutineService {
 =======
 =======
 >>>>>>> 988528d (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+                .useYn(dto.getUseYn())
+                .deleteYn(dto.getDeleteYn())
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> 7bbc5c2 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> bab334b (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
                 .build();
     }
 
@@ -170,6 +189,7 @@ public interface RoutineService {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
@@ -188,6 +208,8 @@ public interface RoutineService {
 =======
 >>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
+>>>>>>> bab334b (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
 >>>>>>> 5974d05 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 506ec7c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
@@ -196,7 +218,12 @@ public interface RoutineService {
 =======
 =======
 >>>>>>> 988528d (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+>>>>>>> 7bbc5c2 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> bab334b (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
                 .useYN(routine.getUseYN())
 =======
                 .useYn(routine.getUseYn())
@@ -250,6 +277,7 @@ public interface RoutineService {
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> d09733c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
@@ -274,6 +302,8 @@ public interface RoutineService {
 >>>>>>> 5974d05 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 >>>>>>> 61f3472 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
+=======
+>>>>>>> bab334b (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 >>>>>>> 5974d05 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 506ec7c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
@@ -282,7 +312,15 @@ public interface RoutineService {
 =======
 =======
 >>>>>>> 988528d (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+                .useYn(routine.getUseYn())
+                .deleteYn(routine.getDeleteYn())
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> 7bbc5c2 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> bab334b (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
                 .build();
     }
 }

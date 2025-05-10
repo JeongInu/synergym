@@ -63,6 +63,7 @@ public class RoutineServiceImpl implements RoutineService {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
@@ -81,6 +82,8 @@ public class RoutineServiceImpl implements RoutineService {
 =======
 >>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
+>>>>>>> bab334b (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
 >>>>>>> 5974d05 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 506ec7c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
@@ -89,7 +92,12 @@ public class RoutineServiceImpl implements RoutineService {
 =======
 =======
 >>>>>>> 988528d (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+>>>>>>> 7bbc5c2 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> bab334b (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 
         User user = userRepository.findById(routineDTO.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + routineDTO.getUserId()));
@@ -118,6 +126,7 @@ public class RoutineServiceImpl implements RoutineService {
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
@@ -151,13 +160,21 @@ public class RoutineServiceImpl implements RoutineService {
 =======
 =======
 >>>>>>> 988528d (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+=======
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> 7bbc5c2 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> bab334b (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 
         User user = userRepository.findById(routineDTO.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + routineDTO.getUserId()));
 
 
         routine.updateFromDTO(routineDTO, user);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -188,10 +205,19 @@ public class RoutineServiceImpl implements RoutineService {
 >>>>>>> ec17896 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 =======
+>>>>>>> bab334b (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 988528d (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> 7bbc5c2 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> bab334b (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)

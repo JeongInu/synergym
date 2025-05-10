@@ -38,6 +38,7 @@ public class Routine {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
@@ -56,6 +57,8 @@ public class Routine {
 =======
 >>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
+>>>>>>> bab334b (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
 >>>>>>> 5974d05 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 506ec7c (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
@@ -64,7 +67,12 @@ public class Routine {
 =======
 =======
 >>>>>>> 988528d (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+>>>>>>> 7bbc5c2 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> bab334b (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     private Character useYN;
 
     public void changeName(String name) {
@@ -93,6 +101,7 @@ public class Routine {
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
@@ -126,7 +135,14 @@ public class Routine {
 =======
 =======
 >>>>>>> 988528d (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> f52c59f (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+=======
+>>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> 7bbc5c2 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+>>>>>>> bab334b (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     private Boolean useYn;
     private Boolean deleteYn;
 
