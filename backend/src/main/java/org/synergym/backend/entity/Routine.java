@@ -30,6 +30,9 @@ public class Routine {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     private Character useYN;
 
     public void changeName(String name) {
@@ -39,6 +42,7 @@ public class Routine {
     public void changeRoutineGoal(String routineGoal) {
         this.routineGoal = routineGoal;
 =======
+<<<<<<< HEAD
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
@@ -47,6 +51,8 @@ public class Routine {
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     private Boolean useYn;
     private Boolean deleteYn;
 

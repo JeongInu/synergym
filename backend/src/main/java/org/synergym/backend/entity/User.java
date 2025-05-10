@@ -36,6 +36,9 @@ public class User {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     public void changeUsername(String username) {
         this.username = username;
     }
@@ -67,6 +70,7 @@ public class User {
     public void changeFitnessLevel(String fitnessLevel) {
         this.fitnessLevel = fitnessLevel;
 =======
+<<<<<<< HEAD
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
@@ -75,6 +79,8 @@ public class User {
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     public void updateFromDTO(UserDTO dto) {
         this.username = dto.getUsername();
         this.password = dto.getPassword();
@@ -88,6 +94,7 @@ public class User {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
@@ -96,6 +103,8 @@ public class User {
 =======
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
+=======
+>>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
     }
 }
