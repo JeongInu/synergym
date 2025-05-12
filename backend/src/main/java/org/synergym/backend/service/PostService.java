@@ -7,18 +7,20 @@ import org.synergym.backend.entity.User;
 import java.util.List;
 
 public interface PostService {
-    Integer addPost(PostDTO postDTO, User user);
+    Integer addPost(PostDTO postDTO, Integer userId);
     List<PostDTO> getAllPosts();
     PostDTO getPostById(Integer id);
     void updatePost(Integer id, PostDTO postDTO);
     void deletePost(Integer id);
+    List<PostDTO> searchPosts(String keyword);
+    List<PostDTO> getPostsByUser(Integer userId);
 
     // 변환 메서드
-    default Post dtoToEntity(PostDTO dto, User writer) {
+    default Post dtoToEntity(PostDTO dto, User user) {
         return Post.builder()
                 .title(dto.getTitle())
                 .content(dto.getContent())
-                .writer(writer)
+                .user(user)
                 .viewCount(dto.getViewCount())
                 .build();
     }
@@ -29,7 +31,7 @@ public interface PostService {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .viewCount(post.getViewCount())
-                .userId(post.getWriter().getId())
+                .userId(post.getUser().getId())
                 .build();
     }
 
