@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { useScrollAnime } from "../hooks/useScrollAnime";
 
 const variants = {
-  hidden: { opacity: 0, scale: 0.6, rotate: 90 },
-  visible: { opacity: 1, scale: 1, rotate: 0, transition: { duration: 1, ease: "easeOut" } },
+  hidden: { opacity: 0, y: 80 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
 };
 
 const Section4 = () => {

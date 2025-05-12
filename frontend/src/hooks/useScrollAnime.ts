@@ -1,10 +1,11 @@
+// src/hooks/useSoftScrollAnime.ts
 import { useAnimation, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
 
 export const useScrollAnime = () => {
   const ref = useRef(null);
   const controls = useAnimation();
-  const inView = useInView(ref, { once: true, amount: 0.3 }); // 30% 보이면 작동
+  const inView = useInView(ref, { once: true, amount: 0.5 }); // 50% 보이면 작동
 
   useEffect(() => {
     if (inView) {
