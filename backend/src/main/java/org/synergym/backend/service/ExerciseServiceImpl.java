@@ -1,8 +1,10 @@
 package org.synergym.backend.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.synergym.backend.api.WgerApiClient;
 import org.synergym.backend.dto.ExerciseDTO;
 import org.synergym.backend.entity.Exercise;
 import org.synergym.backend.repository.ExerciseRepository;
@@ -11,13 +13,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ExerciseServiceImpl implements ExerciseService {
 
     private final ExerciseRepository exerciseRepository;
+    private final WgerApiClient wgerApiClient;
 
     @Autowired
-    public ExerciseServiceImpl(ExerciseRepository exerciseRepository) {
+    public ExerciseServiceImpl(ExerciseRepository exerciseRepository, WgerApiClient wgerApiClient) {
         this.exerciseRepository = exerciseRepository;
+        this.wgerApiClient = wgerApiClient;
     }
 
     @Transactional(readOnly = true)  // 읽기 전용 트랜잭션으로 변경
@@ -41,9 +46,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     public void updateExercise(Integer id, ExerciseDTO exerciseDTO) {
         Exercise exercise = exerciseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Exercise not found with id: " + id));
-        
-        exercise.changeName(exerciseDTO.getName());
-        exercise.changeDescription(exerciseDTO.getDescription());
+
         exercise.changeCategory(exerciseDTO.getCategory());
         exercise.changeMuscles(exerciseDTO.getMuscles());
         exercise.changeEquipment(exerciseDTO.getEquipment());
@@ -68,4 +71,5 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .map(this::entityToDto)
                 .collect(Collectors.toList());
     }
+
 }
