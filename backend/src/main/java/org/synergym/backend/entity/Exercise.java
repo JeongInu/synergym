@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.synergym.backend.dto.ExerciseDTO;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,6 +18,12 @@ import java.util.List;
 @Builder
 public class Exercise {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "exercises_seq_gen",
+            sequenceName = "exercises_id_seq",
+            allocationSize = 1
+    )
     private Integer id;
 
     private String name;
@@ -36,13 +42,19 @@ public class Exercise {
     private Integer language;
 
     @ElementCollection
-    private List<Integer> muscles;
+    @CollectionTable(name = "exercise_muscles")
+    @Builder.Default
+    private List<Integer> muscles = new ArrayList<>();
 
     @ElementCollection
-    private List<Integer> musclesSecondary;
+    @CollectionTable(name = "exercise_muscles_secondary")
+    @Builder.Default
+    private List<Integer> musclesSecondary = new ArrayList<>();
 
     @ElementCollection
-    private List<Integer> equipment;
+    @CollectionTable(name = "exercise_equipment")
+    @Builder.Default
+    private List<Integer> equipment = new ArrayList<>();
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -62,10 +74,11 @@ public class Exercise {
     }
 
     public void changeMuscles(List<Integer> muscles) {
-        this.muscles = muscles;
+        this.muscles = muscles != null ? new ArrayList<>(muscles) : new ArrayList<>();
     }
 
     public void changeEquipment(List<Integer> equipment) {
+<<<<<<< HEAD
         this.equipment = equipment;
 =======
 =======
@@ -84,5 +97,8 @@ public class Exercise {
         this.muscles = exerciseDTO.getMuscles();
         this.equipment = exerciseDTO.getEquipment();
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+        this.equipment = equipment != null ? new ArrayList<>(equipment) : new ArrayList<>();
+>>>>>>> cc535ab (test : user, exercise, routine test코드 작성)
     }
 }

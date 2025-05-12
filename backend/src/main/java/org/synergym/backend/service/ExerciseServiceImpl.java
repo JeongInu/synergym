@@ -8,7 +8,6 @@ import org.synergym.backend.entity.Exercise;
 import org.synergym.backend.repository.ExerciseRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,11 +20,12 @@ public class ExerciseServiceImpl implements ExerciseService {
         this.exerciseRepository = exerciseRepository;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)  // 읽기 전용 트랜잭션으로 변경
     @Override
     public ExerciseDTO getExerciseById(Integer id) {
-        Optional<Exercise> exercise = exerciseRepository.findById(id);
-        return entityToDto(exercise.get());  // toDTO 메서드 사용
+        Exercise exercise = exerciseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Exercise not found with id: " + id));
+        return entityToDto(exercise);
     }
 
     @Transactional
@@ -33,12 +33,13 @@ public class ExerciseServiceImpl implements ExerciseService {
     public Integer addExercise(ExerciseDTO exerciseDTO) {
         Exercise exercise = dtoToEntity(exerciseDTO);
         exercise = exerciseRepository.save(exercise);
-        return exercise.getId();  // 저장 후 DTO로 반환
+        return exercise.getId();
     }
 
     @Transactional
     @Override
     public void updateExercise(Integer id, ExerciseDTO exerciseDTO) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -81,20 +82,35 @@ public class ExerciseServiceImpl implements ExerciseService {
         exercise.get().updateFromDTO(exerciseDTO);  // Entity에서 DTO의 정보를 업데이트하는 메서드 호출
         exerciseRepository.save(exercise.get()); // 업데이트된 Entity 저장
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+        Exercise exercise = exerciseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Exercise not found with id: " + id));
+        
+        exercise.changeName(exerciseDTO.getName());
+        exercise.changeDescription(exerciseDTO.getDescription());
+        exercise.changeCategory(exerciseDTO.getCategory());
+        exercise.changeMuscles(exerciseDTO.getMuscles());
+        exercise.changeEquipment(exerciseDTO.getEquipment());
+
+        exerciseRepository.save(exercise);
+>>>>>>> cc535ab (test : user, exercise, routine test코드 작성)
     }
 
     @Transactional
     @Override
     public void deleteExercise(Integer id) {
+        if (!exerciseRepository.existsById(id)) {
+            throw new RuntimeException("Exercise not found with id: " + id);
+        }
         exerciseRepository.deleteById(id);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)  // 읽기 전용 트랜잭션으로 변경
     @Override
     public List<ExerciseDTO> getAllExercises() {
         return exerciseRepository.findAll()
                 .stream()
-                .map(this::entityToDto)  // Entity를 DTO로 변환
+                .map(this::entityToDto)
                 .collect(Collectors.toList());
     }
 }
