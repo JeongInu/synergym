@@ -1,0 +1,26 @@
+// src/sections/Section2.tsx
+import { motion } from "framer-motion";
+import { useScrollAnime } from "../hooks/useScrollAnime";
+
+const variants = {
+  hidden: { opacity: 0, rotate: -180 },
+  visible: { opacity: 1, rotate: 0, transition: { duration: 1, ease: "easeOut" } },
+};
+
+const Section2 = () => {
+  const { ref, controls } = useScrollAnime();
+
+  return (
+    <motion.section
+      ref={ref}
+      initial="hidden"
+      animate={controls}
+      variants={variants}
+      className="h-screen flex items-center justify-center bg-gradient-to-br from-blue-400 to-teal-500"
+    >
+      <h1 className="text-white text-6xl font-bold">Section 2</h1>
+    </motion.section>
+  );
+};
+
+export default Section2;
