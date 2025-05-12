@@ -50,6 +50,7 @@ public class ExerciseServiceImpl implements ExerciseService {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         Optional<Exercise> exerciseOptional = exerciseRepository.findById(id);
 
         if (exerciseOptional.isPresent()) {
@@ -98,6 +99,8 @@ public class ExerciseServiceImpl implements ExerciseService {
 >>>>>>> 9f3ef93 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> ff4e567 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> 581e456 (test : user, exercise, routine test코드 작성)
         Exercise exercise = exerciseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Exercise not found with id: " + id));
         
@@ -120,6 +123,8 @@ public class ExerciseServiceImpl implements ExerciseService {
 >>>>>>> e8fc40a (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
 =======
 >>>>>>> 8bfcd65 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+>>>>>>> d78db24 (test : user, exercise, routine test코드 작성)
 <<<<<<< HEAD
         Optional<Exercise> exerciseOptional = exerciseRepository.findById(id);
 
@@ -182,8 +187,26 @@ public class ExerciseServiceImpl implements ExerciseService {
         exercise.get().updateFromDTO(exerciseDTO);  // Entity에서 DTO의 정보를 업데이트하는 메서드 호출
         exerciseRepository.save(exercise.get()); // 업데이트된 Entity 저장
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> 8bfcd65 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> ff4e567 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+=======
+        Exercise exercise = exerciseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Exercise not found with id: " + id));
+        
+        exercise.changeName(exerciseDTO.getName());
+        exercise.changeDescription(exerciseDTO.getDescription());
+        exercise.changeCategory(exerciseDTO.getCategory());
+        exercise.changeMuscles(exerciseDTO.getMuscles());
+        exercise.changeEquipment(exerciseDTO.getEquipment());
+
+        exerciseRepository.save(exercise);
+>>>>>>> cc535ab (test : user, exercise, routine test코드 작성)
+>>>>>>> d78db24 (test : user, exercise, routine test코드 작성)
+>>>>>>> 581e456 (test : user, exercise, routine test코드 작성)
     }
 
     @Transactional

@@ -95,6 +95,7 @@ public class Exercise {
     public void changeEquipment(List<Integer> equipment) {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         this.equipment = equipment;
 =======
 =======
@@ -117,8 +118,12 @@ public class Exercise {
         this.equipment = equipment != null ? new ArrayList<>(equipment) : new ArrayList<>();
 >>>>>>> cc535ab (test : user, exercise, routine test코드 작성)
 =======
+=======
+>>>>>>> 581e456 (test : user, exercise, routine test코드 작성)
         this.equipment = equipment != null ? new ArrayList<>(equipment) : new ArrayList<>();
 =======
+=======
+>>>>>>> d78db24 (test : user, exercise, routine test코드 작성)
         this.equipment = equipment;
 =======
 =======
@@ -137,7 +142,16 @@ public class Exercise {
         this.muscles = exerciseDTO.getMuscles();
         this.equipment = exerciseDTO.getEquipment();
 >>>>>>> 48662b8 (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> 8859a4d (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+<<<<<<< HEAD
 >>>>>>> 90fa1dc (feat(users) : service코드 수정 및 createdAt 칼럼삭제)
+=======
+=======
+=======
+        this.equipment = equipment != null ? new ArrayList<>(equipment) : new ArrayList<>();
+>>>>>>> cc535ab (test : user, exercise, routine test코드 작성)
+>>>>>>> d78db24 (test : user, exercise, routine test코드 작성)
+>>>>>>> 581e456 (test : user, exercise, routine test코드 작성)
     }
 }
