@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.synergym.backend.dto.ExerciseDTO;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,6 +18,12 @@ import java.util.List;
 @Builder
 public class Exercise {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "exercises_seq_gen",
+            sequenceName = "exercises_id_seq",
+            allocationSize = 1
+    )
     private Integer id;
 
     private String name;
@@ -36,13 +42,19 @@ public class Exercise {
     private Integer language;
 
     @ElementCollection
-    private List<Integer> muscles;
+    @CollectionTable(name = "exercise_muscles")
+    @Builder.Default
+    private List<Integer> muscles = new ArrayList<>();
 
     @ElementCollection
-    private List<Integer> musclesSecondary;
+    @CollectionTable(name = "exercise_muscles_secondary")
+    @Builder.Default
+    private List<Integer> musclesSecondary = new ArrayList<>();
 
     @ElementCollection
-    private List<Integer> equipment;
+    @CollectionTable(name = "exercise_equipment")
+    @Builder.Default
+    private List<Integer> equipment = new ArrayList<>();
 
     public void changeName(String name) {
         this.name = name;
@@ -57,10 +69,10 @@ public class Exercise {
     }
 
     public void changeMuscles(List<Integer> muscles) {
-        this.muscles = muscles;
+        this.muscles = muscles != null ? new ArrayList<>(muscles) : new ArrayList<>();
     }
 
     public void changeEquipment(List<Integer> equipment) {
-        this.equipment = equipment;
+        this.equipment = equipment != null ? new ArrayList<>(equipment) : new ArrayList<>();
     }
 }
