@@ -29,7 +29,7 @@ public interface PostService {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .viewCount(post.getViewCount())
-                .userId(post.getWriter().getId().longValue())
+                .userId(post.getWriter().getId())
                 .build();
     }
 

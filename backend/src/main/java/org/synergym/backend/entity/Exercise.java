@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "exercises")
@@ -27,16 +29,11 @@ public class Exercise {
     private Integer id;
 
     private String name;
-    private String nameOriginal;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private String licenseAuthor;
-    private String status;
-    private String uuid;
     private LocalDateTime creationDate;
-
     private Integer license;
     private Integer category;
     private Integer language;
@@ -55,6 +52,15 @@ public class Exercise {
     @CollectionTable(name = "exercise_equipment")
     @Builder.Default
     private List<Integer> equipment = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name = "exercise_translations")
+    @Builder.Default
+    private Map<String, String> translations = new HashMap<>();  // language code를 key로 사용
+
+    public void addTranslation(String languageCode, String translatedName) {
+        this.translations.put(languageCode, translatedName);
+    }
 
     public void changeName(String name) {
         this.name = name;
