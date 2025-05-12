@@ -31,37 +31,14 @@ public class User {
     private Float height;
     private String fitnessLevel;
 
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    // DTO로 변환하는 메서드
-    public UserDTO toDTO() {
-        return UserDTO.builder()
-                .id(this.id)
-                .username(this.username)
-                .password(this.password)
-                .role(this.role)
-                .email(this.email)
-                .age(this.age)
-                .gender(this.gender)
-                .weight(this.weight)
-                .height(this.height)
-                .fitnessLevel(this.fitnessLevel)
-                .createdAt(this.createdAt)
-                .build();
-    }
-
-    // DTO 정보를 Entity에 업데이트하는 메서드
-    public void updateFromDTO(UserDTO userDTO) {
-        this.username = userDTO.getUsername();
-        this.password = userDTO.getPassword();
-        this.role = userDTO.getRole();
-        this.email = userDTO.getEmail();
-        this.age = userDTO.getAge();
-        this.gender = userDTO.getGender();
-        this.weight = userDTO.getWeight();
-        this.height = userDTO.getHeight();
-        this.fitnessLevel = userDTO.getFitnessLevel();
-        this.createdAt = userDTO.getCreatedAt();
+    public void updateFromDTO(UserDTO dto) {
+        this.username = dto.getUsername();
+        this.password = dto.getPassword();
+        this.email = dto.getEmail();
+        this.age = dto.getAge();
+        this.gender = dto.getGender();
+        this.weight = dto.getWeight();
+        this.height = dto.getHeight();
+        this.fitnessLevel = dto.getFitnessLevel();
     }
 }

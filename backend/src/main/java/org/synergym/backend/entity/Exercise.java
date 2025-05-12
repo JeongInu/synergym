@@ -44,18 +44,6 @@ public class Exercise {
     @ElementCollection
     private List<Integer> equipment;
 
-    // DTO로 변환하는 메서드
-    public ExerciseDTO toDTO() {
-        return ExerciseDTO.builder()
-                .id(this.id)
-                .name(this.name)
-                .description(this.description)
-                .category(this.category)
-                .muscles(this.muscles)
-                .equipment(this.equipment)
-                .build();
-    }
-
     // DTO 정보를 Entity에 업데이트하는 메서드
     public void updateFromDTO(ExerciseDTO exerciseDTO) {
         this.name = exerciseDTO.getName();

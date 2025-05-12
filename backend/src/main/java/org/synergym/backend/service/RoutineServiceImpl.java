@@ -1,5 +1,6 @@
 package org.synergym.backend.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ import org.synergym.backend.repository.RoutineRepository;
 import org.synergym.backend.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,49 +29,43 @@ public class RoutineServiceImpl implements RoutineService {
     @Transactional(readOnly = true)
     @Override
     public RoutineDTO getRoutineById(Integer id) {
-        Routine routine = routineRepository.findById(id.longValue())
+        Routine routine = routineRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Routine not found"));
-        return routine.toDTO();
+        return entityToDto(routine);
     }
 
     @Transactional
     @Override
-    public RoutineDTO addRoutine(RoutineDTO routineDTO) {
-        User user = userRepository.findById(routineDTO.getUserId().longValue())
+    public Integer addRoutine(RoutineDTO routineDTO) {
+        User user = userRepository.findById(routineDTO.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Routine routine = Routine.builder()
-                .name(routineDTO.getName())
-                .routineGoal(routineDTO.getRoutineGoal())
-                .user(user)
-                .createdAt(routineDTO.getCreatedAt())
-                .useYn(routineDTO.getUseYn())
-                .deleteYn(routineDTO.getDeleteYn())
-                .build();
-
-        return routineRepository.save(routine).toDTO();
+        Routine routine = dtoToEntity(routineDTO, user);
+        routine = routineRepository.save(routine);
+        return routine.getId();
     }
 
     @Transactional
     @Override
-    public RoutineDTO updateRoutine(Integer id, RoutineDTO routineDTO) {
-        Routine routine = routineRepository.findById(id.longValue())
-                .orElseThrow(() -> new RuntimeException("Routine not found"));
+    public void updateRoutine(Integer id, RoutineDTO routineDTO) {
+        Routine routine = routineRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Routine not found with id: " + id));
 
-        User user = userRepository.findById(routineDTO.getUserId().longValue())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(routineDTO.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + routineDTO.getUserId()));
+
 
         routine.updateFromDTO(routineDTO, user);
-        return routineRepository.save(routine).toDTO();
+        routineRepository.save(routine);
     }
 
     @Transactional
     @Override
     public void deleteRoutine(Integer id) {
-        if (!routineRepository.existsById(id.longValue())) {
+        if (!routineRepository.existsById(id)) {
             throw new RuntimeException("Routine not found");
         }
-        routineRepository.deleteById(id.longValue());
+        routineRepository.deleteById(id);
     }
 
     @Transactional(readOnly = true)
@@ -77,7 +73,7 @@ public class RoutineServiceImpl implements RoutineService {
     public List<RoutineDTO> getAllRoutines() {
         return routineRepository.findAll()
                 .stream()
-                .map(Routine::toDTO)
+                .map(this::entityToDto)
                 .collect(Collectors.toList());
     }
 }
