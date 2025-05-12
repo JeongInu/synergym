@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "poseAnalysises")
+@Table(name = "pose_analysises")
 public class PoseAnalysis {
 
     @Id
@@ -22,7 +22,7 @@ public class PoseAnalysis {
 
     // 분석 대상 사진
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "photoId", unique = true)
+    @JoinColumn(name = "photo_id", unique = true)
     private Photo photo;
 
     private Double neckAngleDiff;

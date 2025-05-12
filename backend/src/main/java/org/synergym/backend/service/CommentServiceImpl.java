@@ -54,8 +54,13 @@ public class CommentServiceImpl implements CommentService {
                 .post(post)
                 .user(user)
                 .build();
-        
+
+        // Post 엔티티의 addComment 메서드 사용
+        post.addComment(comment);
+
+        // 댓글 명시적 저장 - ID 획득 목적
         Comment savedComment = commentRepository.save(comment);
+
         return savedComment.getId();
     }
 
@@ -71,7 +76,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public List<CommentDTO> getCommentsByPostId(Integer postId) {
-        List<Comment> comments = commentRepository.findByPostIdAndIsDeletedFalse(postId);
+        List<Comment> comments = commentRepository.findByPostIdAndDeleteYnFalse(postId);
 
         // Comment 엔티티를 DTO로 변환
         return comments.stream()
@@ -126,7 +131,16 @@ public class CommentServiceImpl implements CommentService {
             throw new SecurityException("You don't have permission to delete this comment");
         }
 
+        // 소프트 삭제 처리
         comment.softDelete();
+
+        // 게시물에서 댓글 제거
+        Post post = comment.getPost();
+        post.removeComment(comment);
+
+        // 변경사항 저장
+        postRepository.save(post);
+
     }
 
 
