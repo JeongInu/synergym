@@ -1,7 +1,5 @@
 package org.synergym.backend;
 
-
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.synergym.backend.repository.RoutineRepository;
 import org.synergym.backend.repository.UserRepository;
 import org.synergym.backend.service.RoutineService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @Transactional
 class ServiceTest {
-
     @Autowired
     private RoutineService routineService;
 
@@ -37,6 +33,7 @@ class ServiceTest {
 
     @BeforeEach
     void setUp() {
+        // 테스트 유저 생성
         testUser = User.builder()
                 .username("testUser")
                 .password("password123")
@@ -44,41 +41,34 @@ class ServiceTest {
                 .build();
         testUser = userRepository.save(testUser);
 
+        // 테스트용 루틴 DTO 생성
         testRoutineDTO = RoutineDTO.builder()
                 .name("Test Routine")
                 .routineGoal("Strength Improvement")
                 .userId(testUser.getId())
                 .useYn(true)
                 .deleteYn(false)
-                .createdAt(LocalDateTime.now())
                 .build();
     }
 
     @Test
-    void testCreateAndGetRoutine() {
+    void createRoutine_Success() {
         // when
-        RoutineDTO savedRoutine = routineService.addRoutine(testRoutineDTO);
+        Integer routineId = routineService.addRoutine(testRoutineDTO);
 
         // then
+        RoutineDTO savedRoutine = routineService.getRoutineById(routineId);
         assertThat(savedRoutine).isNotNull();
-        assertThat(savedRoutine.getId()).isNotNull();
-        assertThat(savedRoutine.getName()).isEqualTo("Test Routine");
-        assertThat(savedRoutine.getRoutineGoal()).isEqualTo("Strength Improvement");
+        assertThat(savedRoutine.getName()).isEqualTo(testRoutineDTO.getName());
+        assertThat(savedRoutine.getRoutineGoal()).isEqualTo(testRoutineDTO.getRoutineGoal());
         assertThat(savedRoutine.getUserId()).isEqualTo(testUser.getId());
-
-        RoutineDTO foundRoutine = routineService.getRoutineById(savedRoutine.getId());
-        assertThat(foundRoutine).isNotNull()
-                .extracting("name", "routineGoal", "userId")
-                .containsExactly("Test Routine", "Strength Improvement", testUser.getId());
     }
 
     @Test
-    void testUpdateRoutine() {
+    void updateRoutine_Success() {
         // given
-        RoutineDTO savedRoutine = routineService.addRoutine(testRoutineDTO);
-
+        Integer routineId = routineService.addRoutine(testRoutineDTO);
         RoutineDTO updateDTO = RoutineDTO.builder()
-                .id(savedRoutine.getId())
                 .name("Updated Routine")
                 .routineGoal("Weight Loss")
                 .userId(testUser.getId())
@@ -87,33 +77,35 @@ class ServiceTest {
                 .build();
 
         // when
-        RoutineDTO updatedRoutine = routineService.updateRoutine(savedRoutine.getId(), updateDTO);
+        routineService.updateRoutine(routineId, updateDTO);
 
         // then
-        assertThat(updatedRoutine).isNotNull()
-                .extracting("name", "routineGoal")
-                .containsExactly("Updated Routine", "Weight Loss");
+        RoutineDTO updatedRoutine = routineService.getRoutineById(routineId);
+        assertThat(updatedRoutine).isNotNull();
+        assertThat(updatedRoutine.getName()).isEqualTo("Updated Routine");
+        assertThat(updatedRoutine.getRoutineGoal()).isEqualTo("Weight Loss");
     }
 
     @Test
-    void testGetNonExistingRoutine() {
+    void getRoutine_NotFound() {
+        // when & then
         assertThrows(RuntimeException.class, () -> routineService.getRoutineById(999));
     }
 
     @Test
-    void testDeleteRoutine() {
+    void deleteRoutine_Success() {
         // given
-        RoutineDTO savedRoutine = routineService.addRoutine(testRoutineDTO);
+        Integer routineId = routineService.addRoutine(testRoutineDTO);
 
         // when
-        routineService.deleteRoutine(savedRoutine.getId());
+        routineService.deleteRoutine(routineId);
 
         // then
-        assertThrows(RuntimeException.class, () -> routineService.getRoutineById(savedRoutine.getId()));
+        assertThrows(RuntimeException.class, () -> routineService.getRoutineById(routineId));
     }
 
     @Test
-    void testGetAllRoutines() {
+    void getAllRoutines_Success() {
         // given
         routineService.addRoutine(testRoutineDTO);
 
@@ -130,15 +122,14 @@ class ServiceTest {
         List<RoutineDTO> routines = routineService.getAllRoutines();
 
         // then
-        assertThat(routines)
-                .isNotNull()
+        assertThat(routines).isNotNull()
                 .hasSize(2)
                 .extracting("name")
                 .containsExactlyInAnyOrder("Test Routine", "Second Routine");
     }
 
     @Test
-    void testCreateRoutineWithInvalidUserId() {
+    void createRoutine_WithInvalidUserId_ThrowsException() {
         // given
         RoutineDTO invalidRoutineDTO = RoutineDTO.builder()
                 .name("Test Routine")

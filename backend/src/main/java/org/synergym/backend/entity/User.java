@@ -31,14 +31,35 @@ public class User {
     private Float height;
     private String fitnessLevel;
 
-    public void updateFromDTO(UserDTO dto) {
-        this.username = dto.getUsername();
-        this.password = dto.getPassword();
-        this.email = dto.getEmail();
-        this.age = dto.getAge();
-        this.gender = dto.getGender();
-        this.weight = dto.getWeight();
-        this.height = dto.getHeight();
-        this.fitnessLevel = dto.getFitnessLevel();
+    public void changeUsername(String username) {
+        this.username = username;
+    }
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
+
+    public void changeEmail(String email) {
+        this.email = email;
+    }
+
+    public void changeAge(Integer age) {
+        this.age = age;
+    }
+
+    public void changeGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void changeWeight(Float weight) {
+        this.weight = weight;
+    }
+
+    public void changeHeight(Float height) {
+        this.height = height;
+    }
+
+    public void changeFitnessLevel(String fitnessLevel) {
+        this.fitnessLevel = fitnessLevel;
     }
 }
