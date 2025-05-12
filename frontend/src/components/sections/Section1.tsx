@@ -1,6 +1,7 @@
-// src/sections/Section1.tsx
 import { motion } from "framer-motion";
 import { useScrollAnime } from "../../hooks/useScrollAnime";
+import Header from "../common/Header";
+import Content from "./content/Section1Content";
 
 const variants = {
   hidden: { opacity: 0, y: 80 },
@@ -16,9 +17,23 @@ const Section1 = () => {
       initial="hidden"
       animate={controls}
       variants={variants}
-      className="h-screen flex items-center justify-center bg-gradient-to-br from-red-400 to-pink-500"
+      className="h-screen bg-black text-white flex flex-col relative"
     >
-      <h1 className="text-white text-6xl font-bold">Section 1</h1>
+      <Header />
+
+      <div className="flex flex-1">
+        {/* 왼쪽: 텍스트 & 버튼 */}
+        <Content />
+
+        {/* 오른쪽: 로고 */}
+        <div className="w-1/2 flex items-center justify-center">
+          <img
+            src="/images/synergym_logo.png"
+            alt="Synergym Logo"
+            className="w-72 h-auto object-contain"
+          />
+        </div>
+      </div>
     </motion.section>
   );
 };
