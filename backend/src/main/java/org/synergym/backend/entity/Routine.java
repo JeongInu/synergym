@@ -21,19 +21,21 @@ public class Routine {
     private String name;
     private String routineGoal;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
 
-    private Boolean useYn;
-    private Boolean deleteYn;
+    private Character useYN;
 
-    public void updateFromDTO(RoutineDTO dto, User user) {
-        this.name = dto.getName();
-        this.routineGoal = dto.getRoutineGoal();
-        this.user = user;
-        this.useYn = dto.getUseYn();
-        this.deleteYn = dto.getDeleteYn();
+    public void changeName(String name) {
+        this.name = name;
     }
 
+    public void changeRoutineGoal(String routineGoal) {
+        this.routineGoal = routineGoal;
+    }
+
+    public void changeUseYN(Character useYN) {
+        this.useYN = useYN;
+    }
 }

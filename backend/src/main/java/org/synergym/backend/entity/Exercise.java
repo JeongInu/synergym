@@ -44,12 +44,23 @@ public class Exercise {
     @ElementCollection
     private List<Integer> equipment;
 
-    // DTO 정보를 Entity에 업데이트하는 메서드
-    public void updateFromDTO(ExerciseDTO exerciseDTO) {
-        this.name = exerciseDTO.getName();
-        this.description = exerciseDTO.getDescription();
-        this.category = exerciseDTO.getCategory();
-        this.muscles = exerciseDTO.getMuscles();
-        this.equipment = exerciseDTO.getEquipment();
+    public void changeName(String name) {
+        this.name = name;
+    }
+
+    public void changeDescription(String description) {
+        this.description = description;
+    }
+
+    public void changeCategory(Integer category) {
+        this.category = category;
+    }
+
+    public void changeMuscles(List<Integer> muscles) {
+        this.muscles = muscles;
+    }
+
+    public void changeEquipment(List<Integer> equipment) {
+        this.equipment = equipment;
     }
 }

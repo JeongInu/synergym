@@ -44,8 +44,15 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // DTO로 받은 정보를 Entity에 반영
-        user.updateFromDTO(userDTO);  // Entity에서 DTO의 정보를 업데이트하는 메서드 호출
+        user.changeUsername(userDTO.getUsername());
+        user.changePassword(userDTO.getPassword());
+        user.changeEmail(userDTO.getEmail());
+        user.changeAge(userDTO.getAge());
+        user.changeGender(userDTO.getGender());
+        user.changeWeight(userDTO.getWeight());
+        user.changeHeight(userDTO.getHeight());
+        user.changeFitnessLevel(userDTO.getFitnessLevel());
+
         userRepository.save(user); // 업데이트된 Entity 저장
     }
 
