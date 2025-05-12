@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
     List<Post> findByTitleContainingOrContentContaining(String title, String content);
-    List<Post> findByWriter(User writer);
+    List<Post> findByUser(User user);
 
 }

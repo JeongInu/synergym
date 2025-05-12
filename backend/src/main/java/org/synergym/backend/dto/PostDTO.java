@@ -11,8 +11,7 @@ public class PostDTO {
     private Integer id;
     private String title;
     private String content;
-    private int viewCount;
     private Integer userId;
-    private String username;
+    private int viewCount;
 
 }
