@@ -12,25 +12,35 @@ public interface ExerciseService {
     void deleteExercise(Integer id);
     List<ExerciseDTO> getAllExercises();
 
-    // DTO로 변환하는 메서드
     default ExerciseDTO entityToDto(Exercise exercise) {
         return ExerciseDTO.builder()
                 .id(exercise.getId())
                 .name(exercise.getName())
                 .description(exercise.getDescription())
+                .creationDate(exercise.getCreationDate())
+                .license(exercise.getLicense())
                 .category(exercise.getCategory())
+                .language(exercise.getLanguage())
                 .muscles(exercise.getMuscles())
+                .musclesSecondary(exercise.getMusclesSecondary())
                 .equipment(exercise.getEquipment())
+                .translations(exercise.getTranslations())
                 .build();
     }
 
-    default Exercise dtoToEntity(ExerciseDTO dto){
+    default Exercise dtoToEntity(ExerciseDTO dto) {
         return Exercise.builder()
+                .id(dto.getId())
                 .name(dto.getName())
                 .description(dto.getDescription())
+                .creationDate(dto.getCreationDate())
+                .license(dto.getLicense())
                 .category(dto.getCategory())
+                .language(dto.getLanguage())
                 .muscles(dto.getMuscles())
+                .musclesSecondary(dto.getMusclesSecondary())
                 .equipment(dto.getEquipment())
+                .translations(dto.getTranslations())
                 .build();
     }
 }
