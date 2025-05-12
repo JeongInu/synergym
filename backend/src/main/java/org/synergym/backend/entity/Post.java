@@ -2,7 +2,6 @@ package org.synergym.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.synergym.backend.dto.PostDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +62,6 @@ public class Post extends BaseEntity {
     }
 
     // 특정 필드만 업데이트하기 위한 메서드
-
     public void changeTitle(String title) {
         this.title = title;
     }
@@ -72,13 +70,12 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    /**
-     * 게시물 조회수를 1 증가시키는 메소드
-     */
+    // 게시물 조회수를 1 증가시키는 메소드
     public void increaseViewCount() {
         this.viewCount++;
     }
 
+    //Post와 Comment는 '양방향 연관관계', 데이터 일관성을 유지, 코드 중복 방지, 객체지향적 설계를 위해
     public void addComment(Comment comment) {
         this.comments.add(comment);
         ((Comment) comment).changePost(this);

@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.synergym.backend.dto.PostDTO;
 import org.synergym.backend.entity.Post;
 import org.synergym.backend.entity.User;
-import org.synergym.backend.repository.CommentRepository;
 import org.synergym.backend.repository.PostRepository;
 import org.synergym.backend.repository.UserRepository;
 
@@ -19,7 +18,6 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
 
@@ -50,7 +48,11 @@ public class PostServiceImpl implements PostService {
     public PostDTO getPostById(Integer id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found with id: " + id));
-        
+        if (post.isDeleteYn()) {
+            // 이미 삭제된 게시글이면 예외 처리
+            throw new RuntimeException("이미 삭제된 게시글입니다.");
+        }
+
         // 조회수 증가
         post.increaseViewCount();
         postRepository.save(post);
