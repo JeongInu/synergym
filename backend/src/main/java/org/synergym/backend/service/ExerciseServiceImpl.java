@@ -39,9 +39,18 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Transactional
     @Override
     public void updateExercise(Integer id, ExerciseDTO exerciseDTO) {
-        Optional<Exercise> exercise = exerciseRepository.findById(id);
-        exercise.get().updateFromDTO(exerciseDTO);  // Entity에서 DTO의 정보를 업데이트하는 메서드 호출
-        exerciseRepository.save(exercise.get()); // 업데이트된 Entity 저장
+        Optional<Exercise> exerciseOptional = exerciseRepository.findById(id);
+
+        if (exerciseOptional.isPresent()) {
+            Exercise exercise = exerciseOptional.get();
+            exercise.changeName(exerciseDTO.getName());
+            exercise.changeDescription(exerciseDTO.getDescription());
+            exercise.changeCategory(exerciseDTO.getCategory());
+            exercise.changeMuscles(exerciseDTO.getMuscles());
+            exercise.changeEquipment(exerciseDTO.getEquipment());
+
+            exerciseRepository.save(exercise);
+        }
     }
 
     @Transactional

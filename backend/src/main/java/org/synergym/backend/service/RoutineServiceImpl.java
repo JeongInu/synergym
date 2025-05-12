@@ -54,8 +54,10 @@ public class RoutineServiceImpl implements RoutineService {
         User user = userRepository.findById(routineDTO.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + routineDTO.getUserId()));
 
+        routine.changeName(routineDTO.getName());
+        routine.changeRoutineGoal(routineDTO.getRoutineGoal());
+        routine.changeUseYN(routineDTO.getUseYN());
 
-        routine.updateFromDTO(routineDTO, user);
         routineRepository.save(routine);
     }
 

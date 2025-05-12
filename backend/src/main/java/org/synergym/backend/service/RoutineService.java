@@ -22,8 +22,7 @@ public interface RoutineService {
                 .name(dto.getName())
                 .routineGoal(dto.getRoutineGoal())
                 .user(user)
-                .useYn(dto.getUseYn())
-                .deleteYn(dto.getDeleteYn())
+                .useYN(dto.getUseYN())
                 .build();
     }
 
@@ -33,8 +32,7 @@ public interface RoutineService {
                 .name(routine.getName())
                 .routineGoal(routine.getRoutineGoal())
                 .userId(routine.getUser() != null ? routine.getUser().getId() : null)
-                .useYn(routine.getUseYn())
-                .deleteYn(routine.getDeleteYn())
+                .useYN(routine.getUseYN())
                 .build();
     }
 }

@@ -21,14 +21,4 @@ public class ExerciseDTO {
     private List<Integer> muscles;
     private List<Integer> equipment;
 
-    public ExerciseDTO toDTO(Exercise e) {
-        return new ExerciseDTO(
-                e.getId(),
-                e.getName(),
-                Jsoup.parse(e.getDescription()).text(),
-                e.getCategory(),
-                e.getMuscles(),
-                e.getEquipment()
-        );
-    }
 }
