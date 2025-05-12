@@ -20,7 +20,7 @@ public class Photo {
 
     // 사용자와 다대일 관계
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 
     // 이미지 경로만 저장

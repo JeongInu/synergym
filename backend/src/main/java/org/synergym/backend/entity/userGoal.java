@@ -11,8 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "userGoals")
-public class userGoal {
+@Table(name = "user_goals")
+
+public class UserGoal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +21,10 @@ public class userGoal {
 
     // User와 1:1 관계
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false, unique = true)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    @Column(length = 255, nullable = false)
+    @Column(nullable = false)
     private String goal;
+
 }
