@@ -25,11 +25,17 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Integer addPost(PostDTO postDTO, User user) {
+    public Integer addPost(PostDTO postDTO, Integer userId) {
+        // 사용자 ID로 User 객체 조회
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+
+        // User 객체를 dtoToEntity 메서드에 전달
         Post post = dtoToEntity(postDTO, user);
         Post savedPost = postRepository.save(post);
         return savedPost.getId();
     }
+
 
 
     @Override
@@ -89,6 +95,7 @@ public class PostServiceImpl implements PostService {
 
 
     // Post 검색 기능 추가
+    @Override
     public List<PostDTO> searchPosts(String keyword) {
         List<Post> posts = postRepository.findByTitleContainingOrContentContaining(keyword, keyword);
         return posts.stream()
@@ -97,23 +104,16 @@ public class PostServiceImpl implements PostService {
     }
     
     // 특정 사용자의 게시물 조회
+    @Override
     public List<PostDTO> getPostsByUser(Integer userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
         
-        List<Post> posts = postRepository.findByWriter(user);
+        List<Post> posts = postRepository.findByUser(user);
         return posts.stream()
                 .map(this::entityToDto)
                 .collect(Collectors.toList());
     }
 
-    // Post 엔티티에 필요한 수정 메서드 추가
-    private void updatePostEntity(Post post, PostDTO postDTO) {
-        if (postDTO.getTitle() != null) {
-            post.changeTitle(postDTO.getTitle());
-        }
-        if (postDTO.getContent() != null) {
-            post.changeContent(postDTO.getContent());
-        }
-    }
+
 }

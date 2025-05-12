@@ -27,10 +27,6 @@ public class Comment extends BaseEntity {
         @Column
         private String content;
 
-        // soft delete 처리
-        public void markAsDeleted() {
-            this.softDelete();  // BaseEntity에 있는 삭제 처리 메서드
-        }
 
         // 내용 수정 메서드
         public void changeContent(String content) {
