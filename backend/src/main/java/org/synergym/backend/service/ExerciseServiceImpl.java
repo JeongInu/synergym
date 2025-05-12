@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.synergym.backend.api.WgerApiClient;
 import org.synergym.backend.dto.ExerciseDTO;
+import org.synergym.backend.dto.ExerciseResponseDTO;
 import org.synergym.backend.entity.Exercise;
 import org.synergym.backend.repository.ExerciseRepository;
 
@@ -15,7 +16,6 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class ExerciseServiceImpl implements ExerciseService {
-
     private final ExerciseRepository exerciseRepository;
     private final WgerApiClient wgerApiClient;
 
@@ -25,12 +25,12 @@ public class ExerciseServiceImpl implements ExerciseService {
         this.wgerApiClient = wgerApiClient;
     }
 
-    @Transactional(readOnly = true)  // 읽기 전용 트랜잭션으로 변경
+    @Transactional(readOnly = true)
     @Override
-    public ExerciseDTO getExerciseById(Integer id) {
+    public ExerciseResponseDTO getExerciseById(Integer id) {
         Exercise exercise = exerciseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Exercise not found with id: " + id));
-        return entityToDto(exercise);
+        return entityToResponseDto(exercise);
     }
 
     @Transactional
@@ -63,13 +63,12 @@ public class ExerciseServiceImpl implements ExerciseService {
         exerciseRepository.deleteById(id);
     }
 
-    @Transactional(readOnly = true)  // 읽기 전용 트랜잭션으로 변경
+    @Transactional(readOnly = true)
     @Override
-    public List<ExerciseDTO> getAllExercises() {
+    public List<ExerciseResponseDTO> getAllExercises() {
         return exerciseRepository.findAll()
                 .stream()
-                .map(this::entityToDto)
+                .map(this::entityToResponseDto)
                 .collect(Collectors.toList());
     }
-
 }
