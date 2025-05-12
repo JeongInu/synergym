@@ -1,16 +1,17 @@
 package org.synergym.backend.service;
 
 import org.synergym.backend.dto.ExerciseDTO;
+import org.synergym.backend.dto.ExerciseResponseDTO;
 import org.synergym.backend.entity.Exercise;
 
 import java.util.List;
 
 public interface ExerciseService {
-    ExerciseDTO getExerciseById(Integer id);
+    ExerciseResponseDTO getExerciseById(Integer id);
     Integer addExercise(ExerciseDTO exerciseDTO);
     void updateExercise(Integer id, ExerciseDTO exerciseDTO);
     void deleteExercise(Integer id);
-    List<ExerciseDTO> getAllExercises();
+    List<ExerciseResponseDTO> getAllExercises();
 
     default ExerciseDTO entityToDto(Exercise exercise) {
         return ExerciseDTO.builder()
@@ -25,6 +26,16 @@ public interface ExerciseService {
                 .musclesSecondary(exercise.getMusclesSecondary())
                 .equipment(exercise.getEquipment())
                 .translations(exercise.getTranslations())
+                .build();
+    }
+
+    default ExerciseResponseDTO entityToResponseDto(Exercise exercise) {
+        return ExerciseResponseDTO.builder()
+                .id(exercise.getId())
+                .name(exercise.getName())
+                .description(exercise.getDescription())
+                .category(exercise.getCategory())
+                .language(exercise.getLanguage())
                 .build();
     }
 
