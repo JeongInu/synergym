@@ -42,7 +42,7 @@ public class Post extends BaseEntity {
     // 다대일(N:1) 관계 매핑, 지연 로딩 전략 사용 (실제 사용 시점에 로딩)
     @JoinColumn(name = "user_id")
     // 외래 키 컬럼명을 'user_id'로 지정
-    private User writer;
+    private User user;
 
     private int viewCount;
     // 조회수를 저장하는 필드
