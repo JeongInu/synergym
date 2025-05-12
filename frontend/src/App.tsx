@@ -1,24 +1,18 @@
-const App = () => {
-  const sections = [
-    { bg: 'bg-red-500', text: 'Section 1' },
-    { bg: 'bg-blue-500', text: 'Section 2' },
-    { bg: 'bg-green-500', text: 'Section 3' },
-    { bg: 'bg-yellow-500', text: 'Section 4' },
-    { bg: 'bg-purple-500', text: 'Section 5' },
-  ];
+// src/App.tsx
+import Section1 from "./sections/Section1";
+import Section2 from "./sections/Section2";
+import Section3 from "./sections/Section3";
+import Section4 from "./sections/Section4";
+import Section5 from "./sections/Section5";
 
+const App = () => {
   return (
-    <div className="overflow-x-hidden">
-      {sections.map((sec, index) => (
-        <section
-          key={index}
-          className={`w-full h-screen flex items-center justify-center ${sec.bg}`}
-        >
-          <div className="text-white text-6xl font-bold">
-            {sec.text}
-          </div>
-        </section>
-      ))}
+    <div>
+      <Section1 />
+      <Section2 />
+      <Section3 />
+      <Section4 />
+      <Section5 />
     </div>
   );
 };
