@@ -13,7 +13,7 @@ public interface PostService {
     void updatePost(Integer id, PostDTO postDTO);
     void deletePost(Integer id);
     List<PostDTO> searchPosts(String keyword);
-    List<PostDTO> getPostsByUser(Integer userId);
+    //List<PostDTO> getPostsByUser(Integer userId);
 
     // 변환 메서드
     default Post dtoToEntity(PostDTO dto, User user) {

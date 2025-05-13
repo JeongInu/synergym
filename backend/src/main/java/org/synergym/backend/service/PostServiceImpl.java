@@ -45,6 +45,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public PostDTO getPostById(Integer id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found with id: " + id));
@@ -105,17 +106,17 @@ public class PostServiceImpl implements PostService {
                 .collect(Collectors.toList());
     }
     
-    // 특정 사용자의 게시물 조회
-    @Override
-    public List<PostDTO> getPostsByUser(Integer userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
-        
-        List<Post> posts = postRepository.findByUser(user);
-        return posts.stream()
-                .map(this::entityToDto)
-                .collect(Collectors.toList());
-    }
+//    // 특정 사용자의 게시물 조회
+//    @Override
+//    public List<PostDTO> getPostsByUser(Integer userId) {
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+//
+//        List<Post> posts = postRepository.findByUser(user);
+//        return posts.stream()
+//                .map(this::entityToDto)
+//                .collect(Collectors.toList());
+//    }
 
 
 }
