@@ -13,7 +13,7 @@ const navigate = useNavigate();
       {/* 메뉴 */}
       <nav className="flex space-x-6">
         <a href="/" className="hover:text-violet-400 transition">사진분석</a>
-        <a href="/" className="hover:text-violet-400 transition">커뮤니티</a>
+        <a href="/post" className="hover:text-violet-400 transition">커뮤니티</a>
         <a href="/" className="hover:text-violet-400 transition">운동목록</a>
       </nav>
 
