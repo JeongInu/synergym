@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
-@Transactional
 @Import(SecurityConfig.class)
 class AuthServiceTest {
     @Autowired
@@ -46,20 +45,20 @@ class AuthServiceTest {
                 .build();
 
         signupRequest = SignupRequest.builder()
-                .email("test3@example.com")
-                .password("password123!")
-                .name("테스트사용자")
-                .birthDate(LocalDate.of(1990, 1, 1))
-                .gender("M")
-                .weight(70.0f)
-                .height(175.0f)
+                .email("kimchijjim@naver.com")
+                .password("masitda")
+                .name("김치찜")
+                .birthDate(LocalDate.of(2000, 10, 11))
+                .gender("F")
+                .weight(75.0f)
+                .height(180.0f)
                 .fitnessLevel("BEGINNER")
-                .userGoal(userGoal)  // UserGoal 객체로 설정
+                .userGoal(userGoal.getGoal())  // UserGoal 객체로 설정
                 .build();
 
         loginRequest = new LoginRequest();
-        loginRequest.setEmail("test3@example.com");
-        loginRequest.setPassword("password123!");
+        loginRequest.setEmail("kimchijjim@naver.com");
+        loginRequest.setPassword("masitda");
 
     }
 
@@ -95,7 +94,7 @@ class AuthServiceTest {
     @DisplayName("로그인 테스트")
     void testLogin() {
         // given
-        authService.signup(signupRequest);
+        authService.login(loginRequest);
         
         // when
         log.info("로그인 테스트 시작: {}", loginRequest.getEmail());
