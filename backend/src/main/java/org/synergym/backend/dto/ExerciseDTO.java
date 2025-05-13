@@ -16,45 +16,29 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.HashMap;
 
-@Getter
+@Data
 @NoArgsConstructor
 @Builder
-@Data
 @AllArgsConstructor
 @Slf4j
 public class ExerciseDTO {
     private Integer id;
     private String name;
     private String description;
-    private String uuid;
-
-    @JsonProperty("creation_date")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-    private LocalDateTime creationDate;
-
-    private Integer license;
-
-    @JsonProperty("license_author")
-    private String licenseAuthor;
-
     private Integer category;
     private Integer language;
 
     @JsonProperty("muscles")
-    @Builder.Default
     private List<Integer> muscles = new ArrayList<>();
 
     @JsonProperty("muscles_secondary")
-    @Builder.Default
     private List<Integer> musclesSecondary = new ArrayList<>();
 
     @JsonProperty("equipment")
-    @Builder.Default
     private List<Integer> equipment = new ArrayList<>();
 
     // translation 데이터를 저장하기 위한 map
-    @Builder.Default
-    private Map<String, String> translations = new HashMap<>();
+    private List<ExerciseTranslationDTO> translations = new ArrayList<>();
 
     @JsonAnySetter
     public void handleUnknownField(String key, Object value) {

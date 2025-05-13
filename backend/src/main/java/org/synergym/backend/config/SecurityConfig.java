@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Lazy;
 @Configuration
 public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
-    
+
     public SecurityConfig(@Lazy JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
@@ -31,7 +31,8 @@ public class SecurityConfig {
                                 "/swagger-ui.html",        // Swagger UI
                                 "/swagger-ui/**",          // Swagger UI 리소스
                                 "/v3/api-docs",            // OpenAPI v3 명세 JSON
-                                "/v3/api-docs/**"          // OpenAPI v3 관련 리소스
+                                "/v3/api-docs/**",         // OpenAPI v3 관련 리소스
+                                "/exercises/import"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
