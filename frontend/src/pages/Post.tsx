@@ -82,36 +82,36 @@ const Post = () => {
   }
 };
 
-  // 검색 기능
-  const handleSearch = async () => {
-    if (!keyword.trim()) {
-      fetchPosts();
-      return;
-    }
+//   검색 기능
+//   const handleSearch = async () => {
+//     if (!keyword.trim()) {
+//       fetchPosts();
+//       return;
+//     }
     
-    setLoading(true);
-  try {
-    const filtered = posts.filter((post) =>
-      post.title.includes(keyword) || post.content.includes(keyword)
-    );
-    setPosts(filtered);
-    setTotalPages(Math.ceil(filtered.length / postsPerPage));
-  } catch (err) {
-    setError('검색 중 오류가 발생했습니다.');
-    console.error('Search error:', err);
-  } finally {
-    setLoading(false);
-  }
-};
+//     setLoading(true);
+//   try {
+//     const filtered = posts.filter((post) =>
+//       post.title.includes(keyword) || post.content.includes(keyword)
+//     );
+//     setPosts(filtered);
+//     setTotalPages(Math.ceil(filtered.length / postsPerPage));
+//   } catch (err) {
+//     setError('검색 중 오류가 발생했습니다.');
+//     console.error('Search error:', err);
+//   } finally {
+//     setLoading(false);
+//   }
+// };
 
   // 게시글 상세 페이지로 이동
   const handlePostClick = (postId: number) => {
-    navigate(`/post/${postId}`);
+    navigate(`/posts/${postId}`);
   };
 
   // 새 게시글 작성 페이지로 이동
   const handleWritePost = () => {
-    navigate('/post/write');
+    navigate('/posts/write');
   };
 
   // 페이지네이션 처리
@@ -161,7 +161,7 @@ const Post = () => {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             className="border border-gray-300 rounded-l px-4 py-2 w-350 focus:outline-none focus:ring-2 focus:ring-gray-500"
-            placeholder="제목 또는 내용으로 검색"
+            placeholder="제목으로 검색"
             />
         <Button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
             검색
