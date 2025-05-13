@@ -8,7 +8,7 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.synergym.backend.dto.ExerciseDTO;
-import org.synergym.backend.dto.TranslationDTO;
+import org.synergym.backend.dto.ExerciseTranslationDTO;
 import org.synergym.backend.dto.wrapper.WgerExerciseWrapper;
 import org.synergym.backend.dto.wrapper.WgerTranslationWrapper;
 
@@ -62,7 +62,7 @@ public class WgerApiClient {
                     .filter(exercise -> exercise.getId() != null)
                     .map(exercise -> CompletableFuture.runAsync(() -> {
                         try {
-                            List<TranslationDTO> translations = fetchTranslations(exercise.getId());
+                            List<ExerciseTranslationDTO> translations = fetchTranslations(exercise.getId());
                             updateExerciseWithTranslations(exercise, translations);
                             log.debug("Processed translations for exercise ID: {}", exercise.getId());
                         } catch (Exception e) {
@@ -84,7 +84,7 @@ public class WgerApiClient {
         }
     }
 
-    public List<TranslationDTO> fetchTranslations(Integer exerciseId) {
+    public List<ExerciseTranslationDTO> fetchTranslations(Integer exerciseId) {
         String url = BASE_URL + "/exercise-translation/" +
                 "?exercise=" + exerciseId;
 
@@ -103,19 +103,13 @@ public class WgerApiClient {
         }
     }
 
-    private void updateExerciseWithTranslations(ExerciseDTO exercise, List<TranslationDTO> translations) {
-        for (TranslationDTO translation : translations) {
+    private void updateExerciseWithTranslations(ExerciseDTO exercise, List<ExerciseTranslationDTO> translations) {
+        for (ExerciseTranslationDTO translation : translations) {
             if (translation.getName() != null) {
                 exercise.setName(translation.getName());
             }
             if (translation.getDescription() != null) {
                 exercise.setDescription(translation.getDescription());
-            }
-            if (translation.getCreationDate() != null) {
-                exercise.setCreationDate(translation.getCreationDate());
-            }
-            if (translation.getLicense() != null) {
-                exercise.setLicense(translation.getLicense());
             }
             if (translation.getLanguage() != null) {
                 exercise.setLanguage(translation.getLanguage());
@@ -123,9 +117,14 @@ public class WgerApiClient {
 
             // 번역 맵에 저장
             if (translation.getLanguage() != null && translation.getName() != null) {
-                exercise.getTranslations().put(
-                        translation.getLanguage().toString(),
-                        translation.getName()
+                exercise.getTranslations().add(
+                        ExerciseTranslationDTO.builder()
+                                .language(translation.getLanguage())
+                                .name(translation.getName())
+                                .description(translation.getDescription())
+                                .creationDate(translation.getCreationDate())
+                                .license(translation.getLicense())
+                                .build()
                 );
             }
         }

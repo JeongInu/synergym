@@ -33,52 +33,35 @@ public class Exercise {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private LocalDateTime creationDate;
-    private Integer license;
     private Integer category;
     private Integer language;
 
-    @ElementCollection
-    @CollectionTable(name = "exercise_muscles")
+    @ElementCollection(fetch = FetchType.LAZY) // 지연 로딩은 성능에 도움이 될 수 있습니다.
+    @CollectionTable(name = "exercise_muscles",
+            joinColumns = @JoinColumn(name = "exercise_id")) // exercise 테이블과의 FK
+    @Column(name = "muscle_id") // 요소가 저장될 컬럼 (DB 스키마의 컬럼명과 일치해야 함)
     @Builder.Default
     private List<Integer> muscles = new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable(name = "exercise_muscles_secondary")
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "exercise_muscles_secondary",
+            joinColumns = @JoinColumn(name = "exercise_id")) // exercise 테이블과의 FK
+    @Column(name = "muscle_id") // 요소가 저장될 컬럼 (오류 메시지에서 언급된 컬럼)
     @Builder.Default
     private List<Integer> musclesSecondary = new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable(name = "exercise_equipment")
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "exercise_equipment",
+            joinColumns = @JoinColumn(name = "exercise_id")) // exercise 테이블과의 FK
+    @Column(name = "equipment_id") // 요소가 저장될 컬럼 (DB 스키마의 컬럼명과 일치해야 함)
     @Builder.Default
     private List<Integer> equipment = new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable(name = "exercise_translations")
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "exercise_translations",
+            joinColumns = @JoinColumn(name = "exercise_id"))
     @Builder.Default
-    private Map<String, String> translations = new HashMap<>();  // language code를 key로 사용
+    private List<ExerciseTranslation> translations = new ArrayList<>();
 
-    public void addTranslation(String languageCode, String translatedName) {
-        this.translations.put(languageCode, translatedName);
-    }
 
-    public void changeName(String name) {
-        this.name = name;
-    }
-
-    public void changeDescription(String description) {
-        this.description = description;
-    }
-
-    public void changeCategory(Integer category) {
-        this.category = category;
-    }
-
-    public void changeMuscles(List<Integer> muscles) {
-        this.muscles = muscles != null ? new ArrayList<>(muscles) : new ArrayList<>();
-    }
-
-    public void changeEquipment(List<Integer> equipment) {
-        this.equipment = equipment != null ? new ArrayList<>(equipment) : new ArrayList<>();
-    }
 }
