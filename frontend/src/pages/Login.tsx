@@ -15,7 +15,7 @@ export default function Login() {
 
           <div>
             <label className="block text-sm text-white mb-1">Password</label>
-            <Input type="password" placeholder="••••••••" className="bg-zinc-800 text-white" />
+            <Input type="password" placeholder="********" className="bg-zinc-800 text-white" />
           </div>
 
           <Button className="w-full bg-blue-500 text-white hover:bg-blue-600">

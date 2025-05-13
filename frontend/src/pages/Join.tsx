@@ -1,7 +1,7 @@
-// components/SignupForm.tsx
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
 
 const variants = {
@@ -23,7 +23,7 @@ export default function Join() {
     goal: "",
   });
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -49,8 +49,10 @@ export default function Join() {
       <div className="w-full max-w-lg space-y-4 p-8 bg-neutral-900 rounded-xl shadow-lg">
         <h1 className="text-3xl font-bold text-center mb-4">회원가입</h1>
 
+        <Label htmlFor="email" className="block mb-1">Email</Label>
         <Input
-          placeholder="이메일"
+          placeholder="example@domain.com"
+          id="email"
           className="bg-neutral-800 text-white"
           value={form.email}
           onChange={(e) => handleChange("email", e.target.value)}
@@ -58,8 +60,10 @@ export default function Join() {
 
         {allVisible.showPassword && (
           <motion.div variants={variants} initial="hidden" animate="visible">
+            <Label htmlFor="password" className="block mb-1">비밀번호</Label>
             <Input
-              placeholder="비밀번호"
+              placeholder="********"
+              id="password"
               type="password"
               className="bg-neutral-800 mt-2"
               value={form.password}
@@ -70,8 +74,10 @@ export default function Join() {
 
         {allVisible.showConfirm && (
           <motion.div variants={variants} initial="hidden" animate="visible">
+            <Label htmlFor="confirm" className="block mb-1">비밀번호 확인</Label>
             <Input
-              placeholder="비밀번호 확인"
+              placeholder="********"
+              id="confirm"
               type="password"
               className="bg-neutral-800 mt-2"
               value={form.confirm}
@@ -82,8 +88,10 @@ export default function Join() {
 
         {allVisible.showName && (
           <motion.div variants={variants} initial="hidden" animate="visible">
+            <Label htmlFor="username">닉네임</Label>
             <Input
-              placeholder="회원 이름"
+              placeholder="닉네임"
+              id="userName"
               className="bg-neutral-800 mt-2"
               value={form.name}
               onChange={(e) => handleChange("name", e.target.value)}
@@ -93,7 +101,8 @@ export default function Join() {
 
         {allVisible.showBirth && (
           <motion.div variants={variants} initial="hidden" animate="visible">
-            <div className="flex gap-2 mt-2">
+            <Label htmlFor="birthdate">생년월일</Label>
+            <div className="flex gap-2 mt-2" id="birthdate">
               <select
                 className="flex-1 bg-neutral-800 text-white p-2 rounded"
                 value={form.birth.year}
@@ -124,7 +133,8 @@ export default function Join() {
 
         {allVisible.showGender && (
           <motion.div variants={variants} initial="hidden" animate="visible">
-            <div className="mt-2 space-x-4">
+            <Label htmlFor="gender" className="block mb-1">성별</Label>
+            <div className="mt-2 space-x-4" id="gender">
               <label>
                 <input
                   type="radio"
@@ -147,7 +157,9 @@ export default function Join() {
 
         {allVisible.showWeight && (
           <motion.div variants={variants} initial="hidden" animate="visible">
+            <Label htmlFor="weight" className="block mb-1">몸무게</Label>
             <Input
+              id="weight"
               placeholder="몸무게 (kg)"
               className="bg-neutral-800 mt-2"
               type="number"
@@ -159,8 +171,10 @@ export default function Join() {
 
         {allVisible.showHeight && (
           <motion.div variants={variants} initial="hidden" animate="visible">
+            <Label htmlFor="height" className="block mb-1">신장</Label>
             <Input
               placeholder="키 (cm)"
+              id="height"
               className="bg-neutral-800 mt-2"
               type="number"
               value={form.height}
@@ -171,34 +185,36 @@ export default function Join() {
 
         {allVisible.showActivity && (
           <motion.div variants={variants} initial="hidden" animate="visible">
+            <Label htmlFor="fitness_level" className="block mb-1" >활동량</Label>
             <select
               className="mt-2 w-full bg-neutral-800 text-white p-2 rounded"
               value={form.activity}
               onChange={(e) => handleChange("activity", e.target.value)}
             >
               <option value="">활동량 선택</option>
-              <option value="주0회">주 0회</option>
-              <option value="주1-2회">주 1-2회</option>
-              <option value="주3-4회">주 3-4회</option>
-              <option value="주5-6회">주 5-6회</option>
+              <option value="lazy">주 0회</option>
+              <option value="normal">주 1-2회</option>
+              <option value="diligent">주 3-4회</option>
+              <option value="too_much">주 5-6회</option>
             </select>
           </motion.div>
         )}
 
         {allVisible.showGoal && (
           <motion.div variants={variants} initial="hidden" animate="visible">
+            <Label htmlFor="goal" className="block mb-1">운동목표</Label>
             <select
               className="mt-2 w-full bg-neutral-800 text-white p-2 rounded"
               value={form.goal}
               onChange={(e) => handleChange("goal", e.target.value)}
             >
               <option value="">운동 목표 선택</option>
-              <option value="체중감량">체중감량</option>
-              <option value="근력상승">근력상승</option>
-              <option value="기초체력">기초체력</option>
-              <option value="자세교정">자세교정</option>
-              <option value="유연성">유연성</option>
-              <option value="기타">기타</option>
+              <option value="loss_weight">체중감량</option>
+              <option value="gain_muscle">근력상승</option>
+              <option value="fitness">기초체력</option>
+              <option value="posture">자세교정</option>
+              <option value="flexibility">유연성</option>
+              <option value="etc">기타</option>
             </select>
           </motion.div>
         )}
