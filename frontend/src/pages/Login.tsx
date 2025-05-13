@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-const Login = () => {
+export default function Login() {
   return (
     <div className="h-screen bg-black flex items-center justify-center px-4">
       <div className="w-full max-w-sm bg-zinc-900 p-8 rounded-2xl shadow-lg space-y-6">
@@ -30,5 +30,3 @@ const Login = () => {
     </div>
   );
 };
-
-export default Login;
