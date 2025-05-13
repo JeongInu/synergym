@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         user.changeUsername(userDTO.getUsername());
         user.changePassword(userDTO.getPassword());
         user.changeEmail(userDTO.getEmail());
-        user.changeAge(userDTO.getAge());
+        user.changeBirthDate(userDTO.getBirthDate());
         user.changeGender(userDTO.getGender());
         user.changeWeight(userDTO.getWeight());
         user.changeHeight(userDTO.getHeight());
