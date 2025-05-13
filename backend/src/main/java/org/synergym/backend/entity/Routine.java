@@ -13,7 +13,7 @@ import org.synergym.backend.dto.RoutineDTO;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Routine {
+public class Routine extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

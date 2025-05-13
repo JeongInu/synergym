@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.synergym.backend.dto.UserDTO;
-
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "users")
@@ -16,20 +13,29 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(unique = true)
     private String username;
+
     private String password;
-    private String role;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;  // String에서 Role로 변경
+
+
+    @Column(unique = true)
     private String email;
-    private Integer age;
+
+    private LocalDate birthDate;  // age를 birthDate로 변경
     private String gender;
     private Float weight;
     private Float height;
     private String fitnessLevel;
+
 
     public void changeUsername(String username) {
         this.username = username;
@@ -43,8 +49,8 @@ public class User {
         this.email = email;
     }
 
-    public void changeAge(Integer age) {
-        this.age = age;
+    public void changeBirthDate(LocalDate birthDate) {  // changeAge 메서드를 changeBirthDate로 변경
+        this.birthDate = birthDate;
     }
 
     public void changeGender(String gender) {

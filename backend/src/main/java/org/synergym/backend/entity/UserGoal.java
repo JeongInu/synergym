@@ -13,13 +13,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "user_goals")
 
-public class UserGoal {
+public class UserGoal extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // User와 1:1 관계
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
