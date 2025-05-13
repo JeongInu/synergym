@@ -37,13 +37,51 @@ export default function DateSelector() {
                     <Label className="text-sm">년도</Label>
                     <Select value={selectedYear} onValueChange={(v:string) => setSelectedYear(v)}>
                         <SelectTrigger className="bg-neutral-800 text-white border-neutral-600">
+                            <SelectValue placeholder="년" />
                         </SelectTrigger>
+                        <SelectContent className="bg-neutral-800 text-white max-h-64 overflow-y-auto">
+                            {years.map((year)=>(
+                                <SelectItem key={year} value={year}>
+                                    {year}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
                     </Select>
                 </div>
 
                 {/** Monthh */}
-                
+                <div>
+                    <Label className="text-sm">월</Label>
+                    <Select value={selectedMonth} onValueChange={(v:string) => setSelectedMonth(v)}>
+                        <SelectTrigger className="bg-neutral-800 text-white border-neutral-600">
+                            <SelectValue placeholder="월" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-neutral-800 text-white max-h-64 overflow-y-auto">
+                            {months.map((month)=>(
+                                <SelectItem key={month} value={month}>
+                                    {month}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+
                 {/**  Date */}
+                <div>
+                    <Label className="text-sm">일</Label>
+                    <Select value={selectedDay} onValueChange={(v:string) => setSelectedDay(v)}>
+                        <SelectTrigger className="bg-neutral-800 text-white border-neutral-600">
+                            <SelectValue placeholder="일" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-neutral-800 text-white max-h-64 overflow-y-auto">
+                            {days.map((day)=>(
+                                <SelectItem key={day} value={day}>
+                                    {day}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
 
             </div>
         </div>
