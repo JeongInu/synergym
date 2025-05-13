@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 import { useState, useEffect } from "react";
 // React 컴포넌트에서 상태 관리와 사이드 이펙트를 처리하기 위한 Hook 불러오기
@@ -8,6 +9,8 @@ import Footer from "../components/common/Footer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+=======
+>>>>>>> ed905fd (feat(post): [create initial post file] for post module)
 import {
   Table,
   TableBody,
@@ -21,6 +24,10 @@ import {
 import {
   Pagination,
   PaginationContent,
+<<<<<<< HEAD
+=======
+  PaginationEllipsis,
+>>>>>>> ed905fd (feat(post): [create initial post file] for post module)
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -28,6 +35,7 @@ import {
 } from "@/components/ui/pagination"
 
 
+<<<<<<< HEAD
 // 게시글 타입 정의
 interface PostType {
   id: number;
@@ -287,4 +295,61 @@ const Post = () => {
   );
 };
 
+=======
+
+const Post = () => {
+  return (
+    <>
+      <Table>
+        <TableCaption>총 게시글: {Post.length}개</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-16 text-center">번호</TableHead>
+            <TableHead>제목</TableHead>
+            <TableHead className="w-24">작성자</TableHead>
+            <TableHead className="w-24">작성일</TableHead>
+            <TableHead className="w-20 text-center">조회수</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+                <TableRow>
+                    <TableCell className="font-medium">INV001</TableCell>
+                    <TableCell>Paid</TableCell>
+                    <TableCell>Credit Card</TableCell>
+                    <TableCell className="text-right">$250.00</TableCell>
+                </TableRow>
+        </TableBody>
+      </Table>
+
+      
+       <div className="mt-6">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious href="#" />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#" isActive>1</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">2</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">3</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext href="#" />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
+    </>
+  );
+};
+
+
+>>>>>>> ed905fd (feat(post): [create initial post file] for post module)
 export default Post;
