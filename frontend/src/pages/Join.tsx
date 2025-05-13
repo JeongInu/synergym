@@ -2,7 +2,9 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { motion } from "framer-motion";
+import DateSelector from "@/components/common/DateSelector";
 
 const variants = {
   hidden: { opacity: 0, y: -10 },
@@ -27,6 +29,16 @@ export default function Join() {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
+  const handleBirthChange = (type: "year" | "month" | "day", value: string) => {
+    setForm((prev) => ({
+      ...prev,
+      birth: {
+        ...prev.birth,
+        [type]: value,
+      },
+    }));
+  };
+
   const allVisible = {
     showPassword: form.email !== "",
     showConfirm: form.password !== "",
@@ -39,10 +51,6 @@ export default function Join() {
     showGoal: form.activity !== "",
     showSubmit: form.goal !== "",
   };
-
-  const years = Array.from({ length: 100 }, (_, i) => `${2025 - i}`);
-  const months = Array.from({ length: 12 }, (_, i) => `${i + 1}`);
-  const days = Array.from({ length: 31 }, (_, i) => `${i + 1}`);
 
   return (
     <div className="min-h-screen bg-black text-white flex justify-center items-center px-4">
@@ -101,33 +109,11 @@ export default function Join() {
 
         {allVisible.showBirth && (
           <motion.div variants={variants} initial="hidden" animate="visible">
-            <Label htmlFor="birthdate">생년월일</Label>
-            <div className="flex gap-2 mt-2" id="birthdate">
-              <select
-                className="flex-1 bg-neutral-800 text-white p-2 rounded"
-                value={form.birth.year}
-                onChange={(e) => setForm({ ...form, birth: { ...form.birth, year: e.target.value } })}
-              >
-                <option value="">년</option>
-                {years.map((y) => <option key={y}>{y}</option>)}
-              </select>
-              <select
-                className="flex-1 bg-neutral-800 text-white p-2 rounded"
-                value={form.birth.month}
-                onChange={(e) => setForm({ ...form, birth: { ...form.birth, month: e.target.value } })}
-              >
-                <option value="">월</option>
-                {months.map((m) => <option key={m}>{m}</option>)}
-              </select>
-              <select
-                className="flex-1 bg-neutral-800 text-white p-2 rounded"
-                value={form.birth.day}
-                onChange={(e) => setForm({ ...form, birth: { ...form.birth, day: e.target.value } })}
-              >
-                <option value="">일</option>
-                {days.map((d) => <option key={d}>{d}</option>)}
-              </select>
-            </div>
+            <DateSelector 
+              year={form.birth.year}
+              month={form.birth.month}
+              day={form.birth.day}
+              onChange={handleBirthChange}/>
           </motion.div>
         )}
 
@@ -138,16 +124,16 @@ export default function Join() {
               <label>
                 <input
                   type="radio"
-                  value="남"
-                  checked={form.gender === "남"}
+                  value="male"
+                  checked={form.gender === "male"}
                   onChange={(e) => handleChange("gender", e.target.value)}
                 /> 남
               </label>
               <label>
                 <input
                   type="radio"
-                  value="여"
-                  checked={form.gender === "여"}
+                  value="female"
+                  checked={form.gender === "female"}
                   onChange={(e) => handleChange("gender", e.target.value)}
                 /> 여
               </label>
@@ -185,43 +171,43 @@ export default function Join() {
 
         {allVisible.showActivity && (
           <motion.div variants={variants} initial="hidden" animate="visible">
-            <Label htmlFor="fitness_level" className="block mb-1" >활동량</Label>
-            <select
-              className="mt-2 w-full bg-neutral-800 text-white p-2 rounded"
-              value={form.activity}
-              onChange={(e) => handleChange("activity", e.target.value)}
-            >
-              <option value="">활동량 선택</option>
-              <option value="lazy">주 0회</option>
-              <option value="normal">주 1-2회</option>
-              <option value="diligent">주 3-4회</option>
-              <option value="too_much">주 5-6회</option>
-            </select>
+            <Label htmlFor="fitness_level" className="block mb-1">활동량</Label>
+            <Select value={form.activity} onValueChange={(value) => handleChange("activity", value)}>
+              <SelectTrigger className="mt-2 w-full bg-neutral-800 text-white p-2 rounded">
+                <SelectValue placeholder="활동량 선택" />
+              </SelectTrigger>
+              <SelectContent className="bg-neutral-800 text-white max-h-64 overflow-y-auto">
+                <SelectItem value="lazy">주 0회</SelectItem>
+                <SelectItem value="normal">주 1-2회</SelectItem>
+                <SelectItem value="diligent">주 3-4회</SelectItem>
+                <SelectItem value="too_much">주 5-6회</SelectItem>
+              </SelectContent>
+            </Select>
           </motion.div>
         )}
 
         {allVisible.showGoal && (
           <motion.div variants={variants} initial="hidden" animate="visible">
             <Label htmlFor="goal" className="block mb-1">운동목표</Label>
-            <select
-              className="mt-2 w-full bg-neutral-800 text-white p-2 rounded"
-              value={form.goal}
-              onChange={(e) => handleChange("goal", e.target.value)}
-            >
-              <option value="">운동 목표 선택</option>
-              <option value="loss_weight">체중감량</option>
-              <option value="gain_muscle">근력상승</option>
-              <option value="fitness">기초체력</option>
-              <option value="posture">자세교정</option>
-              <option value="flexibility">유연성</option>
-              <option value="etc">기타</option>
-            </select>
+            <Select value={form.goal} onValueChange={(value) => handleChange("goal", value)}>
+              <SelectTrigger className="mt-2 w-full bg-neutral-800 text-white p-2 rounded">
+                <SelectValue placeholder="운동 목표 선택" />
+              </SelectTrigger>
+              <SelectContent className="bg-neutral-800 text-white max-h-64 overflow-y-auto">
+                <SelectItem value="loss_weight">체중감량</SelectItem>
+                <SelectItem value="gain_muscle">근력상승</SelectItem>
+                <SelectItem value="fitness">기초체력</SelectItem>
+                <SelectItem value="posture">자세교정</SelectItem>
+                <SelectItem value="flexibility">유연성</SelectItem>
+                <SelectItem value="etc">기타</SelectItem>
+              </SelectContent>
+            </Select>
           </motion.div>
         )}
 
         {allVisible.showSubmit && (
           <motion.div variants={variants} initial="hidden" animate="visible">
-            <Button className="w-full mt-4 bg-white text-black hover:bg-gray-200">가입 완료</Button>
+            <Button className="w-full mt-4 bg-white text-black hover:bg-gray-200"> 완료</Button>
           </motion.div>
         )}
       </div>
