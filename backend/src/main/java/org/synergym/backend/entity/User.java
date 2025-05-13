@@ -13,20 +13,29 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(unique = true)
     private String username;
+
     private String password;
-    private String role;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;  // String에서 Role로 변경
+
+
+    @Column(unique = true)
     private String email;
+
     private LocalDate birthDate;  // age를 birthDate로 변경
     private String gender;
     private Float weight;
     private Float height;
     private String fitnessLevel;
+
 
     public void changeUsername(String username) {
         this.username = username;
