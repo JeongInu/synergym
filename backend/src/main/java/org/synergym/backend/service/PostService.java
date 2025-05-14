@@ -32,6 +32,9 @@ public interface PostService {
                 .content(post.getContent())
                 .viewCount(post.getViewCount())
                 .userId(post.getUser().getId())
+                .username(post.getUser().getUsername()) // User 엔티티에서 username 가져와 설정
+                .createdAt(post.getCreatedAt())
+                .updatedAt(post.getUpdatedAt())
                 .build();
     }
 

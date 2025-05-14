@@ -7,6 +7,7 @@ import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import api from "../api/axiosInstance"; 
 
 import {
   Table,
@@ -27,6 +28,8 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 
+import { useUserStore } from "@/store/userStore";
+
 
 // 게시글 타입 정의
 interface PostType {
@@ -46,6 +49,7 @@ const Post = () => {
 
   // 상태 정의
   const [posts, setPosts] = useState<PostType[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<PostType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -55,85 +59,88 @@ const Post = () => {
   const navigate = useNavigate();
   const postsPerPage = 10; // 페이지당 게시글 수
 
-   // 게시글 불러오기 (mock 데이터 사용 중)
+
+
+// 게시글 불러오기 (백엔드 연동)
   const fetchPosts = async () => {
     setLoading(true);
     try {
-    // 실제 서버 대신 mock 데이터 사용
-    const mockData: PostType[] = Array.from({ length: 25 }, (_, i) => ({
-      id: i + 1,
-      title: `게시글 제목 ${i + 1}`,
-      content: `게시글 내용 ${i + 1}`,
-      userId: i % 5,
-      username: `사용자${(i % 5) + 1}`,
-      createdAt: '2025-05-13T12:34:56',
-      updatedAt: '2025-05-13T12:34:56',
-      viewCount: Math.floor(Math.random() * 100),
-      deleteYn: false,
-    }));
+      // 백엔드에서 전체 게시물 목록을 받아옴
+      const response = await api.get("/posts"); // /posts 엔드포인트 사용 가정
+      // 받아온 전체 게시물 저장
+      setPosts(response.data);
+      // 초기에는 전체 게시물이 필터링된 게시물 목록
+      setFilteredPosts(response.data);
+      setTotalPages(Math.ceil(response.data.length / postsPerPage));
+    } catch (err) {
+      setError("게시글을 불러오는데 실패했습니다.");
+      console.error("Error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    setPosts(mockData);
-    setTotalPages(Math.ceil(mockData.length / postsPerPage));
-  } catch (err) {
-    setError('게시글을 불러오는데 실패했습니다.');
-    console.error('Error:', err);
-  } finally {
-    setLoading(false);
-  }
-};
 
-//   검색 기능
-//   const handleSearch = async () => {
-//     if (!keyword.trim()) {
-//       fetchPosts();
-//       return;
-//     }
-    
-//     setLoading(true);
-//   try {
-//     const filtered = posts.filter((post) =>
-//       post.title.includes(keyword) || post.content.includes(keyword)
-//     );
-//     setPosts(filtered);
-//     setTotalPages(Math.ceil(filtered.length / postsPerPage));
-//   } catch (err) {
-//     setError('검색 중 오류가 발생했습니다.');
-//     console.error('Search error:', err);
-//   } finally {
-//     setLoading(false);
-//   }
-// };
+
+// 검색 기능 (프론트엔드에서 필터링)
+  const handleSearch = () => {
+    const lowerCaseKeyword = keyword.toLowerCase();
+    const filtered = posts.filter(
+      (post) =>
+        post.title.toLowerCase().includes(lowerCaseKeyword) ||
+        post.content.toLowerCase().includes(lowerCaseKeyword)
+    );
+    setFilteredPosts(filtered);
+    setCurrentPage(1); // 검색 후 첫 페이지로 이동
+  };
+
 
   // 게시글 상세 페이지로 이동
   const handlePostClick = (postId: number) => {
     navigate(`/posts/${postId}`);
   };
 
+  const user = useUserStore((state) => state.user);
+
   // 새 게시글 작성 페이지로 이동
   const handleWritePost = () => {
-    navigate('/posts/write');
-  };
+  if (!user) {
+    alert("로그인 시 이용 가능합니다.");
+    return;
+  }
+  navigate('/posts/write');
+};
 
   // 페이지네이션 처리
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  // 현재 페이지에 표시할 게시글
-  const currentPosts = posts.slice(
-    (currentPage - 1) * postsPerPage,
-    currentPage * postsPerPage
-  );
+  // 현재 페이지에 표시할 게시글 (필터링된 목록에서 선택)
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
 
-  // 컴포넌트 마운트 시 게시글 로드
+
+   // 컴포넌트 마운트 시 게시글 로드 및 검색어 변경 시 검색
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, []); // 최초 마운트 시에만 전체 게시글 로드
+
+
+  // 검색 버튼 클릭 또는 Enter 키 입력 시 검색 실행
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
 
   // 날짜 형식 변환 (2025-05-13T12:34:56 -> 2025-05-13)
   const formatDate = (dateString: string) => {
-    return dateString.split('T')[0];
+    return dateString ? dateString.split("T")[0] : "";
   };
+
 
   // 렌더링
   return (
@@ -160,10 +167,14 @@ const Post = () => {
             type="text"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
+            onKeyDown={handleKeyDown} // 이 부분 추가
             className="border border-gray-300 rounded-l px-4 py-2 w-350 focus:outline-none focus:ring-2 focus:ring-gray-500"
-            placeholder="제목으로 검색"
+            placeholder="제목 또는 내용으로 검색"
             />
-        <Button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
+        <Button
+              onClick={handleSearch} // 검색 버튼에 핸들러 연결
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+            >
             검색
           </Button>
         </div>
@@ -194,13 +205,19 @@ const Post = () => {
                       className="hover:bg-gray-50 hover:text-black cursor-pointer"
                       onClick={() => handlePostClick(post.id)}
                     >
-                      <TableCell className="text-center font-medium">{post.id}</TableCell>
-                      <TableCell>{post.title}</TableCell>
-                      <TableCell>{post.username}</TableCell>
-                      <TableCell>{formatDate(post.createdAt)}</TableCell>
-                      <TableCell className="text-center">{post.viewCount}</TableCell>
-                    </TableRow>
-                  ))
+                      {/* 테이블 셀에 데이터 바인딩 */}
+                        <TableCell className="text-center font-medium">
+                          {post.id}
+                        </TableCell>
+                        <TableCell>{post.title}</TableCell>
+                        <TableCell>{post.username}</TableCell>{" "}
+                        {/* 백엔드에서 받은 username 표시 */}
+                        <TableCell>{formatDate(post.createdAt)}</TableCell>
+                        <TableCell className="text-center">
+                          {post.viewCount}
+                        </TableCell>
+                      </TableRow>
+                    ))
                 ) : (
                   <TableRow>
                     <TableCell colSpan={5} className="text-center py-4">
@@ -227,36 +244,44 @@ const Post = () => {
                       />
                     </PaginationItem>
                     
-                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                      // 현재 페이지 중심으로 5개의 페이지 표시
-                      let pageNum;
-                      if (totalPages <= 5) {
-                        pageNum = i + 1;
-                      } else if (currentPage <= 3) {
-                        pageNum = i + 1;
-                      } else if (currentPage >= totalPages - 2) {
-                        pageNum = totalPages - 4 + i;
-                      } else {
-                        pageNum = currentPage - 2 + i;
-                      }
-                      
-                      return (
-                        <PaginationItem key={pageNum}>
-                          <PaginationLink 
-                            href="#" 
-                            isActive={currentPage === pageNum}
-                            className="hover:bg-gray-50 hover:text-black transition-colors duration-200 rounded-md px-3 py-1"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handlePageChange(pageNum);
-                            }}
-                          >
-                            {pageNum}
-                          </PaginationLink>
-                        </PaginationItem>
-                      );
-                    })}
-                    
+                    {/* 페이지 번호 렌더링 로직 */}
+                      {Array.from(
+                        { length: Math.min(5, totalPages) },
+                        (_, i) => {
+                          let pageNum;
+                          if (totalPages <= 5) {
+                            pageNum = i + 1;
+                          } else if (currentPage <= 3) {
+                            pageNum = i + 1;
+                          } else if (currentPage >= totalPages - 2) {
+                            pageNum = totalPages - 4 + i;
+                          } else {
+                            pageNum = currentPage - 2 + i;
+                          }
+
+                          // 유효한 페이지 번호인지 확인 (총 페이지 수를 넘지 않도록)
+                          if (pageNum > 0 && pageNum <= totalPages) {
+                            return (
+                              <PaginationItem key={pageNum}>
+                                <PaginationLink
+                                  href="#"
+                                  isActive={currentPage === pageNum}
+                                  className="hover:bg-gray-50 hover:text-black transition-colors duration-200 rounded-md px-3 py-1"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handlePageChange(pageNum);
+                                  }}
+                                >
+                                  {pageNum}
+                                </PaginationLink>
+                              </PaginationItem>
+                            );
+                          }
+                          return null; // 유효하지 않은 페이지 번호는 렌더링하지 않음
+                        }
+                      )}
+
+                    {/* 더 많은 페이지가 있을 때 ... 표시 */}
                     {totalPages > 5 && currentPage < totalPages - 2 && (
                       <PaginationItem>
                         <span className="px-2">...</span>
@@ -269,7 +294,8 @@ const Post = () => {
                         className="hover:bg-gray-50 hover:text-black transition-colors duration-200 rounded-md px-3 py-1"
                         onClick={(e) => {
                           e.preventDefault();
-                          if (currentPage < totalPages) handlePageChange(currentPage + 1);
+                          if (currentPage < totalPages)
+                            handlePageChange(currentPage + 1);
                         }}
                       />
                     </PaginationItem>
@@ -280,7 +306,6 @@ const Post = () => {
           </>
         )}
       </div>
-      
       </main>
       <Footer />
     </div>

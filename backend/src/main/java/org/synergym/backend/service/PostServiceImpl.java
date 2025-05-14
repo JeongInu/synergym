@@ -1,6 +1,7 @@
 package org.synergym.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.synergym.backend.dto.PostDTO;
@@ -38,11 +39,15 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDTO> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
+        // createdAt 필드를 기준으로 내림차순 (DESC) 정렬
+        Sort sortByCreatedAtDesc = Sort.by(Sort.Direction.DESC, "createdAt");
+        List<Post> posts = postRepository.findAll(sortByCreatedAtDesc);
+        // Entity 리스트를 DTO 리스트로 변환 (PostService 인터페이스에 변환 메서드가 있다고 가정)
         return posts.stream()
-                .map(this::entityToDto)
+                .map(this::entityToDto) // PostService 인터페이스의 default 메서드 호출
                 .collect(Collectors.toList());
     }
+
 
     @Override
     @Transactional
