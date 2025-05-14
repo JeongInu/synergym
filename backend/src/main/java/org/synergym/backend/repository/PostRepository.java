@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
     List<Post> findByTitleContainingOrContentContaining(String title, String content);
-    List<Post> findByUser(User user);
+    //List<Post> findByUser(User user);
+    List<Post> findAll(org.springframework.data.domain.Sort sort);
+
 
 }

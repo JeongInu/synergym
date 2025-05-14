@@ -161,19 +161,30 @@ public class PostServiceTest {
     @Test
     @DisplayName("게시물 조회 시 조회수 증가 테스트")
     void increaseViewCountOnPostView() {
-        // 게시물 등록 및 ID 획득
+        // 게시물 등록 (초기 조회수 0으로 설정)
+        testPostDTO.setViewCount(0); // 초기 조회수 명시적으로 0으로 설정
         createdPostId = postService.addPost(testPostDTO, testUser.getId());
         System.out.println("게시물 생성 ID: " + createdPostId);
 
-        // 처음 조회 시 조회수 확인 (콘솔 출력)
+        // 첫 번째 조회
         PostDTO initialPost = postService.getPostById(createdPostId);
         System.out.println("첫 번째 조회 후 게시물 정보: " + initialPost);
         System.out.println("첫 번째 조회 후 조회수: " + initialPost.getViewCount());
 
-        // 두 번째 조회 시 조회수 확인 (콘솔 출력)
+        // 첫 번째 조회 후 조회수는 1이어야 함
+        assertEquals(1, initialPost.getViewCount(), "첫 번째 조회 후 조회수는 1이어야 합니다");
+
+        // 두 번째 조회
         PostDTO secondViewPost = postService.getPostById(createdPostId);
         System.out.println("두 번째 조회 후 게시물 정보: " + secondViewPost);
         System.out.println("두 번째 조회 후 조회수: " + secondViewPost.getViewCount());
+
+        // 두 번째 조회 후 조회수는 2여야 함
+        assertEquals(2, secondViewPost.getViewCount(), "두 번째 조회 후 조회수는 2여야 합니다");
+
+        // 조회수 증가가 제대로 이루어졌는지 확인
+        assertTrue(secondViewPost.getViewCount() > initialPost.getViewCount(),
+                "두 번째 조회 후 조회수는 첫 번째 조회 후보다 커야 합니다");
     }
 
 
