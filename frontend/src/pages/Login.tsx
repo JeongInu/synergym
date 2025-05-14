@@ -2,16 +2,32 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { login } from "@/api/authApi";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUserStore } from "@/store/userStore";
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const setUser = useUserStore((state) => state.setUser);
+  const navigate = useNavigate();
 
   const handleLogin = async() => {
     try {
       const response = await login({ email, password });
-      console.log(response);
+      const result = response.message;
+      const whoami = response.username;
+      setUser(response);
+      navigate("/");
+
+      if (result === "s") {
+        alert(`🎉 로그인 성공!\n${whoami}님, 다시 오신 걸 환영해요 😊`);
+      } else if (result === "m") {
+        alert("😥 등록되지 않은 이메일이에요.\n입력한 주소를 다시 확인해주세요!");
+      } else if (result === "p") {
+        alert("😅 비밀번호가 맞지 않아요.\n다시 한번 확인해볼까요?");
+      }
+
     } catch(err) {
       console.log(`로그인 실패 : ${err}`);
       setError("로그인 실패");

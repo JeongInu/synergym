@@ -5,6 +5,7 @@ import Section4 from "../components/sections/Section4";
 import Section5 from "../components/sections/Section5";
 
 const Home = () => {
+
   return (
     <>
       <Section1 />
