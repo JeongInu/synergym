@@ -8,14 +8,14 @@ import org.synergym.backend.entity.Role;
 
 
 @Data
-@Builder
 @AllArgsConstructor
+@Builder
+@Getter
 public class LoginResponse {
-    private Integer id;
     private String email;
     private String username;
     private String token;
     private Role role;
-
+    private boolean success;
+    private String message;
 }
-
