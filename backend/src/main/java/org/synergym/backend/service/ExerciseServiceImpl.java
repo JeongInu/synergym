@@ -2,6 +2,9 @@ package org.synergym.backend.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.synergym.backend.api.WgerApiClient;
@@ -28,6 +31,63 @@ public class ExerciseServiceImpl implements ExerciseService {
         this.exerciseRepository = exerciseRepository;
         this.wgerApiClient = wgerApiClient;
     }
+
+    @Override
+    public Page<ExerciseResponseDTO> searchExercises(Integer category,
+                                                     Integer language,
+                                                     List<Integer> muscles,
+                                                     List<Integer> equipment,
+                                                     String keyword,
+                                                     Pageable pageable) {
+
+        Specification<Exercise> spec = Specification.where(null);
+
+        if (category != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("category"), category));
+        }
+
+        if (language != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("language"), language));
+        }
+
+        if (muscles != null && !muscles.isEmpty()) {
+            spec = spec.and((root, query, cb) -> root.get("muscles").in(muscles));
+        }
+
+        if (equipment != null && !equipment.isEmpty()) {
+            spec = spec.and((root, query, cb) -> root.get("equipment").in(equipment));
+        }
+
+        if (keyword != null && !keyword.isEmpty()) {
+            spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("name")), "%" + keyword.toLowerCase() + "%"));
+        }
+
+        Page<Exercise> page = exerciseRepository.findAll(spec, pageable);
+        return page.map(this::entityToResponseDto);
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ExerciseResponseDTO> getExercisesByCategoryAndLanguage(Integer category, Integer language) {
+        List<Exercise> exercises;
+
+        // 조건에 따라 filtering
+        if (category != null && language != null) {
+            exercises = exerciseRepository.findByCategoryAndLanguage(category, language);
+        } else if (category != null) {
+            exercises = exerciseRepository.findByCategory(category);
+        } else if (language != null) {
+            exercises = exerciseRepository.findByLanguage(language);
+        } else {
+            exercises = exerciseRepository.findAll(); // 둘 다 없으면 전체 조회
+        }
+
+        return exercises.stream()
+                .map(this::entityToResponseDto)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public Exercise dtoToEntity(ExerciseDTO dto) {
