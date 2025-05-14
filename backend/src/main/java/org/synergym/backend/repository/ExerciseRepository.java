@@ -1,7 +1,14 @@
 package org.synergym.backend.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.synergym.backend.entity.Exercise;
+import java.util.List;
 
-public interface ExerciseRepository extends JpaRepository<Exercise, Integer> {
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.synergym.backend.entity.Exercise;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ExerciseRepository extends JpaRepository<Exercise, Integer>, JpaSpecificationExecutor<Exercise> {
+    List<Exercise> findByCategory(Integer category);
+    List<Exercise> findByLanguage(Integer language);
+    List<Exercise> findByCategoryAndLanguage(Integer category, Integer language);
 }
+
