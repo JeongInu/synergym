@@ -16,11 +16,11 @@ export default function Login() {
     try {
       const response = await login({ email, password });
       const result = response.message;
-      const whoami = response.username;
-      setUser(response);
-      navigate("/");
 
       if (result === "s") {
+        const whoami = response.username;
+        setUser(response);
+        navigate("/");
         alert(`🎉 로그인 성공!\n${whoami}님, 다시 오신 걸 환영해요 😊`);
       } else if (result === "m") {
         alert("😥 등록되지 않은 이메일이에요.\n입력한 주소를 다시 확인해주세요!");
