@@ -27,7 +27,7 @@ const handleLogout = () => {
       <nav className="flex space-x-6">
         <a href="/" className="hover:text-violet-400 transition">사진분석</a>
         <a href="/posts" className="hover:text-violet-400 transition">커뮤니티</a>
-        <a href="/" className="hover:text-violet-400 transition">운동목록</a>
+        <a href="/exercises" className="hover:text-violet-400 transition">운동목록</a>
         {user && (
           <a href="/" className="hover:text-violet-400 transition">마이페이지</a>
         )}

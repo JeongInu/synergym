@@ -5,6 +5,7 @@ import Join from "./pages/Join";
 import Post from "./pages/Post";
 import PostWrite from "./pages/PostWrite";
 import PostDetail from "./pages/PostDetail";
+import ExerciseList from "./pages/ExerciseList";
 
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
       <Route path="/posts" element={<Post />} />
       <Route path="/posts/write" element={<PostWrite />} />
       <Route path="/posts/:postId" element={<PostDetail />} />
+      <Route path="/exercises" element={<ExerciseList />} />
     </Routes>
   );
 };
