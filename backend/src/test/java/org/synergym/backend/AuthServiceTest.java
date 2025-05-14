@@ -57,8 +57,8 @@ class AuthServiceTest {
                 .build();
 
         loginRequest = new LoginRequest();
-        loginRequest.setEmail("kimchijjim@naver.com");
-        loginRequest.setPassword("masitda");
+        loginRequest.setEmail("test3@example.com");
+        loginRequest.setPassword("password123!");
 
     }
 
