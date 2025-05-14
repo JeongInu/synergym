@@ -6,6 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { motion } from "framer-motion";
 import DateSelector from "@/components/common/DateSelector";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { joinUser } from "@/api/authApi";
+import { useNavigate } from "react-router-dom";
 
 const variants = {
   hidden: { opacity: 0, y: -10 },
@@ -13,6 +15,8 @@ const variants = {
 };
 
 export default function Join() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -96,6 +100,16 @@ export default function Join() {
       },
     }));
   };
+
+  const handleSubmit = async () => {
+    try {
+      await joinUser(form);
+      alert("환영합니다! 회원 가입이 완료되었습니다!");
+      navigate("/login");
+    }catch(err){
+      console.log(`로그인 실패 : ${err}`);
+    }
+  }
 
   const allVisible = {
     showPassword: form.email !== "",
@@ -185,11 +199,17 @@ export default function Join() {
               className="mt-2 flex gap-4"
             >
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="male" id="male" />
+                <RadioGroupItem 
+                  className="border-gray-400 data-[state=checked]:bg-white data-[state=checked]:border-white"
+                  value="male" 
+                  id="male" />
                 <Label htmlFor="male">남</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="female" id="female" />
+                <RadioGroupItem 
+                  className="border-gray-400 data-[state=checked]:bg-white data-[state=checked]:border-white"
+                  value="female" 
+                  id="female" />
                 <Label htmlFor="female">여</Label>
               </div>
             </RadioGroup>
@@ -263,7 +283,9 @@ export default function Join() {
         {allVisible.showSubmit && (
           <motion.div variants={variants} initial="hidden" animate="visible">
             <div className="w-full flex justify-center mt-8">
-              <Button className="px-8 py-4 text-lg font-semibold bg-transparent border border-gray-500 text-white hover:bg-white hover:text-black transition-colors duration-300 rounded-xl">
+              <Button 
+                onClick={handleSubmit}
+                className="px-8 py-4 text-lg font-semibold bg-transparent border border-gray-500 text-white hover:bg-white hover:text-black transition-colors duration-300 rounded-xl">
                 회원 가입
               </Button>
             </div>
