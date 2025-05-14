@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { motion } from "framer-motion";
 import DateSelector from "@/components/common/DateSelector";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 const variants = {
   hidden: { opacity: 0, y: -10 },
@@ -16,7 +17,7 @@ export default function Join() {
     email: "",
     password: "",
     confirm: "",
-    name: "",
+    username: "",
     birth: { year: "", month: "", day: "" },
     gender: "",
     weight: "",
@@ -24,6 +25,63 @@ export default function Join() {
     activity: "",
     goal: "",
   });
+
+  const [shown, setShown] = useState({
+    password: false,
+    confirm: false,
+    username: false,
+    birth: false,
+    gender: false,
+    weight: false,
+    height: false,
+    activity: false,
+    goal: false,
+  });
+
+  useEffect(() => {
+    if (form.email && !shown.password)
+      setShown(prev => ({ ...prev, password: true }));
+  }, [form.email, shown.password]);
+
+  useEffect(() => {
+    if (form.password && !shown.confirm)
+      setShown(prev => ({ ...prev, confirm: true }));
+  }, [form.password, shown.confirm]);
+
+  useEffect(() => {
+    if (form.confirm && !shown.username)
+      setShown(prev => ({ ...prev, username: true }));
+  }, [form.confirm, shown.username]);
+
+  useEffect(() => {
+    if (form.username && !shown.birth)
+      setShown(prev => ({ ...prev, birth: true }));
+  }, [form.username, shown.birth]);
+
+  useEffect(() => {
+    if (form.birth.year && form.birth.month && form.birth.day && !shown.gender)
+      setShown(prev => ({ ...prev, gender: true }));
+  }, [form.birth, shown.gender]);
+
+  useEffect(() => {
+    if (form.gender && !shown.weight)
+      setShown(prev => ({ ...prev, weight: true }));
+  }, [form.gender, shown.weight]);
+
+  useEffect(() => {
+    if (form.weight && !shown.height)
+      setShown(prev => ({ ...prev, height: true }));
+  }, [form.weight, shown.height]);
+
+  useEffect(() => {
+    if (form.height && !shown.activity)
+      setShown(prev => ({ ...prev, activity: true }));
+  }, [form.height, shown.activity]);
+
+  useEffect(() => {
+    if (form.activity && !shown.goal)
+      setShown(prev => ({ ...prev, goal: true }));
+  }, [form.activity, shown.goal]);
 
   const handleChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -43,7 +101,7 @@ export default function Join() {
     showPassword: form.email !== "",
     showConfirm: form.password !== "",
     showName: form.confirm !== "",
-    showBirth: form.name !== "",
+    showBirth: form.username !== "",
     showGender: form.birth.year && form.birth.month && form.birth.day,
     showWeight: form.gender !== "",
     showHeight: form.weight !== "",
@@ -55,7 +113,7 @@ export default function Join() {
   return (
     <div className="min-h-screen bg-black text-white flex justify-center items-center px-4">
       <div className="w-full max-w-lg space-y-4 p-8 bg-neutral-900 rounded-xl shadow-lg">
-        <h1 className="text-3xl font-bold text-center mb-4">회원가입</h1>
+        <h1 className="text-3xl font-bold text-center mb-4">Sign Up</h1>
 
         <Label htmlFor="email" className="block mb-1">Email</Label>
         <Input
@@ -66,7 +124,7 @@ export default function Join() {
           onChange={(e) => handleChange("email", e.target.value)}
         />
 
-        {allVisible.showPassword && (
+        {shown.password && (
           <motion.div variants={variants} initial="hidden" animate="visible">
             <Label htmlFor="password" className="block mb-1">비밀번호</Label>
             <Input
@@ -80,7 +138,7 @@ export default function Join() {
           </motion.div>
         )}
 
-        {allVisible.showConfirm && (
+        {shown.confirm && (
           <motion.div variants={variants} initial="hidden" animate="visible">
             <Label htmlFor="confirm" className="block mb-1">비밀번호 확인</Label>
             <Input
@@ -94,20 +152,20 @@ export default function Join() {
           </motion.div>
         )}
 
-        {allVisible.showName && (
+        {shown.username && (
           <motion.div variants={variants} initial="hidden" animate="visible">
             <Label htmlFor="username">닉네임</Label>
             <Input
               placeholder="닉네임"
-              id="userName"
+              id="username"
               className="bg-neutral-800 mt-2"
-              value={form.name}
-              onChange={(e) => handleChange("name", e.target.value)}
+              value={form.username}
+              onChange={(e) => handleChange("username", e.target.value)}
             />
           </motion.div>
         )}
 
-        {allVisible.showBirth && (
+        {shown.birth && (
           <motion.div variants={variants} initial="hidden" animate="visible">
             <DateSelector 
               year={form.birth.year}
@@ -117,31 +175,28 @@ export default function Join() {
           </motion.div>
         )}
 
-        {allVisible.showGender && (
+        {shown.gender && (
           <motion.div variants={variants} initial="hidden" animate="visible">
             <Label htmlFor="gender" className="block mb-1">성별</Label>
-            <div className="mt-2 space-x-4" id="gender">
-              <label>
-                <input
-                  type="radio"
-                  value="male"
-                  checked={form.gender === "male"}
-                  onChange={(e) => handleChange("gender", e.target.value)}
-                /> 남
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="female"
-                  checked={form.gender === "female"}
-                  onChange={(e) => handleChange("gender", e.target.value)}
-                /> 여
-              </label>
-            </div>
+            <RadioGroup
+              id="gender"
+              defaultValue={form.gender}
+              onValueChange={(value) => handleChange("gender", value)}
+              className="mt-2 flex gap-4"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="male" id="male" />
+                <Label htmlFor="male">남</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="female" id="female" />
+                <Label htmlFor="female">여</Label>
+              </div>
+            </RadioGroup>
           </motion.div>
         )}
 
-        {allVisible.showWeight && (
+        {shown.weight && (
           <motion.div variants={variants} initial="hidden" animate="visible">
             <Label htmlFor="weight" className="block mb-1">몸무게</Label>
             <Input
@@ -155,7 +210,7 @@ export default function Join() {
           </motion.div>
         )}
 
-        {allVisible.showHeight && (
+        {shown.height && (
           <motion.div variants={variants} initial="hidden" animate="visible">
             <Label htmlFor="height" className="block mb-1">신장</Label>
             <Input
@@ -169,7 +224,7 @@ export default function Join() {
           </motion.div>
         )}
 
-        {allVisible.showActivity && (
+        {shown.activity && (
           <motion.div variants={variants} initial="hidden" animate="visible">
             <Label htmlFor="fitness_level" className="block mb-1">활동량</Label>
             <Select value={form.activity} onValueChange={(value) => handleChange("activity", value)}>
@@ -186,7 +241,7 @@ export default function Join() {
           </motion.div>
         )}
 
-        {allVisible.showGoal && (
+        {shown.goal && (
           <motion.div variants={variants} initial="hidden" animate="visible">
             <Label htmlFor="goal" className="block mb-1">운동목표</Label>
             <Select value={form.goal} onValueChange={(value) => handleChange("goal", value)}>
@@ -207,7 +262,11 @@ export default function Join() {
 
         {allVisible.showSubmit && (
           <motion.div variants={variants} initial="hidden" animate="visible">
-            <Button className="w-full mt-4 bg-white text-black hover:bg-gray-200"> 완료</Button>
+            <div className="w-full flex justify-center mt-8">
+              <Button className="px-8 py-4 text-lg font-semibold bg-transparent border border-gray-500 text-white hover:bg-white hover:text-black transition-colors duration-300 rounded-xl">
+                회원 가입
+              </Button>
+            </div>
           </motion.div>
         )}
       </div>

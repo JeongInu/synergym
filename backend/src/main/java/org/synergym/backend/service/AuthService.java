@@ -119,7 +119,7 @@ public class AuthService implements UserDetailsService {
         if (optionalUser.isEmpty()) {
             return LoginResponse.builder()
                     .success(false)
-                    .message("Email not Registered")
+                    .message("m")
                     .build();
         }
 
@@ -129,13 +129,14 @@ public class AuthService implements UserDetailsService {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             return LoginResponse.builder()
                     .success(false)
-                    .message("Incorrect Password")
+                    .message("p")
                     .build();
         }
 
         try {
             String email = user.getEmail();
             Role role = user.getRole();
+            int id = user.getId();
 
             if (email == null || role == null) {
                 return LoginResponse.builder()
@@ -148,12 +149,13 @@ public class AuthService implements UserDetailsService {
             String token = jwtTokenProvider.createToken(email, roles);
 
             return LoginResponse.builder()
+                    .id(id)
                     .email(email)
                     .username(user.getUsername())
                     .token(token)
                     .role(role)
                     .success(true)
-                    .message("Login Success")
+                    .message("s")
                     .build();
         } catch (Exception e) {
             return LoginResponse.builder()
