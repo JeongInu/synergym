@@ -1,6 +1,7 @@
-// src/sections/Section2.tsx
 import { motion } from "framer-motion";
-import { useScrollAnime } from "../../hooks/useScrollAnime";
+import { useScrollAnime } from "@/hooks/useScrollAnime";
+import Section2Header from "./content/Section2Header";
+import Section2CardList from "./content/Section2CardList";
 
 const variants = {
   hidden: { opacity: 0, y: 80 },
@@ -16,9 +17,10 @@ const Section2 = () => {
       initial="hidden"
       animate={controls}
       variants={variants}
-      className="h-screen flex items-center justify-center bg-gradient-to-br from-blue-400 to-teal-500"
+      className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-400 to-teal-500"
     >
-      <h1 className="text-white text-6xl font-bold">Section 2</h1>
+      <Section2Header controls={controls} />
+      <Section2CardList />
     </motion.section>
   );
 };
