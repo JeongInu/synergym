@@ -12,7 +12,8 @@ import org.synergym.backend.entity.Category;
 @AllArgsConstructor
 public class ExerciseResponseDTO {
     private Integer id;
-    private Category category;
+    private Integer categoryId;
+    private String categoryName;
     private String description;
     private Integer language;
     private String languageName;

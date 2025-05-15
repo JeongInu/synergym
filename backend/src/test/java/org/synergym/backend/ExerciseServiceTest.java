@@ -37,24 +37,8 @@ public class ExerciseServiceTest {
         for (ExerciseResponseDTO dto : exercises) {
             System.out.println("ID: " + dto.getId() +
                     ", Name: " + dto.getName() +
-                    ", Category: " + dto.getCategory() +
-                    ", Language: " + dto.getLanguage());
-        }
-    }
-
-    @Test
-    void testGetExercisesByCategoryAndLanguage() {
-        Integer category = 8;
-        Integer language = 2;
-
-        List<ExerciseResponseDTO> result = exerciseService.getExercisesByCategoryAndLanguage(category, language);
-
-        System.out.println("===== getExercisesByCategoryAndLanguage(" + category + ", " + language + ") 결과 =====");
-        for (ExerciseResponseDTO dto : result) {
-            System.out.println("ID: " + dto.getId() +
-                    ", Name: " + dto.getName() +
-                    ", Category: " + dto.getCategory().getName() +
-                    ", Language: " + dto.getLanguage());
+                    ", Description: " + dto.getDescription() +
+                    ", Category: " + dto.getCategoryName());
         }
     }
 
@@ -72,7 +56,7 @@ public class ExerciseServiceTest {
         for (ExerciseResponseDTO dto : result) {
             System.out.println("ID: " + dto.getId()
                     + ", 이름: " + dto.getName()
-                    + ", 카테고리: " + dto.getCategory().getName()
+                    + ", 카테고리: " + dto.getCategoryName()
                     + ", 언어: " + dto.getLanguage());
         }
     }
@@ -94,7 +78,7 @@ public class ExerciseServiceTest {
             System.out.println("Exercise ID: " + exercise.getId());
             System.out.println("Exercise Name: " + exercise.getName());
             System.out.println("Exercise Description: " + exercise.getDescription());
-            System.out.println("Exercise Category: " + exercise.getCategory().getName());
+            System.out.println("Exercise Category: " + exercise.getCategoryName());
             System.out.println("Exercise Language: " + exercise.getLanguageName());
             System.out.println("--------");
         });

@@ -14,41 +14,48 @@ import org.synergym.backend.service.ExerciseService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/exercises")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class ExerciseController {
     private final ExerciseImportService exerciseImportService;
     private final ExerciseService exerciseService;
 
-    @PostMapping("/exercises/import")
+    @PostMapping("/import")
     public ResponseEntity<Void> importExercises() {
         exerciseImportService.importExercises();
         return ResponseEntity.ok().build();
     }
 
     // 전체 운동 조회
-    @GetMapping
+    @GetMapping("/exercises")
     public ResponseEntity<List<ExerciseResponseDTO>> getAllExercises() {
         List<ExerciseResponseDTO> exercises = exerciseService.getAllExercises();
+        System.out.println("===== getAllExercises() 결과 =====");
+        for (ExerciseResponseDTO dto : exercises) {
+            System.out.println("ID: " + dto.getId() +
+                    ", Name: " + dto.getName() +
+                    ", Description: " + dto.getDescription() +
+                    ", Category: " + dto.getCategoryName());
+        }
         return ResponseEntity.ok(exercises);
     }
     // 특정 ID 운동 조회
-    @GetMapping("/{id}")
+    @GetMapping("/exercises/{id}")
     public ResponseEntity<ExerciseResponseDTO> getExerciseById(@PathVariable Integer id) {
         ExerciseResponseDTO exercise = exerciseService.getExerciseById(id);
         return ResponseEntity.ok(exercise);
     }
     // 특정 카테고리와 언어로 운동 조회 (languageName 사용)
-    @GetMapping("/filter")
+    @GetMapping("/exercises/filter")
     public ResponseEntity<List<ExerciseResponseDTO>> getExercisesByCategoryAndLanguage(
             @RequestParam(required = false) String category,
-            @RequestParam(required = false) String languageName  // 언어 이름으로 수정
+            @RequestParam(required = false) String languageName
     ) {
         List<ExerciseResponseDTO> exercises = exerciseService.getExercisesByCategoryAndLanguage(category, languageName);
         return ResponseEntity.ok(exercises);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/exercises/search")
     public ResponseEntity<Page<ExerciseResponseDTO>> searchExercises(
             @RequestParam(required = false) String keyword,
             @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
@@ -56,6 +63,13 @@ public class ExerciseController {
         Page<ExerciseResponseDTO> result = exerciseService.searchExercises(
                 keyword, pageable
         );
+        System.out.println("===== getAllExercises() 결과 =====");
+        for (ExerciseResponseDTO dto : result.getContent()) {
+            System.out.println("ID: " + dto.getId() +
+                    ", Name: " + dto.getName() +
+                    ", Description: " + dto.getDescription() +
+                    ", Category: " + dto.getCategoryName());
+        }
         return ResponseEntity.ok(result);
     }
 }

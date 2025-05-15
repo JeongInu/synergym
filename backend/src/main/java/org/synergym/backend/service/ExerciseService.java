@@ -10,10 +10,7 @@ import java.util.List;
 
 public interface ExerciseService {
     ExerciseResponseDTO getExerciseById(Integer id);
-    Integer addExercise(ExerciseDTO exerciseDTO);
-    void deleteExercise(Integer id);
     List<ExerciseResponseDTO> getAllExercises();
-    List<ExerciseResponseDTO> getExercisesByCategoryAndLanguage(Integer category, Integer language);
     Page<ExerciseResponseDTO> searchExercises(String keyword,
                                               Pageable pageable);
     List<ExerciseResponseDTO> getExercisesByCategoryAndLanguage(String categoryName, String languageName);

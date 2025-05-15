@@ -60,19 +60,26 @@ public class ExerciseServiceImpl implements ExerciseService {
     public List<ExerciseResponseDTO> getExercisesByCategoryAndLanguage(String categoryName, String languageName) {
         Integer languageId = languageNameToIdMap.get(languageName);
 
-        if (languageId == null) {
-            throw new IllegalArgumentException("지원하지 않는 언어입니다: " + languageName);
-        }
-
         List<Exercise> exercises = exerciseRepository.findByCategory_NameAndLanguage(categoryName, languageId);
+
+        Integer language = languageId;  // Integer (nullable)
+
+        String languageN;
+        if (language != null) {
+            languageN = LanguageType.getDisplayNameById(languageId);
+        } else {
+            languageN = "Unknown";
+        }
 
         return exercises.stream()
                 .map(e -> ExerciseResponseDTO.builder()
                         .id(e.getId())
                         .name(e.getName())
                         .description(e.getDescription())
-                        .category(e.getCategory())
+                        .categoryId(e.getCategory().getId())
+                        .categoryName(e.getCategory().getName())
                         .language(e.getLanguage())
+                        .languageName(languageN)
                         .build())
                 .collect(Collectors.toList());
     }
@@ -89,28 +96,6 @@ public class ExerciseServiceImpl implements ExerciseService {
 
         Page<Exercise> page = exerciseRepository.findAll(spec, pageable);
         return page.map(this::entityToResponseDto);
-    }
-
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<ExerciseResponseDTO> getExercisesByCategoryAndLanguage(Integer category, Integer language) {
-        List<Exercise> exercises;
-
-        // 조건에 따라 filtering
-        if (category != null && language != null) {
-            exercises = exerciseRepository.findByCategory_IdAndLanguage(category, language);
-        } else if (category != null) {
-            exercises = exerciseRepository.findByCategory_Id(category);
-        } else if (language != null) {
-            exercises = exerciseRepository.findByLanguage(language);
-        } else {
-            exercises = exerciseRepository.findAll(); // 둘 다 없으면 전체 조회
-        }
-
-        return exercises.stream()
-                .map(this::entityToResponseDto)
-                .collect(Collectors.toList());
     }
 
 
@@ -167,15 +152,25 @@ public class ExerciseServiceImpl implements ExerciseService {
             return null;
         }
 
+        Integer language = exercise.getLanguage();  // Integer (nullable)
+
+        String languageName = null;
+        if (language != null) {
+            languageName = LanguageType.getDisplayNameById(language);
+        } else {
+            // 언어가 없을 경우 기본값 설정 (예: "Unknown" 또는 빈 문자열)
+            languageName = "Unknown";
+        }
 
         // Exercise 엔티티를 ExerciseResponseDTO로 변환하는 로직
         // 빌더 패턴을 ExerciseResponseDTO에도 적용할 수 있다면 유사하게 사용 가능
         ExerciseResponseDTO.ExerciseResponseDTOBuilder builder = ExerciseResponseDTO.builder()
                 .id(exercise.getId())
-                .category(exercise.getCategory())
+                .categoryId(exercise.getCategory().getId())
+                .categoryName(exercise.getCategory().getName())
                 .description(exercise.getDescription())
                 .language(exercise.getLanguage())
-                .languageName(LanguageType.getDisplayNameById(exercise.getLanguage()))
+                .languageName(languageName)
                 .name(exercise.getName());
         return builder.build();
     }
@@ -187,27 +182,6 @@ public class ExerciseServiceImpl implements ExerciseService {
         Exercise exercise = exerciseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Exercise not found with id: " + id));
         return entityToResponseDto(exercise);
-    }
-
-    @Transactional
-    @Override
-    public Integer addExercise(ExerciseDTO exerciseDTO) {
-        Exercise exercise = dtoToEntity(exerciseDTO);
-        // Exercise 엔티티의 creationDate 필드가 Not Null이고, DTO에 없다면 여기서 설정 가능
-        // if (exercise.getCreationDate() == null) {
-        //     exercise.setCreationDate(java.time.LocalDateTime.now()); // 또는 빌더에서 설정
-        // }
-        exercise = exerciseRepository.save(exercise);
-        return exercise.getId();
-    }
-
-    @Transactional
-    @Override
-    public void deleteExercise(Integer id) {
-        if (!exerciseRepository.existsById(id)) {
-            throw new RuntimeException("Exercise not found with id: " + id);
-        }
-        exerciseRepository.deleteById(id);
     }
 
     @Transactional(readOnly = true)

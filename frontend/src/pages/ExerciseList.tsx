@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 import {
   Card,
   CardContent,
@@ -11,42 +12,73 @@ import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import { fetchExercises } from '@/api/exerciseApi';
 
+
 // Define the type for exercises
 interface Exercise {
+  id: number;
   name: string;
   description: string;
-  category: string;
+  categoryId: number;
+  categoryName: string;
   language: string;
+  languageName: string;
 }
 
 const ExerciseList = () => {
-  const [category, setCategory] = useState('');
-  const [language, setLanguage] = useState('');
+  const [category, setCategory] = useState('');    // 기본값: 팔
+  const [language, setLanguage] = useState('');   // 기본값: 영어
   const [keyword, setKeyword] = useState('');
+  const [useFilter, setUseFilter] = useState(false); // 필터 사용 여부
+  const [useSearch, setUseSearch] = useState(false); // 검색 사용 여부
   const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSearch = async () => {
+  const loadExercises = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    console.log('데이터 가져오기 시도:', { category, languageName: language, keyword, useFilter, useSearch }); // language를 languageName으로 사용
     try {
-      console.log('검색 요청 데이터:', { category, language, keyword });
-      const data = await fetchExercises(category, language, keyword);
-      console.log('검색 응답 데이터:', data);
-      setExercises(data);
-    } catch (error) {
-      console.error('Failed to fetch exercises:', error);
+      const data = await fetchExercises(category, language, keyword, useFilter, useSearch);
+      console.log('데이터 가져오기 결과:', data);
+      setExercises(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error('운동 데이터를 불러오는 데 실패했습니다:', err);
+      setError("운동 데이터를 불러오는 데 실패했습니다.");
+      setExercises([]);
+    } finally {
+      setLoading(false);
     }
+  }, [category, language, keyword, useFilter, useSearch]); // category, language, keyword가 변경될 때만 함수 재생성
+
+  // 컴포넌트 마운트 시 및 필터 변경 시 운동 데이터 불러오기
+  useEffect(() => {
+    loadExercises();
+  }, [loadExercises]); // loadExercises 함수 자체가 의존성
+
+  // 검색 버튼 클릭 핸들러
+  const handleSearch = () => {
+    setKeyword(keyword.trim()); // 검색어 앞뒤 공백 제거
+    setUseSearch(true); // 필터 사용 여부를 true로 설정
+    console.log('검색 버튼 클릭:', { category, languageName: language, keyword });
   };
 
-  const handleCategoryChange = async (value: string) => {
-    setCategory(value);
-    try {
-      console.log('카테고리 선택 데이터:', { category: value, language, keyword });
-      const data = await fetchExercises(value, language, keyword);
-      console.log('카테고리 선택 응답 데이터:', data);
-      setExercises(data);
-    } catch (error) {
-      console.error('Failed to fetch exercises on category change:', error);
-    }
+  // 카테고리 변경 핸들러
+  const handleCategoryChange = (value: string) => {
+    setUseFilter(true); // 필터 사용 여부를 true로 설정
+    console.log('카테고리 변경:', value);
+    setCategory(value); // 상태만 변경, 데이터 로딩은 useEffect가 처리
   };
+
+  // 언어 변경 핸들러
+  const handleLanguageChange = (value: string) => {
+    setUseFilter(true); // 필터 사용 여부를 true로 설정
+    console.log('언어 변경:', value);
+    setLanguage(value); // 상태만 변경, 데이터 로딩은 useEffect가 처리
+  };
+
+  if (loading) return <p className="text-white text-center py-10">로딩중...</p>;
+  if (error) return <p className="text-red-500 text-center py-10">{error}</p>;
 
   return (
     <div className="bg-black text-white min-h-screen mx-auto p-4">
@@ -59,23 +91,23 @@ const ExerciseList = () => {
 
       {/* 검색 UI */}
       <div className="mb-4 flex gap-4">
-        <Select onValueChange={handleCategoryChange}>
+        <Select onValueChange={handleCategoryChange} defaultValue={category}>
           <SelectTrigger className="w-40">
             <SelectValue placeholder="카테고리 선택" />
           </SelectTrigger>
           <SelectContent className="bg-white text-black">
-            <SelectItem value="8">팔</SelectItem>
-            <SelectItem value="9">다리</SelectItem>
-            <SelectItem value="10">복근</SelectItem>
-            <SelectItem value="11">가슴</SelectItem>
-            <SelectItem value="12">등</SelectItem>
-            <SelectItem value="13">어깨</SelectItem>
-            <SelectItem value="14">종아리</SelectItem>
-            <SelectItem value="15">유산소</SelectItem>
+            <SelectItem value="Arms">팔</SelectItem>
+            <SelectItem value="Legs">다리</SelectItem>
+            <SelectItem value="Abs">복근</SelectItem>
+            <SelectItem value="Chest">가슴</SelectItem>
+            <SelectItem value="Back">등</SelectItem>
+            <SelectItem value="Shoulders">어깨</SelectItem>
+            <SelectItem value="Calves">종아리</SelectItem>
+            <SelectItem value="Cardio">유산소</SelectItem>
           </SelectContent>
         </Select>
 
-        <Select onValueChange={(value) => setLanguage(value)} defaultValue="EN">
+        <Select onValueChange={handleLanguageChange} defaultValue={language}>
           <SelectTrigger className="w-40">
             <SelectValue placeholder="언어 선택" />
           </SelectTrigger>
@@ -118,13 +150,16 @@ const ExerciseList = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {exercises.length > 0 ? (
-          exercises.map((exercise, index) => (
-            <Card key={index}>
+          exercises.map((exercise) => (
+            <Card key={exercise.id}>
               <CardHeader>
                 <h2 className="text-lg font-semibold">{exercise.name}</h2>
               </CardHeader>
               <CardContent>
-                <p>{exercise.description}</p>
+                <p className="text-sm text-gray-500 font-semibold">카테고리: {exercise.categoryName}</p>
+                <p className="text-sm text-gray-500 font-semibold">언어: {exercise.languageName}</p>
+                <br></br>
+                <div dangerouslySetInnerHTML={{ __html: exercise.description }} />
               </CardContent>
             </Card>
           ))
