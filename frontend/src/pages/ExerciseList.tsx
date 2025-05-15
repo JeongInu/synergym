@@ -123,10 +123,26 @@ const ExerciseList = () => {
               <SelectValue placeholder="언어 선택" />
             </SelectTrigger>
             <SelectContent className="bg-white text-black max-h-50 overflow-y-auto">
-              <SelectItem value="EN">영어</SelectItem>
-              <SelectItem value="KR">한국어</SelectItem>
+              <SelectItem value="AZ">아제르바이잔어</SelectItem>
+              <SelectItem value="ID">인도네시아어</SelectItem>
               <SelectItem value="DE">독일어</SelectItem>
-              {/* 필요시 언어 추가 */}
+              <SelectItem value="EN">영어</SelectItem>
+              <SelectItem value="ES">스페인어</SelectItem>
+              <SelectItem value="EO">에스페란토</SelectItem>
+              <SelectItem value="FR">프랑스어</SelectItem>
+              <SelectItem value="HR">크로아티아어</SelectItem>
+              <SelectItem value="IT">이탈리아어</SelectItem>
+              <SelectItem value="NL">네덜란드어</SelectItem>
+              <SelectItem value="NO">노르웨이어</SelectItem>
+              <SelectItem value="PL">폴란드어</SelectItem>
+              <SelectItem value="PT">포르투갈어</SelectItem>
+              <SelectItem value="SV">스웨덴어</SelectItem>
+              <SelectItem value="TR">터키어</SelectItem>
+              <SelectItem value="CS">체코어</SelectItem>
+              <SelectItem value="EL">그리스어</SelectItem>
+              <SelectItem value="BG">불가리아어</SelectItem>
+              <SelectItem value="RU">러시아어</SelectItem>
+              <SelectItem value="UK">우크라이나어</SelectItem>
             </SelectContent>
           </Select>
 
