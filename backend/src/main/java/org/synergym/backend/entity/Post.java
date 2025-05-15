@@ -46,7 +46,7 @@ public class Post extends BaseEntity {
     private int viewCount;
     // 조회수를 저장하는 필드
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
     // 일대다(1:N) 관계 매핑, 양방향 관계에서 매핑 주인을 'post'로 지정
     // cascade = CascadeType.ALL: Post 엔티티의 모든 변경(저장, 삭제 등)이 연관된 Comment에도 적용됨
     // orphanRemoval = true: 부모 엔티티와 연관관계가 끊어진 자식 엔티티 자동 삭제 (연관관계 제거 시 댓글도 삭제)

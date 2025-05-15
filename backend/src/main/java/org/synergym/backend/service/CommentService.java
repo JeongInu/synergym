@@ -1,5 +1,6 @@
 package org.synergym.backend.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.synergym.backend.dto.CommentDTO;
 import org.synergym.backend.entity.Comment;
 import org.synergym.backend.entity.Post;
@@ -8,10 +9,10 @@ import org.synergym.backend.entity.User;
 import java.util.List;
 
 public interface CommentService {
-    Integer addComment(String content, Integer postId); //Spring Security 사용 예정
+    Integer addComment(String content, Integer postId, Integer userId);
     List<CommentDTO> getCommentsByPostId(Integer postId);
-    void updateComment(Integer id, CommentDTO commentDTO);
-    void deleteComment(Integer id);
+    void updateComment(Integer id, CommentDTO commentDTO, Integer userId);
+    void deleteComment(Integer id, Integer userId);
 
     default Comment dtoToEntity(CommentDTO commentDTO, Post post, User user) {
         return Comment.builder()
@@ -29,7 +30,11 @@ public interface CommentService {
                 .content(comment.getContent())
                 .postId(comment.getPost().getId())
                 .userId(comment.getUser().getId())
+                .username(comment.getUser().getUsername())
+                .createdAt(comment.getCreatedAt())
+                .updatedAt(comment.getUpdatedAt())
                 .build();
     }
+
 
 }

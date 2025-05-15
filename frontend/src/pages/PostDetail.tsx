@@ -6,12 +6,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { deletePost, getPostById, updatePost, type PostDTO } from "../api/postApi"; 
+import { getCommentsByPostId, addComment, updateComment, deleteComment, type CommentDTO } from "../api/commentApi"; // 댓글 API
 import { useUserStore } from "@/store/userStore"; // 사용자 정보 가져오기
-// PostDTO는 타입으로만 사용되므로 'type' 키워드를 사용하여 임포트
 
 
 // 백엔드의 PostDTO에 대응하는 타입 사용
 interface PostType extends PostDTO {}
+
+interface CommentType extends CommentDTO {}
 
 
 interface PostType {
@@ -72,30 +74,12 @@ const PostDetail = () => {
       setEditedTitle(data.title);
       setEditedContent(data.content);
 
-        // 댓글 데이터는 현재 Mock 유지 (백엔드 API 연결 시 수정 필요)
-        const mockComments: CommentType[] = [
-            {
-              id: 1,
-              postId: id,
-              content: "첫 번째 댓글입니다.",
-              username: "댓글러1",
-              createdAt: "2025-05-13T13:00:00",
-            },
-            {
-              id: 2,
-              postId: id,
-              content: "두 번째 댓글이에요!",
-              username: "댓글러2",
-              createdAt: "2025-05-13T14:00:00",
-            },
-          ];
-          setComments(mockComments);
-
+      // 댓글 DB에서 불러오기
+      const dbComments = await getCommentsByPostId(id);
+      setComments(dbComments);
     } catch (err) {
-      console.error("게시글 로딩 실패", err);
-      // 에러 발생 시 사용자에게 알림 등의 처리 필요
-      alert("게시글을 불러오는 데 실패했습니다."); // 사용자에게 알림
-      navigate("/"); // 실패 시 목록 페이지로 이동 등 처리 가능
+      alert("게시글을 불러오는 데 실패했습니다.");
+      navigate("/");
     } finally {
       setLoading(false);
     }
@@ -165,43 +149,56 @@ const handleDeletePost = async () => {
 
 
 
-//댓글 추가 (Mock 데이터 유지)
-   const handleAddComment = () => {
+// 댓글 추가
+  const handleAddComment = async () => {
+    if (!user) {
+      alert("로그인 후 이용 가능합니다.");
+      return;
+    }
     if (newComment.trim() === "") return;
-    const newOne: CommentType = {
-      id: Date.now(),
-      postId: post!.id,
-      content: newComment,
-      username: "현재유저",
-      createdAt: new Date().toISOString(),
-    };
-    setComments([...comments, newOne]);
-    setNewComment("");
+    try {
+      await addComment({ content: newComment, postId: post!.id, userId: user.id });
+      setNewComment("");
+      fetchPost(); // 댓글 추가 후 목록 새로고침
+    } catch {
+      alert("댓글 추가에 실패했습니다.");
+    }
   };
 
-  //댓글 삭제 (Mock 데이터 유지)
-  const handleDeleteComment = (id: number) => {
-    setComments(comments.filter((c) => c.id !== id));
+  // 댓글 삭제
+  const handleDeleteComment = async (id: number) => {
+    if (!user) {
+      alert("로그인 후 이용 가능합니다.");
+      return;
+    }
+    try {
+      await deleteComment(id, user.id);
+      fetchPost();
+    } catch {
+      alert("댓글 삭제에 실패했습니다.");
+    }
   };
 
-  //댓글 수정 (Mock 데이터 유지)
+  // 댓글 수정 모드 진입
   const handleEditComment = (id: number, content: string) => {
     setEditingCommentId(id);
     setEditedCommentContent(content);
   };
 
-  //댓글 저장 (Mock 데이터 유지)
-  const handleSaveComment = () => {
-    setComments((prev) =>
-      prev.map((c) =>
-        c.id === editingCommentId ? { ...c, content: editedCommentContent } : c
-      )
-    );
-    setEditingCommentId(null);
-    setEditedCommentContent("");
+  // 댓글 저장
+  const handleSaveComment = async () => {
+    if (!user || editingCommentId === null) return;
+    try {
+      await updateComment(editingCommentId, { content: editedCommentContent, userId: user.id });
+      setEditingCommentId(null);
+      setEditedCommentContent("");
+      fetchPost();
+    } catch {
+      alert("댓글 수정에 실패했습니다.");
+    }
   };
 
-  //댓글 수정 취소 (Mock 데이터 유지)
+  // 댓글 수정 취소
   const handleCancelCommentEdit = () => {
     setEditingCommentId(null);
     setEditedCommentContent("");
@@ -209,6 +206,7 @@ const handleDeletePost = async () => {
 
   useEffect(() => {
     fetchPost();
+    // eslint-disable-next-line
   }, [postId]);
 
   if (loading || !post) {
@@ -304,14 +302,10 @@ const handleDeletePost = async () => {
         {/* 댓글 섹션 */}
         <div className="max-h-130 overflow-y-auto max-w-3xl mx-auto mt-8 bg-gray-900 p-6 rounded-lg shadow-md">
           <h3 className="text-xl font-semibold mb-4">댓글</h3>
-
           {comments.map((comment) => (
-            <div
-              key={comment.id}
-              className="mb-4 p-4 bg-gray-800 rounded-md flex flex-col gap-2"
-            >
+            <div key={comment.id} className="mb-4 p-4 bg-gray-800 rounded-md flex flex-col gap-2">
               <div className="text-sm text-gray-400">
-                {comment.username} | {comment.createdAt.split("T")[0]}
+                {comment.username} | {typeof comment.createdAt === "string" ? comment.createdAt.split("T")[0] : "날짜 정보 없음"}
               </div>
               {editingCommentId === comment.id ? (
                 <>
@@ -331,34 +325,40 @@ const handleDeletePost = async () => {
               ) : (
                 <>
                   <p>{comment.content}</p>
-                  <div className="flex gap-2">
-                    <Button
-                      onClick={() => handleEditComment(comment.id, comment.content)}
-                      className="bg-blue-500 hover:bg-blue-600 text-white">
-                      수정
-                    </Button>
-                    <Button
-                      onClick={() => handleDeleteComment(comment.id)}
-                      className="bg-red-500 hover:bg-red-600 text-white">
-                      삭제
-                    </Button>
-                  </div>
+                  {/* 댓글 작성자만 수정/삭제 버튼 보이게 */}
+                  {user && user.username === comment.username && (
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={() => handleEditComment(comment.id, comment.content)}
+                        className="bg-blue-500 hover:bg-blue-600 text-white">
+                        수정
+                      </Button>
+                      <Button
+                        onClick={() => handleDeleteComment(comment.id)}
+                        className="bg-red-500 hover:bg-red-600 text-white">
+                        삭제
+                      </Button>
+                    </div>
+                  )}
                 </>
               )}
             </div>
           ))}
 
-          <div className="mt-6 flex items-center gap-2">
-            <Input
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              placeholder="댓글을 입력하세요..."
-              className="flex-1"
-            />
-            <Button onClick={handleAddComment} className="bg-blue-500 hover:bg-blue-600 text-white">
-              추가
-            </Button>
-          </div>
+          {/* 로그인한 사용자만 댓글 입력창/추가 버튼 보이게 */}
+          {user && (
+            <div className="mt-6 flex items-center gap-2">
+              <Input
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="댓글을 입력하세요..."
+                className="flex-1"
+              />
+              <Button onClick={handleAddComment} className="bg-blue-500 hover:bg-blue-600 text-white">
+                추가
+              </Button>
+            </div>
+          )}
         </div>
       </main>
       <Footer />
