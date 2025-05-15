@@ -15,10 +15,7 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * CommentService 구현 클래스
- * 나중에 Spring Security 적용 시 인증된 사용자 정보를 SecurityContextHolder에서 가져오도록 수정 예정
- */
+
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
@@ -30,53 +27,32 @@ public class CommentServiceImpl implements CommentService {
 
     /**
      * 댓글 추가 메서드
-     * 현재는 userId를 직접 전달받지만, 추후 Spring Security 적용 시
-     * SecurityContextHolder에서 인증된 사용자 정보를 가져오도록 수정 예정
      */
-    @Override
     @Transactional
-    public Integer addComment(String content, Integer postId) {
-        // Spring Security 적용 시 현재 사용자 정보 가져올 예정
-        // 임시로 하드코딩된 사용자 ID를 사용하거나 메서드 매개변수로 받을 수 있음
-        Integer userId = getCurrentUserId(); // 현재는 구현 필요
-
-        // 1. Post 객체 조회
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new EntityNotFoundException("Post not found with id: " + postId));
-        
-        // 2. User 객체 조회
+    @Override
+    public Integer addComment(String content, Integer postId, Integer userId) {
+        // 로그인한 사용자만 댓글 작성 가능
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
-        
-        // 3. Comment 객체 생성 및 저장
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("Post not found with id: " + postId));
         Comment comment = Comment.builder()
                 .content(content)
                 .post(post)
                 .user(user)
                 .build();
-
-        // Post 엔티티의 addComment 메서드 사용
         post.addComment(comment);
-
-        // 댓글 명시적 저장 - ID 획득 목적
         Comment savedComment = commentRepository.save(comment);
-
         return savedComment.getId();
     }
 
-    // Spring Security 구현 전 임시 메서드
-    private Integer getCurrentUserId() {
-        // 임시 구현: 고정된 사용자 ID 반환 또는 예외 발생
-        // Spring Security 구현 후 대체 예정
-        throw new UnsupportedOperationException("Spring Security not yet implemented");
-    }
 
     /**
      * 댓글 PostId별 조회 메서드
      */
     @Override
     public List<CommentDTO> getCommentsByPostId(Integer postId) {
-        List<Comment> comments = commentRepository.findByPostIdAndDeleteYnFalse(postId);
+        List<Comment> comments = commentRepository.findByPostIdAndDeleteYnFalseOrderByCreatedAtAsc(postId);
 
         // Comment 엔티티를 DTO로 변환
         return comments.stream()
@@ -90,25 +66,17 @@ public class CommentServiceImpl implements CommentService {
      * 현재는 userId를 직접 전달받지만, 추후 Spring Security 적용 시
      * SecurityContextHolder에서 인증된 사용자 정보를 가져오도록 수정 예정
      */
-    @Override
     @Transactional
-    public void updateComment(Integer id, CommentDTO commentDTO) {
-        // 임시로 고정된 사용자 ID 사용 (Spring Security 적용 전)
-        Integer userId = 1; // 개발/테스트용 임시 사용자 ID
-
-
+    @Override
+    public void updateComment(Integer id, CommentDTO commentDTO, Integer userId) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Comment not found with id: " + id));
-
-        // 작성자 검증 - Spring Security 적용 시 이 부분 변경 예정
+        // 작성자만 수정 가능
         if (!comment.getUser().getId().equals(userId)) {
-            throw new SecurityException("You don't have permission to update this comment");
+            throw new SecurityException("댓글 작성자만 수정할 수 있습니다.");
         }
-
         comment.changeContent(commentDTO.getContent());
         commentRepository.save(comment);
-
-
     }
 
 
@@ -117,29 +85,21 @@ public class CommentServiceImpl implements CommentService {
      * 현재는 userId를 직접 전달받지만, 추후 Spring Security 적용 시
      * SecurityContextHolder에서 인증된 사용자 정보를 가져오도록 수정 예정
      */
-    @Override
     @Transactional
-    public void deleteComment(Integer id) {
-        // Spring Security 적용 시 현재 사용자 정보 가져올 예정
-        Integer userId = 1; // 개발/테스트용 임시 사용자 ID
-
+    @Override
+    public void deleteComment(Integer id, Integer userId) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Comment not found with id: " + id));
-
-        // 작성자 검증 - Spring Security 적용 시 이 부분 변경 예정
+        // 작성자만 삭제 가능
         if (!comment.getUser().getId().equals(userId)) {
-            throw new SecurityException("You don't have permission to delete this comment");
+            throw new SecurityException("댓글 작성자만 삭제할 수 있습니다.");
         }
 
         // 소프트 삭제 처리
         comment.softDelete();
 
-        // 게시물에서 댓글 제거
-        Post post = comment.getPost();
-        post.removeComment(comment);
-
         // 변경사항 저장
-        postRepository.save(post);
+        commentRepository.save(comment);
 
     }
 

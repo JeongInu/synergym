@@ -123,7 +123,7 @@ public class PostServiceTest {
                 .build();
 
         // 게시물 수정
-        postService.updatePost(postId, updateDTO);
+        postService.updatePost(postId, updateDTO, testUser.getId());
 
         // 수정된 게시물 조회
         PostDTO updatedPost = postService.getPostById(postId);

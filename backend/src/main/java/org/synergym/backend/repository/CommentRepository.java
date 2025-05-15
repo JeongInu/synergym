@@ -8,8 +8,8 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
-    // deleteYn이 false인 댓글만 조회(소프트 삭제되지 않은 것만)
-    List<Comment> findByPostIdAndDeleteYnFalse(Integer postId);
+    // deleteYn이 false인 댓글만 생성된 날짜 기준 조회
+    List<Comment> findByPostIdAndDeleteYnFalseOrderByCreatedAtAsc(Integer postId);
 
 
 }
