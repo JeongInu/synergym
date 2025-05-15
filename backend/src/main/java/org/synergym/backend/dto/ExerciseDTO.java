@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.synergym.backend.entity.Category;
+
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.HashMap;
@@ -25,7 +27,7 @@ public class ExerciseDTO {
     private Integer id;
     private String name;
     private String description;
-    private Integer category;
+    private Category category;
     private Integer language;
 
     @JsonProperty("muscles")

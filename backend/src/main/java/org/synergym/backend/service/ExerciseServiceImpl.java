@@ -1,5 +1,6 @@
 package org.synergym.backend.service;
 
+import jakarta.persistence.criteria.Predicate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,12 +13,10 @@ import org.synergym.backend.dto.ExerciseDTO;
 import org.synergym.backend.dto.ExerciseResponseDTO;
 import org.synergym.backend.entity.Exercise;
 import org.synergym.backend.entity.ExerciseTranslation;
+import org.synergym.backend.entity.LanguageType;
 import org.synergym.backend.repository.ExerciseRepository;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +25,29 @@ public class ExerciseServiceImpl implements ExerciseService {
     private final ExerciseRepository exerciseRepository;
     private final WgerApiClient wgerApiClient;
 
+    private static final Map<String, Integer> languageNameToIdMap = Map.ofEntries(
+            Map.entry("AZ", 18),
+            Map.entry("ID", 23),
+            Map.entry("DE", 1),
+            Map.entry("EN", 2),
+            Map.entry("ES", 4),
+            Map.entry("EO", 19),
+            Map.entry("FR", 12),
+            Map.entry("HR", 22),
+            Map.entry("IT", 13),
+            Map.entry("NL", 6),
+            Map.entry("NO", 11),
+            Map.entry("PL", 14),
+            Map.entry("PT", 7),
+            Map.entry("SV", 10),
+            Map.entry("TR", 16),
+            Map.entry("CS", 9),
+            Map.entry("EL", 8),
+            Map.entry("BG", 3),
+            Map.entry("RU", 5),
+            Map.entry("UK", 15)
+    );
+
     @Autowired
     public ExerciseServiceImpl(ExerciseRepository exerciseRepository, WgerApiClient wgerApiClient) {
         this.exerciseRepository = exerciseRepository;
@@ -33,59 +55,65 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
-    public Page<ExerciseResponseDTO> searchExercises(Integer category,
-                                                     Integer language,
-                                                     List<Integer> muscles,
-                                                     List<Integer> equipment,
-                                                     String keyword,
+    public List<ExerciseResponseDTO> getExercisesByCategoryAndLanguage(String categoryName, String languageName) {
+        boolean filterByCategory = categoryName != null && !categoryName.trim().isEmpty();
+
+        Integer languageId = null;
+        boolean filterByLanguage = false;
+        if (languageName != null && !languageName.trim().isEmpty()) {
+            languageId = languageNameToIdMap.get(languageName.trim());
+            filterByLanguage = languageId != null;
+        }
+
+        List<Exercise> exercises;
+
+        if (filterByCategory && filterByLanguage) {
+            exercises = exerciseRepository.findByCategory_NameAndLanguage(categoryName.trim(), languageId);
+        } else if (filterByCategory) {
+            exercises = exerciseRepository.findByCategory_Name(categoryName.trim());
+        } else if (filterByLanguage) {
+            exercises = exerciseRepository.findByLanguage(languageId);
+        } else {
+            exercises = exerciseRepository.findAll();
+        }
+        return exercises.stream()
+                .map(e -> ExerciseResponseDTO.builder()
+                        .id(e.getId())
+                        .name(e.getName())
+                        .description(e.getDescription())
+                        .categoryId(e.getCategory() != null ? e.getCategory().getId() : null)
+                        .categoryName(e.getCategory() != null ? e.getCategory().getName() : null)
+                        .language(e.getLanguage() != null ? e.getLanguage() : null)
+                        .languageName(LanguageType.getDisplayNameById(e.getLanguage()))
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<ExerciseResponseDTO> searchExercises(String keyword,
                                                      Pageable pageable) {
 
         Specification<Exercise> spec = Specification.where(null);
 
-        if (category != null) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("category"), category));
-        }
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            String lowerKeyword = "%" + keyword.trim().toLowerCase() + "%";
 
-        if (language != null) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("language"), language));
-        }
+            // 여러 필드에 대한 OR 검색 조건을 만들기 위한 Specification 정의
+            Specification<Exercise> keywordSpec = (root, query, cb) -> {
+                List<Predicate> predicates = new ArrayList<>();
 
-        if (muscles != null && !muscles.isEmpty()) {
-            spec = spec.and((root, query, cb) -> root.get("muscles").in(muscles));
-        }
+                // 제목, 내용 검색
+                predicates.add(cb.like(cb.lower(root.get("name")), lowerKeyword));
+                predicates.add(cb.like(cb.lower(root.get("description")), lowerKeyword));
 
-        if (equipment != null && !equipment.isEmpty()) {
-            spec = spec.and((root, query, cb) -> root.get("equipment").in(equipment));
-        }
+                return cb.or(predicates.toArray(new Predicate[0]));
+            };
 
-        if (keyword != null && !keyword.isEmpty()) {
-            spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("name")), "%" + keyword.toLowerCase() + "%"));
+            spec = spec.and(keywordSpec);
         }
 
         Page<Exercise> page = exerciseRepository.findAll(spec, pageable);
         return page.map(this::entityToResponseDto);
-    }
-
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<ExerciseResponseDTO> getExercisesByCategoryAndLanguage(Integer category, Integer language) {
-        List<Exercise> exercises;
-
-        // 조건에 따라 filtering
-        if (category != null && language != null) {
-            exercises = exerciseRepository.findByCategoryAndLanguage(category, language);
-        } else if (category != null) {
-            exercises = exerciseRepository.findByCategory(category);
-        } else if (language != null) {
-            exercises = exerciseRepository.findByLanguage(language);
-        } else {
-            exercises = exerciseRepository.findAll(); // 둘 다 없으면 전체 조회
-        }
-
-        return exercises.stream()
-                .map(this::entityToResponseDto)
-                .collect(Collectors.toList());
     }
 
 
@@ -141,13 +169,26 @@ public class ExerciseServiceImpl implements ExerciseService {
         if (exercise == null) {
             return null;
         }
+
+        Integer language = exercise.getLanguage();  // Integer (nullable)
+
+        String languageName = null;
+        if (language != null) {
+            languageName = LanguageType.getDisplayNameById(language);
+        } else {
+            // 언어가 없을 경우 기본값 설정 (예: "Unknown" 또는 빈 문자열)
+            languageName = "Unknown";
+        }
+
         // Exercise 엔티티를 ExerciseResponseDTO로 변환하는 로직
         // 빌더 패턴을 ExerciseResponseDTO에도 적용할 수 있다면 유사하게 사용 가능
         ExerciseResponseDTO.ExerciseResponseDTOBuilder builder = ExerciseResponseDTO.builder()
                 .id(exercise.getId())
-                .category(exercise.getCategory())
+                .categoryId(exercise.getCategory().getId())
+                .categoryName(exercise.getCategory().getName())
                 .description(exercise.getDescription())
                 .language(exercise.getLanguage())
+                .languageName(languageName)
                 .name(exercise.getName());
         return builder.build();
     }
@@ -159,27 +200,6 @@ public class ExerciseServiceImpl implements ExerciseService {
         Exercise exercise = exerciseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Exercise not found with id: " + id));
         return entityToResponseDto(exercise);
-    }
-
-    @Transactional
-    @Override
-    public Integer addExercise(ExerciseDTO exerciseDTO) {
-        Exercise exercise = dtoToEntity(exerciseDTO);
-        // Exercise 엔티티의 creationDate 필드가 Not Null이고, DTO에 없다면 여기서 설정 가능
-        // if (exercise.getCreationDate() == null) {
-        //     exercise.setCreationDate(java.time.LocalDateTime.now()); // 또는 빌더에서 설정
-        // }
-        exercise = exerciseRepository.save(exercise);
-        return exercise.getId();
-    }
-
-    @Transactional
-    @Override
-    public void deleteExercise(Integer id) {
-        if (!exerciseRepository.existsById(id)) {
-            throw new RuntimeException("Exercise not found with id: " + id);
-        }
-        exerciseRepository.deleteById(id);
     }
 
     @Transactional(readOnly = true)

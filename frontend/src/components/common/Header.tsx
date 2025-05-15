@@ -52,7 +52,7 @@ const handleLogout = () => {
 
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
-              <Link to="/" className="hover:text-violet-400 transition">
+              <Link to="/exercises" className="hover:text-violet-400 transition">
                 운동목록
               </Link>
             </NavigationMenuLink>
