@@ -122,7 +122,7 @@ const Post = () => {
   const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
 
 
-   // 컴포넌트 마운트 시 게시글 로드 및 검색어 변경 시 검색
+  // 컴포넌트 마운트 시 게시글 로드 및 검색어 변경 시 검색
   useEffect(() => {
     fetchPosts();
   }, []); // 최초 마운트 시에만 전체 게시글 로드
@@ -145,7 +145,6 @@ const Post = () => {
   // 렌더링
   return (
     <div className="bg-black text-white min-h-screen">
-    
       <Header />
       <br/>
       <br/>
@@ -199,15 +198,16 @@ const Post = () => {
               </TableHeader>
               <TableBody>
                 {currentPosts.length > 0 ? (
-                  currentPosts.map((post) => (
+                  currentPosts.map((post, index) => (
                     <TableRow 
                       key={post.id} 
                       className="hover:bg-gray-50 hover:text-black cursor-pointer"
                       onClick={() => handlePostClick(post.id)}
                     >
                       {/* 테이블 셀에 데이터 바인딩 */}
+                      {/* 순차적인 번호: 현재 페이지의 첫 글 번호부터 시작 */}
                         <TableCell className="text-center font-medium">
-                          {post.id}
+                          {indexOfFirstPost + index + 1}
                         </TableCell>
                         <TableCell>{post.title}</TableCell>
                         <TableCell>{post.username}</TableCell>{" "}

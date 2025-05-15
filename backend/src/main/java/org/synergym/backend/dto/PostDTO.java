@@ -16,5 +16,6 @@ public class PostDTO {
     private int viewCount;
     private LocalDateTime createdAt; // 생성일 필드 추가
     private LocalDateTime updatedAt; // 수정일 필드 추가
+    private boolean deleteYn; // 삭제 여부 필드 추가
 
 }

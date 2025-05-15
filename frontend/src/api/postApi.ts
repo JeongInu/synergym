@@ -2,6 +2,8 @@ import axios from './axiosInstance';
 
 // PostDTO 타입 정의 (백엔드 구조에 맞춤)
 export interface PostDTO {
+    updatedAt: string;
+    createdAt: string;
     id: number;
     title: string;
     content: string;
@@ -39,8 +41,8 @@ export const createPost = async (postDTO: Omit<PostDTO, 'id' | 'username' | 'vie
 };
 
 // 게시물 정보 수정 (PUT /api/posts/{id})
-export const updatePost = async (id: number, postDTO: Partial<PostDTO>): Promise<void> => {
-    await axios.put(`/posts/${id}`, postDTO);
+export const updatePost = async (id: number, postDTO: Partial<PostDTO>, userId: number) => {
+    await axios.put(`/posts/${id}`, postDTO, { params: { userId } });
 };
 
 // 게시물 삭제 (소프트 딜리트) (DELETE /api/posts/{id})
