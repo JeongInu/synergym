@@ -22,7 +22,20 @@ const handleLogout = () => {
 };
 
   return (
-    <div className="absolute top-0 left-0 w-full h-20 flex items-center justify-between px-6 bg-black text-white z-50">
+    <div style={{
+        position: 'relative',  // 고정 위치
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '80px',
+        backgroundColor: 'black',
+        color: 'white',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 24px',
+        zIndex: 50,
+      }}>
       <div className="flex items-center space-x-2">
         <img 
           src="/images/synergym_logo.png" 
@@ -61,7 +74,7 @@ const handleLogout = () => {
           {user && (
             <NavigationMenuItem>
               <NavigationMenuTrigger>마이페이지</NavigationMenuTrigger>
-              <NavigationMenuContent>
+              <NavigationMenuContent className="bg-black z-50">
                 <ul className="grid gap-2 p-4 w-48">
                   <li>
                     <NavigationMenuLink asChild>

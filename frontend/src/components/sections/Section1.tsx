@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { useScrollAnime } from "../../hooks/useScrollAnime";
-import Header from "../common/Header";
 import Content from "./content/Section1Content";
 
 const variants = {
@@ -19,8 +18,6 @@ const Section1 = () => {
       variants={variants}
       className="h-screen bg-black text-white flex flex-col relative"
     >
-      <Header />
-
       <div className="flex flex-1">
         {/* 왼쪽: 텍스트 & 버튼 */}
         <Content />
