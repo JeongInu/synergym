@@ -1,5 +1,6 @@
 package org.synergym.backend.service;
 
+import jakarta.persistence.criteria.Predicate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,10 +16,7 @@ import org.synergym.backend.entity.ExerciseTranslation;
 import org.synergym.backend.entity.LanguageType;
 import org.synergym.backend.repository.ExerciseRepository;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,28 +56,35 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     @Override
     public List<ExerciseResponseDTO> getExercisesByCategoryAndLanguage(String categoryName, String languageName) {
-        Integer languageId = languageNameToIdMap.get(languageName);
+        boolean filterByCategory = categoryName != null && !categoryName.trim().isEmpty();
 
-        List<Exercise> exercises = exerciseRepository.findByCategory_NameAndLanguage(categoryName, languageId);
-
-        Integer language = languageId;  // Integer (nullable)
-
-        String languageN;
-        if (language != null) {
-            languageN = LanguageType.getDisplayNameById(languageId);
-        } else {
-            languageN = "Unknown";
+        Integer languageId = null;
+        boolean filterByLanguage = false;
+        if (languageName != null && !languageName.trim().isEmpty()) {
+            languageId = languageNameToIdMap.get(languageName.trim());
+            filterByLanguage = languageId != null;
         }
 
+        List<Exercise> exercises;
+
+        if (filterByCategory && filterByLanguage) {
+            exercises = exerciseRepository.findByCategory_NameAndLanguage(categoryName.trim(), languageId);
+        } else if (filterByCategory) {
+            exercises = exerciseRepository.findByCategory_Name(categoryName.trim());
+        } else if (filterByLanguage) {
+            exercises = exerciseRepository.findByLanguage(languageId);
+        } else {
+            exercises = exerciseRepository.findAll();
+        }
         return exercises.stream()
                 .map(e -> ExerciseResponseDTO.builder()
                         .id(e.getId())
                         .name(e.getName())
                         .description(e.getDescription())
-                        .categoryId(e.getCategory().getId())
-                        .categoryName(e.getCategory().getName())
-                        .language(e.getLanguage())
-                        .languageName(languageN)
+                        .categoryId(e.getCategory() != null ? e.getCategory().getId() : null)
+                        .categoryName(e.getCategory() != null ? e.getCategory().getName() : null)
+                        .language(e.getLanguage() != null ? e.getLanguage() : null)
+                        .languageName(LanguageType.getDisplayNameById(e.getLanguage()))
                         .build())
                 .collect(Collectors.toList());
     }
@@ -90,8 +95,21 @@ public class ExerciseServiceImpl implements ExerciseService {
 
         Specification<Exercise> spec = Specification.where(null);
 
-        if (keyword != null && !keyword.isEmpty()) {
-            spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("name")), "%" + keyword.toLowerCase() + "%"));
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            String lowerKeyword = "%" + keyword.trim().toLowerCase() + "%";
+
+            // 여러 필드에 대한 OR 검색 조건을 만들기 위한 Specification 정의
+            Specification<Exercise> keywordSpec = (root, query, cb) -> {
+                List<Predicate> predicates = new ArrayList<>();
+
+                // 제목, 내용 검색
+                predicates.add(cb.like(cb.lower(root.get("name")), lowerKeyword));
+                predicates.add(cb.like(cb.lower(root.get("description")), lowerKeyword));
+
+                return cb.or(predicates.toArray(new Predicate[0]));
+            };
+
+            spec = spec.and(keywordSpec);
         }
 
         Page<Exercise> page = exerciseRepository.findAll(spec, pageable);

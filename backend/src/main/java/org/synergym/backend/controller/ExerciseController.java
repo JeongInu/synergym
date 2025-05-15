@@ -39,12 +39,7 @@ public class ExerciseController {
         }
         return ResponseEntity.ok(exercises);
     }
-    // 특정 ID 운동 조회
-    @GetMapping("/exercises/{id}")
-    public ResponseEntity<ExerciseResponseDTO> getExerciseById(@PathVariable Integer id) {
-        ExerciseResponseDTO exercise = exerciseService.getExerciseById(id);
-        return ResponseEntity.ok(exercise);
-    }
+
     // 특정 카테고리와 언어로 운동 조회 (languageName 사용)
     @GetMapping("/exercises/filter")
     public ResponseEntity<List<ExerciseResponseDTO>> getExercisesByCategoryAndLanguage(
@@ -63,13 +58,20 @@ public class ExerciseController {
         Page<ExerciseResponseDTO> result = exerciseService.searchExercises(
                 keyword, pageable
         );
-        System.out.println("===== getAllExercises() 결과 =====");
-        for (ExerciseResponseDTO dto : result.getContent()) {
-            System.out.println("ID: " + dto.getId() +
-                    ", Name: " + dto.getName() +
-                    ", Description: " + dto.getDescription() +
-                    ", Category: " + dto.getCategoryName());
-        }
+
+         System.out.println("===== searchExercises() 결과 =====");
+//         if (result != null && result.hasContent()) {
+//             for (ExerciseResponseDTO dto : result.getContent()) {
+//                 System.out.println("ID: " + dto.getId() +
+//                         ", Name: " + dto.getName() +
+//                         ", Description: " + dto.getDescription() +
+//                         ", Category: " + dto.getCategoryName());
+//             }
+//             System.out.println("Total Elements: " + result.getTotalElements() + ", Total Pages: " + result.getTotalPages());
+//         } else {
+//              System.out.println("검색 결과가 없습니다.");
+//         }
         return ResponseEntity.ok(result);
     }
+
 }

@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
-import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -12,8 +11,6 @@ import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import { fetchExercises } from '@/api/exerciseApi';
 
-
-// Define the type for exercises
 interface Exercise {
   id: number;
   name: string;
@@ -25,8 +22,8 @@ interface Exercise {
 }
 
 const ExerciseList = () => {
-  const [category, setCategory] = useState('');    // 기본값: 팔
-  const [language, setLanguage] = useState('');   // 기본값: 영어
+  const [category, setCategory] = useState('');
+  const [language, setLanguage] = useState('');
   const [keyword, setKeyword] = useState('');
   const [useFilter, setUseFilter] = useState(false); // 필터 사용 여부
   const [useSearch, setUseSearch] = useState(false); // 검색 사용 여부
@@ -39,7 +36,7 @@ const ExerciseList = () => {
     setError(null);
     console.log('데이터 가져오기 시도:', { category, languageName: language, keyword, useFilter, useSearch }); // language를 languageName으로 사용
     try {
-      const data = await fetchExercises(category, language, keyword, useFilter, useSearch);
+      const data = await fetchExercises(category, language, keyword);
       console.log('데이터 가져오기 결과:', data);
       setExercises(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -49,17 +46,19 @@ const ExerciseList = () => {
     } finally {
       setLoading(false);
     }
-  }, [category, language, keyword, useFilter, useSearch]); // category, language, keyword가 변경될 때만 함수 재생성
+  }, [category, language, keyword]); 
 
-  // 컴포넌트 마운트 시 및 필터 변경 시 운동 데이터 불러오기
   useEffect(() => {
-    loadExercises();
-  }, [loadExercises]); // loadExercises 함수 자체가 의존성
+    if (!useSearch) {
+      loadExercises();
+    }
+  }, [category, language, useFilter]);
 
   // 검색 버튼 클릭 핸들러
   const handleSearch = () => {
-    setKeyword(keyword.trim()); // 검색어 앞뒤 공백 제거
-    setUseSearch(true); // 필터 사용 여부를 true로 설정
+    setKeyword(keyword.trim());
+    setUseSearch(true);
+    loadExercises();
     console.log('검색 버튼 클릭:', { category, languageName: language, keyword });
   };
 
