@@ -1,7 +1,5 @@
-// src/components/sections/Section5.tsx
 import { motion } from "framer-motion";
 import { useScrollAnime } from "../../hooks/useScrollAnime";
-import Footer from "../common/Footer";
 
 const variants = {
   hidden: { opacity: 0, y: 80 },
@@ -20,7 +18,6 @@ const Section5 = () => {
       className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 to-purple-600"
     >
       <h1 className="text-white text-6xl font-bold">Section 5</h1>
-      <Footer />
     </motion.section>
   );
 };
