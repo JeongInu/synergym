@@ -12,6 +12,7 @@ import org.synergym.backend.dto.ExerciseDTO;
 import org.synergym.backend.dto.ExerciseResponseDTO;
 import org.synergym.backend.entity.Exercise;
 import org.synergym.backend.entity.ExerciseTranslation;
+import org.synergym.backend.entity.LanguageType;
 import org.synergym.backend.repository.ExerciseRepository;
 
 import java.util.Collections;
@@ -26,6 +27,29 @@ public class ExerciseServiceImpl implements ExerciseService {
     private final ExerciseRepository exerciseRepository;
     private final WgerApiClient wgerApiClient;
 
+    private static final Map<String, Integer> languageNameToIdMap = Map.ofEntries(
+            Map.entry("AZ", 18),
+            Map.entry("ID", 23),
+            Map.entry("DE", 1),
+            Map.entry("EN", 2),
+            Map.entry("ES", 4),
+            Map.entry("EO", 19),
+            Map.entry("FR", 12),
+            Map.entry("HR", 22),
+            Map.entry("IT", 13),
+            Map.entry("NL", 6),
+            Map.entry("NO", 11),
+            Map.entry("PL", 14),
+            Map.entry("PT", 7),
+            Map.entry("SV", 10),
+            Map.entry("TR", 16),
+            Map.entry("CS", 9),
+            Map.entry("EL", 8),
+            Map.entry("BG", 3),
+            Map.entry("RU", 5),
+            Map.entry("UK", 15)
+    );
+
     @Autowired
     public ExerciseServiceImpl(ExerciseRepository exerciseRepository, WgerApiClient wgerApiClient) {
         this.exerciseRepository = exerciseRepository;
@@ -33,30 +57,31 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
-    public Page<ExerciseResponseDTO> searchExercises(Integer category,
-                                                     Integer language,
-                                                     List<Integer> muscles,
-                                                     List<Integer> equipment,
-                                                     String keyword,
+    public List<ExerciseResponseDTO> getExercisesByCategoryAndLanguage(String categoryName, String languageName) {
+        Integer languageId = languageNameToIdMap.get(languageName);
+
+        if (languageId == null) {
+            throw new IllegalArgumentException("지원하지 않는 언어입니다: " + languageName);
+        }
+
+        List<Exercise> exercises = exerciseRepository.findByCategory_NameAndLanguage(categoryName, languageId);
+
+        return exercises.stream()
+                .map(e -> ExerciseResponseDTO.builder()
+                        .id(e.getId())
+                        .name(e.getName())
+                        .description(e.getDescription())
+                        .category(e.getCategory())
+                        .language(e.getLanguage())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<ExerciseResponseDTO> searchExercises(String keyword,
                                                      Pageable pageable) {
 
         Specification<Exercise> spec = Specification.where(null);
-
-        if (category != null) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("category"), category));
-        }
-
-        if (language != null) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("language"), language));
-        }
-
-        if (muscles != null && !muscles.isEmpty()) {
-            spec = spec.and((root, query, cb) -> root.get("muscles").in(muscles));
-        }
-
-        if (equipment != null && !equipment.isEmpty()) {
-            spec = spec.and((root, query, cb) -> root.get("equipment").in(equipment));
-        }
 
         if (keyword != null && !keyword.isEmpty()) {
             spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("name")), "%" + keyword.toLowerCase() + "%"));
@@ -74,9 +99,9 @@ public class ExerciseServiceImpl implements ExerciseService {
 
         // 조건에 따라 filtering
         if (category != null && language != null) {
-            exercises = exerciseRepository.findByCategoryAndLanguage(category, language);
+            exercises = exerciseRepository.findByCategory_IdAndLanguage(category, language);
         } else if (category != null) {
-            exercises = exerciseRepository.findByCategory(category);
+            exercises = exerciseRepository.findByCategory_Id(category);
         } else if (language != null) {
             exercises = exerciseRepository.findByLanguage(language);
         } else {
@@ -141,6 +166,8 @@ public class ExerciseServiceImpl implements ExerciseService {
         if (exercise == null) {
             return null;
         }
+
+
         // Exercise 엔티티를 ExerciseResponseDTO로 변환하는 로직
         // 빌더 패턴을 ExerciseResponseDTO에도 적용할 수 있다면 유사하게 사용 가능
         ExerciseResponseDTO.ExerciseResponseDTOBuilder builder = ExerciseResponseDTO.builder()
@@ -148,6 +175,7 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .category(exercise.getCategory())
                 .description(exercise.getDescription())
                 .language(exercise.getLanguage())
+                .languageName(LanguageType.getDisplayNameById(exercise.getLanguage()))
                 .name(exercise.getName());
         return builder.build();
     }

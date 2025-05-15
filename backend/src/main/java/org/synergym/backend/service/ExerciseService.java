@@ -14,12 +14,9 @@ public interface ExerciseService {
     void deleteExercise(Integer id);
     List<ExerciseResponseDTO> getAllExercises();
     List<ExerciseResponseDTO> getExercisesByCategoryAndLanguage(Integer category, Integer language);
-    Page<ExerciseResponseDTO> searchExercises(Integer category,
-                                              Integer language,
-                                              List<Integer> muscles,
-                                              List<Integer> equipment,
-                                              String keyword,
+    Page<ExerciseResponseDTO> searchExercises(String keyword,
                                               Pageable pageable);
+    List<ExerciseResponseDTO> getExercisesByCategoryAndLanguage(String categoryName, String languageName);
     Exercise dtoToEntity(ExerciseDTO dto);
     ExerciseResponseDTO entityToResponseDto(Exercise exercise);
 }

@@ -38,27 +38,24 @@ public class ExerciseController {
         ExerciseResponseDTO exercise = exerciseService.getExerciseById(id);
         return ResponseEntity.ok(exercise);
     }
+    // 특정 카테고리와 언어로 운동 조회 (languageName 사용)
     @GetMapping("/filter")
     public ResponseEntity<List<ExerciseResponseDTO>> getExercisesByCategoryAndLanguage(
-            @RequestParam(required = false) Integer category,
-            @RequestParam(required = false) Integer language
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String languageName  // 언어 이름으로 수정
     ) {
-        List<ExerciseResponseDTO> exercises = exerciseService.getExercisesByCategoryAndLanguage(category, language);
+        List<ExerciseResponseDTO> exercises = exerciseService.getExercisesByCategoryAndLanguage(category, languageName);
         return ResponseEntity.ok(exercises);
     }
+
     @GetMapping("/search")
     public ResponseEntity<Page<ExerciseResponseDTO>> searchExercises(
-            @RequestParam(required = false) Integer category,
-            @RequestParam(required = false) Integer language,
-            @RequestParam(required = false) List<Integer> muscles,
-            @RequestParam(required = false) List<Integer> equipment,
             @RequestParam(required = false) String keyword,
             @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         Page<ExerciseResponseDTO> result = exerciseService.searchExercises(
-                category, language, muscles, equipment, keyword, pageable
+                keyword, pageable
         );
         return ResponseEntity.ok(result);
     }
-
 }

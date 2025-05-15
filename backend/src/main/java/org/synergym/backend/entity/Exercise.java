@@ -33,7 +33,10 @@ public class Exercise {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private Integer category;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category", referencedColumnName = "id")
+    private Category category;
+
     private Integer language;
 
     @ElementCollection(fetch = FetchType.LAZY) // 지연 로딩은 성능에 도움이 될 수 있습니다.
