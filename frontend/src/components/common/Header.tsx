@@ -36,7 +36,7 @@ const handleLogout = () => {
         <NavigationMenuList className="space-x-4">
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
-              <Link href="/" className="hover:text-violet-400 transition">
+              <Link to="/" className="hover:text-violet-400 transition">
                 사진분석
               </Link>
             </NavigationMenuLink>
@@ -44,7 +44,7 @@ const handleLogout = () => {
 
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
-              <Link href="/posts" className="hover:text-violet-400 transition">
+              <Link to="/posts" className="hover:text-violet-400 transition">
                 커뮤니티
               </Link>
             </NavigationMenuLink>
@@ -52,7 +52,7 @@ const handleLogout = () => {
 
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
-              <Link href="/" className="hover:text-violet-400 transition">
+              <Link to="/" className="hover:text-violet-400 transition">
                 운동목록
               </Link>
             </NavigationMenuLink>
@@ -65,28 +65,28 @@ const handleLogout = () => {
                 <ul className="grid gap-2 p-4 w-48">
                   <li>
                     <NavigationMenuLink asChild>
-                      <Link href="/mypage/profile" className="text-sm hover:text-violet-400 transition">
+                      <Link to="/" className="text-sm hover:text-violet-400 transition">
                         회원 정보
                       </Link>
                     </NavigationMenuLink>
                   </li>
                   <li>
                     <NavigationMenuLink asChild>
-                      <Link href="/mypage/photos" className="text-sm hover:text-violet-400 transition">
+                      <Link to="/" className="text-sm hover:text-violet-400 transition">
                         사진 분석 기록
                       </Link>
                     </NavigationMenuLink>
                   </li>
                   <li>
                     <NavigationMenuLink asChild>
-                      <Link href="/mypage/routine" className="text-sm hover:text-violet-400 transition">
+                      <Link to="/" className="text-sm hover:text-violet-400 transition">
                         루틴 기록
                       </Link>
                     </NavigationMenuLink>
                   </li>
                   <li>
                     <NavigationMenuLink asChild>
-                      <Link href="/mypage/likes" className="text-sm hover:text-violet-400 transition">
+                      <Link to="/" className="text-sm hover:text-violet-400 transition">
                         좋아요한 운동
                       </Link>
                     </NavigationMenuLink>
