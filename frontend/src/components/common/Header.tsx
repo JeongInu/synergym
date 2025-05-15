@@ -1,6 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useUserStore } from "@/store/userStore";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+} from "@/components/ui/navigation-menu";
 
 const Header = () => {
 const navigate = useNavigate();
@@ -24,14 +32,71 @@ const handleLogout = () => {
       </div>
 
       {/* 메뉴 */}
-      <nav className="flex space-x-6">
-        <a href="/" className="hover:text-violet-400 transition">사진분석</a>
-        <a href="/posts" className="hover:text-violet-400 transition">커뮤니티</a>
-        <a href="/exercises" className="hover:text-violet-400 transition">운동목록</a>
-        {user && (
-          <a href="/" className="hover:text-violet-400 transition">마이페이지</a>
-        )}
-      </nav>
+      <NavigationMenu>
+        <NavigationMenuList className="space-x-4">
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link href="/" className="hover:text-violet-400 transition">
+                사진분석
+              </Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link href="/posts" className="hover:text-violet-400 transition">
+                커뮤니티
+              </Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link href="/" className="hover:text-violet-400 transition">
+                운동목록
+              </Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+
+          {user && (
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>마이페이지</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid gap-2 p-4 w-48">
+                  <li>
+                    <NavigationMenuLink asChild>
+                      <Link href="/mypage/profile" className="text-sm hover:text-violet-400 transition">
+                        회원 정보
+                      </Link>
+                    </NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink asChild>
+                      <Link href="/mypage/photos" className="text-sm hover:text-violet-400 transition">
+                        사진 분석 기록
+                      </Link>
+                    </NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink asChild>
+                      <Link href="/mypage/routine" className="text-sm hover:text-violet-400 transition">
+                        루틴 기록
+                      </Link>
+                    </NavigationMenuLink>
+                  </li>
+                  <li>
+                    <NavigationMenuLink asChild>
+                      <Link href="/mypage/likes" className="text-sm hover:text-violet-400 transition">
+                        좋아요한 운동
+                      </Link>
+                    </NavigationMenuLink>
+                  </li>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          )}
+        </NavigationMenuList>
+      </NavigationMenu>
 
       {/* 로그인/로그아웃 버튼 */}
       {user ? (
