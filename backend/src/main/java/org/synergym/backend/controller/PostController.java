@@ -82,9 +82,9 @@ public class PostController {
      * @return 성공 시 200 응답
      */
     @PutMapping("/posts/{id}")
-    public ResponseEntity<Void> updatePost(@PathVariable Integer id, @RequestBody PostDTO postDTO) {
+    public ResponseEntity<Void> updatePost(@PathVariable Integer id, @RequestBody PostDTO postDTO, @RequestParam Integer userId) {
         try {
-            postService.updatePost(id, postDTO);
+            postService.updatePost(id, postDTO, userId);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             // 게시물이나 사용자를 찾을 수 없는 경우 404 응답

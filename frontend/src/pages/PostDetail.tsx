@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { deletePost, getPostById, updatePost, type PostDTO } from "../api/postApi"; 
+import { useUserStore } from "@/store/userStore"; // 사용자 정보 가져오기
 // PostDTO는 타입으로만 사용되므로 'type' 키워드를 사용하여 임포트
 
 
@@ -47,6 +48,8 @@ const PostDetail = () => {
   const [newComment, setNewComment] = useState("");
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const [editedCommentContent, setEditedCommentContent] = useState("");
+
+  const user = useUserStore((state) => state.user);
 
 
  // 게시글 조회 (백엔드 API 연결)
@@ -103,7 +106,10 @@ const PostDetail = () => {
 // 게시글 수정 (백엔드 API 연결)
 const handleSave = async () => {
   if (!post) return; // post 객체가 없으면 저장하지 않음
-
+  if (!user) {
+    alert("로그인 후 이용 가능합니다.");
+    return;
+  }
   try {
       // 백엔드 updatePost API가 Partial<PostDTO>를 받으므로, 변경된 필드만 담아서 보냅니다.
       const updatedPostData: Partial<PostDTO> = {
@@ -114,8 +120,8 @@ const handleSave = async () => {
           // 예: userId: post.userId
       };
 
-    await updatePost(post.id as number, updatedPostData); // post.id는 number 타입임을 명시
-
+    await updatePost(post.id, updatedPostData, user.id);
+  
     // 상태 업데이트: UI에 변경사항 반영
     setPost((prev) => prev && { ...prev, title: editedTitle, content: editedContent });
     setEditMode(false);
@@ -263,28 +269,34 @@ const handleDeletePost = async () => {
             </div>
           )}
 
-           {!editMode && (
+
+          {/* 수정 모드가 아닐 때만 보이게 */}
+          {!editMode && (
             <div className="flex gap-4">
-              <Button 
-                onClick={() => setEditMode(true)}
-                className="bg-blue-500 hover:bg-blue-600 text-white">
-                수정
+
+            {/* 수정/삭제 버튼: 작성자만 보이게 */}
+            {user && post && user.id === post.userId && (
+              <div className="flex gap-4">
+                <Button 
+                  onClick={() => setEditMode(true)}
+                  className="bg-blue-500 hover:bg-blue-600 text-white">
+                  수정
+                </Button>
+
+                <Button
+                  onClick={handleDeletePost} 
+                  className="bg-red-500 hover:bg-red-600 text-white">
+                  삭제
               </Button>
+              </div>
+            )}
 
               <Button
-                onClick={handleDeletePost} 
-                className="bg-red-500 hover:bg-red-600 text-white"
-            >
-                삭제
-            </Button>
-
-          
-            <Button
-              onClick={() => navigate(-1)}
-              className="bg-gray-500 hover:bg-gray-600 text-white"
-            >
-              목록으로
-            </Button>
+                onClick={() => navigate(-1)}
+                className="bg-gray-500 hover:bg-gray-600 text-white"
+              >
+                목록으로
+              </Button>
             </div>
           )}
         </div>
@@ -322,14 +334,12 @@ const handleDeletePost = async () => {
                   <div className="flex gap-2">
                     <Button
                       onClick={() => handleEditComment(comment.id, comment.content)}
-                      className="bg-blue-500 hover:bg-blue-600 text-white"
-                    >
+                      className="bg-blue-500 hover:bg-blue-600 text-white">
                       수정
                     </Button>
                     <Button
                       onClick={() => handleDeleteComment(comment.id)}
-                      className="bg-gray-500 hover:bg-gray-600 text-white"
-                    >
+                      className="bg-red-500 hover:bg-red-600 text-white">
                       삭제
                     </Button>
                   </div>
