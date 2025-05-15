@@ -4,34 +4,58 @@ import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import api from "../api/axiosInstance"; 
+import { useUserStore } from "@/store/userStore";
 
 const PostWrite = () => {
   const navigate = useNavigate();
+  const user = useUserStore((state) => state.user); // 로그인한 사용자 정보
   
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = () => {
-    // 게시글 제목과 내용이 비어 있지 않은지 확인
+
+  const handleSubmit = async () => { // async 키워드 추가
+    if (!user) {
+      setError("로그인 시 이용 가능합니다.");
+      return;
+    }
+    
     if (!title.trim() || !content.trim()) {
       setError("제목과 내용은 반드시 입력해야 합니다.");
       return;
     }
 
-    // 게시글 제출 (모킹된 데이터로 저장 또는 API 연동 필요)
-    const newPost = {
+
+    // 백엔드로 보낼 데이터 객체
+    const postData = {
       title,
       content,
-      username: "사용자1", // 실제 사용자로 변경해야 함
-      createdAt: new Date().toISOString(),
+      // 백엔드의 addPost 메서드는 DTO와 userId를 받으므로 DTO에 userId를 포함
+      userId: user.id // 실제 사용자 ID 사용
+      // createdAt, username 등은 백엔드에서 처리
     };
 
-    console.log("새 게시글 작성:", newPost);
+    try {
+      // 백엔드 API 호출하여 게시글 작성
+      // POST /posts 엔드포인트 사용, 요청 본문에 postData, 쿼리 파라미터로 userId 전달
+      const response = await api.post("/posts", postData, {
+          params: {
+              userId: user.id // 쿼리 파라미터로 userId 전달
+          }
+      });
 
-    // 게시글 작성 후 목록 페이지로 이동
-    navigate("/posts");
+      console.log("게시글 작성 성공:", response.data);
+      // 게시글 작성 후 목록 페이지로 이동
+      navigate("/posts");
+    } catch (err) {
+      setError("게시글 작성 중 오류가 발생했습니다.");
+      console.error("게시글 작성 오류:", err);
+      // 오류 처리 로직 추가 (예: 사용자에게 오류 메시지 표시)
+    }
   };
+
 
   return (
     <div className="bg-black text-white min-h-screen">
