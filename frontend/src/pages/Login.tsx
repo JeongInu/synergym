@@ -17,6 +17,21 @@ export default function Login() {
       const response = await login({ email, password });
       const result = response.message;
 
+      if (!email && !password) {
+        alert("🤔 이메일이랑 비밀번호를 모두 입력해 주세요!");
+        return;
+      }
+
+      if (!email) {
+        alert("📧 이메일을 입력해 주세요!");
+        return;
+      }
+
+      if (!password) {
+        alert("🔐 비밀번호를 입력해 주세요!");
+        return;
+      }
+
       if (result === "s") {
         const whoami = response.username;
         setUser(response);
@@ -48,7 +63,10 @@ export default function Login() {
               placeholder="example@domain.com" 
               className="bg-zinc-800 text-white" 
               value={email}
-              onChange={(e) => setEmail(e.target.value)}/>
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleLogin();
+              }}/>
           </div>
 
           <div>
@@ -58,7 +76,10 @@ export default function Login() {
               placeholder="********" 
               className="bg-zinc-800 text-white" 
               value={password}
-              onChange={(e) => setPassword(e.target.value)}/>
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleLogin();
+              }}/>
           </div>
 
           <Button 
